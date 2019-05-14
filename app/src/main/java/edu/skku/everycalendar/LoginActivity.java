@@ -1,5 +1,6 @@
 package edu.skku.everycalendar;
 
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +15,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         Button btnLogin = findViewById(R.id.btnLogin);
         final EditText txtID = findViewById(R.id.txtID);
@@ -28,6 +29,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 if(lr.getLogined()){
                     //Make intent
+                    Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+                    mainIntent.putExtra("Cookie", lr.getCookie());
+                    LoginActivity.this.startActivity(mainIntent);
                 }
                 else{
                     AlertDialog.Builder adb = new AlertDialog.Builder(LoginActivity.this);
