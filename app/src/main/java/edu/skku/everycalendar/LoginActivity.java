@@ -27,8 +27,7 @@ public class LoginActivity extends AppCompatActivity {
                 while(!lr.getFinished()){
                     sleep(100);
                 }
-                if(lr.getLogined()){
-                    //Make intent
+                if(true/*lr.getLogined()*/){
                     Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
                     mainIntent.putExtra("Cookie", lr.getCookie());
                     LoginActivity.this.startActivity(mainIntent);
