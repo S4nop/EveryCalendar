@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        EverytimeRequest etR = new EverytimeRequest();
     }
 
     @Override

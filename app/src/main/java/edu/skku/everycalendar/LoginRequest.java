@@ -27,7 +27,6 @@ public class LoginRequest{
 
     public LoginRequest(String id, String pw){
         uid = id; pwd = pw;
-        Log.d("Log", "LoginRequest");
         JWRequest();
         //logined = true;
     }
@@ -53,8 +52,6 @@ public class LoginRequest{
                     queries.put("redirect", "/");
                     if(hr.request("POST", "https://everytime.kr/user/login", queries, headers) == 0){
                         getUserInfo(hr);
-                        Log.d("Log_result", hr.getResult());
-
                     }
                 }
             }
@@ -63,10 +60,7 @@ public class LoginRequest{
     }
 
     private void getUserInfo(HttpRequest hr){
-        Log.d("log_rslt", hr.getResult());
-        Log.d("Log_Header", hr.getHeaders().toString());
         try{
-            Log.d("Log_Cookie", hr.getHeaders().get("Set-Cookie").toString());
             cookie = hr.getHeaders().get("Set-Cookie").toString();
             logined = true;
         }catch(Exception e){
