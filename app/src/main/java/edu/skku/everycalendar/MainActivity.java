@@ -1,8 +1,6 @@
 package edu.skku.everycalendar;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.view.MenuItem;
@@ -30,7 +28,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        EverytimeRequest etR = new EverytimeRequest();
+        ET_TimetableRequest etR = new ET_TimetableRequest("Cookie");
+        etR.makeTimeTable();
     }
 
     @Override

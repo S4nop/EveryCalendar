@@ -5,7 +5,26 @@ import java.util.ArrayList;
 public class ETtimetable {
     String name;
     String place;
+    String prof;
+    String weekDay;
     Integer startTime, endTime;
+
+    public ETtimetable(String name, String place, String prof, String weekDay, Integer startTime, Integer endTime) {
+        this.name = name;
+        this.place = place;
+        this.prof = prof;
+        this.weekDay = weekDay;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
+    public String getProf() {
+        return prof;
+    }
+
+    public void setProf(String prof) {
+        this.prof = prof;
+    }
 
     public String getName() {
         return name;
@@ -22,31 +41,5 @@ public class ETtimetable {
     public void setPlace(String place) {
         this.place = place;
     }
-
-    public Integer getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Integer startTime) {
-        this.startTime = startTime;
-    }
-
-    public Integer getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Integer endTime) {
-        this.endTime = endTime;
-    }
-
-    public ArrayList<String> getTime() {
-        return time;
-    }
-
-    public void setTime(ArrayList<String> time) {
-        this.time = time;
-    }
-
-    ArrayList<String> time;
 
 }
