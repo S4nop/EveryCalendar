@@ -4,13 +4,12 @@ import android.content.ContentValues;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class ET_TimetableRequest {
     String cookie;
-    ArrayList<ETtimetable> classList = new ArrayList<>();
+    ArrayList<TimetableData> classList = new ArrayList<>();
 
     ET_TimetableRequest(String cookie){
         this.cookie = cookie;
@@ -20,7 +19,8 @@ public class ET_TimetableRequest {
     public void makeTimeTable(){
         String tNum = getTTNum();
         if(tNum == null){
-            //Case failure
+            Log.d("LOG_MakeTimeTable", "getting tNum failed");
+            return;
         }
         parseTimeTable(getTimeTable(tNum));
     }
@@ -70,7 +70,7 @@ public class ET_TimetableRequest {
                 //Time = (Hour * 60 + Min) / 5
                 stTime = Integer.parseInt(dates[j].split("starttime=\"")[1].split("\"")[0]);
                 edTime = Integer.parseInt(dates[j].split("endtime=\"")[1].split("\"")[0]);
-                classList.add(new ETtimetable(name, place, prof, weekday, stTime, edTime));
+                classList.add(new TimetableData(name, place, prof, weekday, stTime, edTime));
                 Log.d("LOG_PRSTT", name + " " + place + " " + prof + " " + weekday);
             }
         }
@@ -159,7 +159,7 @@ public class ET_TimetableRequest {
         }
     }
 
-    public ArrayList<ETtimetable> getClassList() {
+    public ArrayList<TimetableData> getClassList() {
         return classList;
     }
 }

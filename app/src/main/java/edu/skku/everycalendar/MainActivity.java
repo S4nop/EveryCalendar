@@ -1,6 +1,7 @@
 package edu.skku.everycalendar;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.view.MenuItem;
@@ -10,6 +11,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.widget.Button;
+
+import com.google.api.client.util.DateTime;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -28,8 +31,11 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        ET_TimetableRequest etR = new ET_TimetableRequest("Cookie");
-        etR.makeTimeTable();
+        //ET_TimetableRequest etR = new ET_TimetableRequest("Cookie");
+        //etR.makeTimeTable();
+
+        GoogleCalRequest gCR = new GoogleCalRequest(getApplicationContext());
+        gCR.getCalendarSchedule(new DateTime("2019-05-01"), new DateTime("2019-05-18"));
     }
 
     @Override
