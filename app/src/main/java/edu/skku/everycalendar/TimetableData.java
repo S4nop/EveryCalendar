@@ -18,6 +18,14 @@ public class TimetableData {
         this.endTime = endTime;
     }
 
+    public TimetableData(String name, String place, String descript, Integer startTime, Integer endTime) {
+        this.name = name;
+        this.place = place;
+        this.descript = descript;
+        this.weekDay = weekDay;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
     public String getWeekDay() {
         return weekDay;
     }

@@ -1,5 +1,7 @@
 package edu.skku.everycalendar;
 
+import android.accounts.AccountManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,9 +16,8 @@ import android.widget.Button;
 
 import com.google.api.client.util.DateTime;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    GoogleCalRequest gCR;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +35,8 @@ public class MainActivity extends AppCompatActivity
         //ET_TimetableRequest etR = new ET_TimetableRequest("Cookie");
         //etR.makeTimeTable();
 
-        GoogleCalRequest gCR = new GoogleCalRequest(getApplicationContext());
-        gCR.getCalendarSchedule(new DateTime("2019-05-01"), new DateTime("2019-05-18"));
+        gCR = new GoogleCalRequest(getApplicationContext(), this, "Account");
+        gCR.getCalendarData(new DateTime("2019-05-01T00:00:00.000+09:00"), new DateTime("2019-05-19T23:59:59.000+09:00"));
     }
 
     @Override
@@ -91,5 +92,15 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("LOG_ACRESLT", "Here");
+
+        if (requestCode == GoogleCalRequest.REQUEST_ACC_PICK && resultCode == RESULT_OK && data != null && data.getExtras() != null) {
+            gCR.pickAcc(data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME));
+        }
     }
 }

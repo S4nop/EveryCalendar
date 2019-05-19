@@ -1,22 +1,6 @@
 package edu.skku.everycalendar;
 
 import android.content.ContentValues;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
-import android.util.Log;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
 
 public class LoginRequest{
 
@@ -35,7 +19,7 @@ public class LoginRequest{
         final int SEND_END = 0;
         final int SEND_ERR = -1;
 
-        final HttpRequest hr = new HttpRequest();
+        final Http_Request hr = new Http_Request();
 
         new Thread(){
             public void run(){
@@ -59,7 +43,7 @@ public class LoginRequest{
 
     }
 
-    private void getUserInfo(HttpRequest hr){
+    private void getUserInfo(Http_Request hr){
         try{
             cookie = hr.getHeaders().get("Set-Cookie").toString();
             logined = true;

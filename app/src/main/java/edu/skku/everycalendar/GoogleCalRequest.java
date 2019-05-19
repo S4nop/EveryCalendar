@@ -1,127 +1,160 @@
 package edu.skku.everycalendar;
 
-import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Log;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.json.jackson2.JacksonFactory;
+
 import com.google.api.client.util.DateTime;
 import com.google.api.client.util.ExponentialBackOff;
-import com.google.api.services.calendar.Calendar;
-import com.google.api.services.calendar.CalendarScopes;
-import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.Events;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
+import com.google.api.services.calendar.CalendarScopes;
+
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 
-public class GoogleCalRequest {
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
+
+
+
+public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
+
+    GoogleAccountCredential mCred;
     Context context;
-    GoogleAccountCredential mCredential;
-    Calendar mServ;
-    ArrayList<TimetableData> todos;
-    private static final String[] SCOPES = { CalendarScopes.CALENDAR_READONLY };
+    Activity mainAct;
+    String accName;
+    int chkLogin = 0;
+    List<TimetableData> events;
 
-    public GoogleCalRequest(Context context) {
+    GoogleCalTask mrt;
+    public static final int REQUEST_ACC_PICK = 1000;
+    public static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
+    private static final String[] PERMS = {CalendarScopes.CALENDAR};
+
+    public GoogleCalRequest(Context context, Activity mainAct, String accName) {
         this.context = context;
-        mServ = new com.google.api.services.calendar.Calendar
-                .Builder(AndroidHttp.newCompatibleTransport(), JacksonFactory.getDefaultInstance(), mCredential)
-                .setApplicationName("EveryCalendar")
-                .build();
-        mCredential.usingOAuth2(context, Arrays.asList(SCOPES)).setBackOff(new ExponentialBackOff());
-        todos = new ArrayList<>();
+        this.mainAct = mainAct;
+        this.accName = accName;
+
+        mCred = GoogleAccountCredential.usingOAuth2(
+                context,
+                Arrays.asList(PERMS)
+        ).setBackOff(new ExponentialBackOff());
+
     }
 
-    public void getCalendarSchedule(DateTime stDate, DateTime edDate) {
 
-        if (!chkGoogleSvc()) {
-            reqGoogleSvc();
+    public void getCalendarData(DateTime stDate, DateTime edDate) {
+        mrt = new GoogleCalTask(mCred);
+        mrt.setModeGet(stDate, edDate);
+        if (!chkGoogleAvail()) {
+            reqGoogleSrv();
+        }
+        if (mCred.getSelectedAccountName() == null) {
+            chooseAcc();
+        }
+        else{
+            executeTasker();
+        }
+    }
+
+    private void executeTasker(){
+        try {
+            events = mrt.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (CancellationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean chkGoogleAvail() {
+
+        GoogleApiAvailability apiAvail = GoogleApiAvailability.getInstance();
+
+        return apiAvail.isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
+    }
+
+
+    private void reqGoogleSrv() {
+        GoogleApiAvailability apiAvail = GoogleApiAvailability.getInstance();
+        int conStatCode = apiAvail.isGooglePlayServicesAvailable(context);
+
+        if (apiAvail.isUserResolvableError(conStatCode)) {
+            //TODO : Error handling
+        }
+    }
+
+
+
+    @AfterPermissionGranted(REQUEST_PERMISSION_GET_ACCOUNTS)
+    private void chooseAcc() {
+
+        if (EasyPermissions.hasPermissions(context, Manifest.permission.GET_ACCOUNTS)) {
+
+            String accName = mainAct.getPreferences(context.MODE_PRIVATE)
+                    .getString(this.accName, null);
+            if (accName != null) {
+                mCred.setSelectedAccountName(accName);
+                executeTasker();
+            } else {
+
+                mainAct.startActivityForResult(
+                        mCred.newChooseAccountIntent(),
+                        REQUEST_ACC_PICK);
+                executeTasker();
+            }
         } else {
-            // Google Calendar API 호출
-            GetCalendarData gcd = new GetCalendarData(stDate, edDate);
-            gcd.execute();
+
+            EasyPermissions.requestPermissions(
+                    mainAct,
+                    "This app needs permission to access your Google Account",
+                    REQUEST_PERMISSION_GET_ACCOUNTS,
+                    Manifest.permission.GET_ACCOUNTS);
+            executeTasker();
         }
-    }
-    private boolean chkGoogleSvc() {
-
-        GoogleApiAvailability apiAvail = GoogleApiAvailability.getInstance();
-        int sCode = apiAvail.isGooglePlayServicesAvailable(context);
-
-        return sCode == ConnectionResult.SUCCESS;
+        chkLogin = 1;
     }
 
-    private void reqGoogleSvc() {
-
-        GoogleApiAvailability apiAvail = GoogleApiAvailability.getInstance();
-        int sCode = apiAvail.isGooglePlayServicesAvailable(context);
-
-        if (apiAvail.isUserResolvableError(sCode)) {
-            //TODO : Error case handling
-        }
-    }
-    private class GetCalendarData extends AsyncTask<Void, Void, String> {
-        DateTime stDate, edDate;
-
-        public GetCalendarData(DateTime stDate,DateTime edDate) {
-            super();
-            this.stDate = stDate;
-            this.edDate = edDate;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            try {
-                getEvent();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        private String getEvent() throws IOException {
-            String name, place, weekDay;
-            Integer startTime, endTime;
-
-            Events events = mServ.events().list("primary")//"primary")
-                    //.setTimeMin(stDate)
-                    //.setTimeMax(edDate)
-                    .setMaxResults(1)
-                    .setOrderBy("startTime")
-                    .setSingleEvents(true)
-                    .execute();
-
-            List<Event> items = events.getItems();
-
-
-            for (Event event : items) {
-                //DateTime start = event.getStart().getDateTime();
-                name = event.getId();
-                place = event.getLocation();
-                Log.d("LOG_GOOAPI", name  + " " + place);
-                //eventStrings.add(String.format("%s \n (%s)", event.getSummary(), start));
-            }
-
-            return "0";
-            //return eventStrings.size() + "개의 데이터를 가져왔습니다.";
+    public void pickAcc(String accName){
+        if (accName != null) {
+            SharedPreferences settings = mainAct.getPreferences(context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString(this.accName, accName);
+            editor.apply();
+            mCred.setSelectedAccountName(accName);
+            executeTasker();
         }
     }
 
+
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> requestPermissionList) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> requestPermissionList) {
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int i, @NonNull String[] strings, @NonNull int[] ints) {
+
+    }
 
 }

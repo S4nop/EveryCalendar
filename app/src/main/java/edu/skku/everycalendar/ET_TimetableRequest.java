@@ -84,7 +84,7 @@ public class ET_TimetableRequest {
         @Override
         protected String doInBackground(Void... voids) {
             try {
-                HttpRequest hr = new HttpRequest();
+                Http_Request hr = new Http_Request();
                 if(hr.request("GET", "https://everytime.kr/", null, null) == 0){
 
                     ContentValues queries = new ContentValues();
@@ -124,7 +124,7 @@ public class ET_TimetableRequest {
         private String rslt;
         protected String doInBackground(String... urls) {
             try {
-                HttpRequest hr = new HttpRequest();
+                Http_Request hr = new Http_Request();
                 if(hr.request("GET", "https://everytime.kr/", null, null) == 0){
 
                     ContentValues queries = new ContentValues();

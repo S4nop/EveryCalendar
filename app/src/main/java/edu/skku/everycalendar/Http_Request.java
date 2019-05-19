@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-public class HttpRequest {
+public class Http_Request {
     private Map<String, List<String>> headers;
     private String result;
     public String date;
