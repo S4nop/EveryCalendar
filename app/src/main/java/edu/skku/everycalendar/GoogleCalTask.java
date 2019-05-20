@@ -1,7 +1,6 @@
 package edu.skku.everycalendar;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -14,13 +13,12 @@ import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
     private Integer mod;
     private DateTime stDate, edDate;
-    private String add_Summarry, add_Location, add_Description;
+    private String add_Summary, add_Location, add_Description;
     private com.google.api.services.calendar.Calendar mServ;
     private boolean addResult = false;
 
@@ -71,7 +69,7 @@ public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
 
     private void addEvent() {
         Event event = new Event()
-                .setSummary(add_Summarry)
+                .setSummary(add_Summary)
                 .setLocation(add_Location)
                 .setDescription(add_Description);
 
@@ -102,7 +100,7 @@ public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
 
     public void setModeAdd(String add_Sum, String add_Loc, String add_Desc, DateTime stDate, DateTime edDate){
         mod = 2;
-        add_Summarry = add_Sum;
+        add_Summary = add_Sum;
         add_Location = add_Loc;
         add_Description = add_Desc;
         this.stDate = stDate;
