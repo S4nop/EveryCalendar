@@ -32,9 +32,8 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
     GoogleAccountCredential mCred;
     ArrayList<TimetableData> events;
     GoogleCalTask googleCalTask;
+    int gThreadRunning = 0;
     static final int REQUEST_ACC_PICK = 1000;
-    static final int REQUEST_AUTHORIZATION = 1001;
-    static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
     static final int REQUEST_PERM_GET_ACC = 1003;
 
 
@@ -55,11 +54,6 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
     }
 
     public void getCalendarData(DateTime stDate, DateTime edDate) {
-        if (!chkGoogleServAvail()) {
-            acqGoogleServ();
-        } else if (mCred.getSelectedAccountName() == null) {
-            chooseAcc();
-        }
         googleCalTask.setModeGet(stDate, edDate);
         executeTask();
     }
@@ -75,19 +69,34 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
     }
 
     private void executeTask(){
-        new Thread(){
-            @Override
-            public void run(){
-                try {
-                    List<Event> eventList = googleCalTask.execute().get();
-                    parseEvents(eventList);
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        Log.d("LOG_EXECUTE", "herere");
+        if (!chkGoogleServAvail()) {
+            acqGoogleServ();
+        } else if (mCred.getSelectedAccountName() == null) {
+            chooseAcc();
+        }
+        else{
+            Log.d("LOG_EXECUTE", "ThrdRun");
+            new Thread(){
+                @Override
+                public void run(){
+                    List<Event> eventList = null;
+                    try {
+                        if(gThreadRunning == 0){
+                            gThreadRunning = 1;
+                            eventList = googleCalTask.execute().get();
+                            parseEvents(eventList);
+                            gThreadRunning = 0;
+                        }
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }.start();
+            }.start();
+
+        }
     }
 
     private void parseEvents(List<Event> items){
@@ -125,21 +134,29 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
 
     @AfterPermissionGranted(REQUEST_PERM_GET_ACC)
     private void chooseAcc() {
-
+        Log.d("LOGHERE", "here1");
         if (EasyPermissions.hasPermissions(context, Manifest.permission.GET_ACCOUNTS)) {
+            Log.d("LOGHERE", "here2");
 
             String svdAccName = mainAct.getPreferences(context.MODE_PRIVATE).getString(accName, null);
             if (svdAccName == null) {
+                Log.d("LOGHERE", "here5");
                 mainAct.startActivityForResult(mCred.newChooseAccountIntent(), REQUEST_ACC_PICK);
+                waitUntilPermEnd(2);
+
+
             } else {
                 mCred.setSelectedAccountName(svdAccName);
+                waitUntilPermEnd(2);
             }
         } else {
+            Log.d("LOGHERE", "here3");
             EasyPermissions.requestPermissions(
                     mainAct,
                     "This app needs permission to access your Google Account",
                     REQUEST_PERM_GET_ACC,
                     Manifest.permission.GET_ACCOUNTS);
+            waitUntilPermEnd(1);
         }
     }
 
@@ -150,10 +167,26 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
             editor.putString(this.accName, accName);
             editor.apply();
             mCred.setSelectedAccountName(accName);
+            waitUntilPermEnd(2);
         }
     }
 
-
+    private void waitUntilPermEnd(final int mod){
+        Log.d("LOGHERE", "here4");
+        new Thread() {
+            @Override
+            public void run() {
+                while((mod == 1 && !EasyPermissions.hasPermissions(context, Manifest.permission.GET_ACCOUNTS)) || (mod == 2 && mCred.getSelectedAccountName() == null)) {
+                    try {
+                        sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                executeTask();
+            }
+        }.start();
+    }
     @Override
     public void onPermissionsGranted(int requestCode, List<String> requestPermissionList) {
 
