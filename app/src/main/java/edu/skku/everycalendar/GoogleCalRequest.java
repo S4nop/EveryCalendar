@@ -64,6 +64,16 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
         executeTask();
     }
 
+    public void addEventToCalendar(String add_Sum, String add_Loc, String add_Desc, DateTime stDate, DateTime edDate){
+        if (!chkGoogleServAvail()) {
+            acqGoogleServ();
+        } else if (mCred.getSelectedAccountName() == null) {
+            chooseAcc();
+        }
+        googleCalTask.setModeAdd(add_Sum, add_Loc, add_Desc, stDate, edDate);
+        executeTask();
+    }
+
     private void executeTask(){
         new Thread(){
             @Override
@@ -82,14 +92,14 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
 
     private void parseEvents(List<Event> items){
         for (Event event : items) {
-            Log.d("LOGHERE", "4");
 
-            DateTime start = event.getStart().getDateTime();
-
-            events.add(new TimetableData(event.getId(), event.getLocation(),
+            events.add(new TimetableData(event.getSummary(), event.getLocation(),
                     event.getDescription(), timeToInt(event.getStart().getDateTime()), timeToInt(event.getEnd().getDateTime())));
 
-            Log.d("LOG_RESLT", String.format("%s \n (%s)", event.getSummary(), start));
+            //TODO : Need to handle case - Events' start date and end date are different
+            //TODO : Need to get weekday form events date
+
+            Log.d("LOG_RESLT", String.format("%s \n (%s)", event.getSummary(), event.getId()));
         }
     }
 
