@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //ET_TimetableRequest etR = new ET_TimetableRequest("Cookie");
         //etR.makeTimeTable();
 
-        gCR = new GoogleCalRequest(getApplicationContext(), this, "Account");
-        gCR.getCalendarData(new DateTime("2019-05-07T00:00:00.000+09:00"), new DateTime("2019-05-19T23:59:59.000+09:00"));
+        //gCR = new GoogleCalRequest(getApplicationContext(), this, "Account");
+        //gCR.getCalendarData(new DateTime("2019-05-07T00:00:00.000+09:00"), new DateTime("2019-05-19T23:59:59.000+09:00"));
         //
     }
 
