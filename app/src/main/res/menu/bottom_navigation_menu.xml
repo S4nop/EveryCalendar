@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_friends"
+        android:background="@drawable/bottom_navigation_selector"
+        android:enabled="true"
+        android:icon="@drawable/ic_friends"
+        android:title="@string/bottom_menu_friends" />
+    <item
+        android:id="@+id/acton_schedules"
+        android:background="@drawable/bottom_navigation_selector"
+        android:enabled="true"
+        android:icon="@drawable/ic_home"
+        android:title="@string/bottom_menu_home" />
+
+    <item
+        android:id="@+id/action_combine"
+        android:background="@drawable/bottom_navigation_selector"
+        android:enabled="true"
+        android:title="@string/bottom_menu_schedule" />
+</menu>

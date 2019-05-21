@@ -13,19 +13,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.api.client.util.DateTime;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     GoogleCalRequest gCR;
+    ImageButton menu_btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
-        Button btn = findViewById(R.id.btnMenu);
-        btn.setOnClickListener(new View.OnClickListener(){
+        menu_btn = findViewById(R.id.btnMenu);
+        menu_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 drawer.openDrawer(GravityCompat.START);
@@ -80,10 +82,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_home) {
             // Handle the camera action
-        } else if (id == R.id.nav_home) {
-
-        } else if (id == R.id.nav_friends) {
-
         } else if (id == R.id.nav_maketime) {
 
         } else if (id == R.id.nav_settings) {
