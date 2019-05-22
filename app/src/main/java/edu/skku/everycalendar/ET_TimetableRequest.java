@@ -5,11 +5,13 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 public class ET_TimetableRequest {
     String cookie;
     ArrayList<TimetableData> classList = new ArrayList<>();
+    boolean finished = false;
 
     ET_TimetableRequest(String cookie){
         this.cookie = cookie;
@@ -59,18 +61,19 @@ public class ET_TimetableRequest {
         String[] classes = resv.split("subject id");
         String[] dates;
         String name, prof, weekday, place;
-        Integer stTime, edTime;
+        Integer stTime, edTime, id;
         for(int i = 1; i < classes.length; i++){
             name = classes[i].split("name value=\"")[1].split("\"")[0];
             prof = classes[i].split("professor value=\"")[1].split("\"")[0];
             dates = classes[i].split("data day");
+            id = new Random().nextInt(30) + 1;
             for(int j = 1; j < dates.length; j++){
                 weekday = dates[j].split("=\"")[1].split("\"")[0];
                 place = dates[j].split("place=\"")[1].split("\"")[0];
                 //Time = (Hour * 60 + Min) / 5
                 stTime = Integer.parseInt(dates[j].split("starttime=\"")[1].split("\"")[0]);
                 edTime = Integer.parseInt(dates[j].split("endtime=\"")[1].split("\"")[0]);
-                classList.add(new TimetableData(name, place, prof, weekday, stTime, edTime));
+                classList.add(new TimetableData(name, place, prof, weekday, stTime, edTime, id));
                 Log.d("LOG_PRSTT", name + " " + place + " " + prof + " " + weekday);
             }
         }

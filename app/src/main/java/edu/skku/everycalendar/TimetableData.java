@@ -8,24 +8,27 @@ public class TimetableData {
     private String weekDay;
     private String descript;
     private Integer startTime, endTime;
+    private Integer idNum;
 
-    public TimetableData(String name, String place, String descript, String weekDay, Integer startTime, Integer endTime) {
+    public TimetableData(String name, String place, String descript, String weekDay, Integer startTime, Integer endTime, Integer idNum) {
         this.name = name;
         this.place = place;
         this.descript = descript;
         this.weekDay = weekDay;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.idNum = idNum;
     }
 
-    public TimetableData(String name, String place, String descript, Integer startTime, Integer endTime) {
-        this.name = name;
-        this.place = place;
-        this.descript = descript;
-        this.weekDay = weekDay;
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
+//    public TimetableData(String name, String place, String descript, Integer startTime, Integer endTime, Integer idNum) {
+//        this.name = name;
+//        this.place = place;
+//        this.descript = descript;
+//        this.weekDay = weekDay;
+//        this.startTime = startTime;
+//        this.endTime = endTime;
+//        this.idNum = idNum;
+//    }
     public String getWeekDay() {
         return weekDay;
     }

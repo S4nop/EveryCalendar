@@ -9,7 +9,8 @@
         android:id="@+id/tbView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"
+        android:padding="0dp"
+        android:layout_margin="0dp"
         android:stretchColumns="*"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp">

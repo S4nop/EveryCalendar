@@ -16,9 +16,14 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -32,6 +37,7 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
     GoogleAccountCredential mCred;
     ArrayList<TimetableData> events;
     GoogleCalTask googleCalTask;
+    boolean finished = false;
     int gThreadRunning = 0;
     static final int REQUEST_ACC_PICK = 1000;
     static final int REQUEST_PERM_GET_ACC = 1003;
@@ -53,8 +59,13 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
         googleCalTask = new GoogleCalTask(mCred);
     }
 
+    public boolean getFinished(){
+        return finished;
+    }
+
     public void getCalendarData(DateTime stDate, DateTime edDate) {
         googleCalTask.setModeGet(stDate, edDate);
+        finished = false;
         executeTask();
     }
 
@@ -87,6 +98,7 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
                             eventList = googleCalTask.execute().get();
                             parseEvents(eventList);
                             gThreadRunning = 0;
+                            finished = true;
                         }
                     } catch (ExecutionException e) {
                         e.printStackTrace();
@@ -102,20 +114,52 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
     private void parseEvents(List<Event> items){
         for (Event event : items) {
 
-            events.add(new TimetableData(event.getSummary(), event.getLocation(),
-                    event.getDescription(), timeToInt(event.getStart().getDateTime()), timeToInt(event.getEnd().getDateTime())));
+            compData(event.getStart().getDateTime(), event.getEnd().getDateTime(), event);
 
-            //TODO : Need to handle case - Events' start date and end date are different
-            //TODO : Need to get weekday form events date
 
-            Log.d("LOG_RESLT", String.format("%s \n (%s)", event.getSummary(), event.getId()));
+            //TODO : Need to handle case - Events' start date and end date are in different week
+
+            Log.d("LOG_RESLT", String.format("%s \n (%s)", event.getSummary(), event.getStart().getDateTime().toString()));
+            DateTime tmp;
         }
     }
 
+    public void compData(DateTime stDate, DateTime edDate, Event event)
+    {
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+
+            Date std, edd;
+            try {
+                std = format.parse(stDate.toString().substring(0, 9));
+                edd = format.parse(edDate.toString().substring(0, 9));
+                long calDateDays = (edd.getTime() - std.getTime()) / ( 24*60*60*1000);
+                Calendar c = Calendar.getInstance();
+                c.setTime(std);
+
+                int week = c.get(Calendar.DAY_OF_WEEK) - 1;
+                int id = new Random().nextInt(30) + 1;
+                Log.d("LOG_COMPDATA", Long.toString(calDateDays));
+                for(long i = 0; i <= calDateDays; i++){
+                    events.add(new TimetableData(event.getSummary(), event.getLocation(),
+                            event.getDescription(), Integer.toString(week), timeToInt(stDate), timeToInt(edDate), id));
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+    }
+
+
     private Integer timeToInt(DateTime dt){
         String strDT = dt.toString();
-        return ((Integer.parseInt(strDT.substring(11, 12)) * 60 + Integer.parseInt(strDT.substring(14,15))) / 5);
+        Integer tmp = ((Integer.parseInt(strDT.substring(11, 13)) * 60 + Integer.parseInt(strDT.substring(14,16))) / 5);
+        Log.d("LOG_TIMETOINT", strDT + " " + Integer.toString(tmp));
+        return ((Integer.parseInt(strDT.substring(11, 13)) * 60 + Integer.parseInt(strDT.substring(14,16))) / 5);
     }
+
+
     private boolean chkGoogleServAvail() {
 
         GoogleApiAvailability apiAvail = GoogleApiAvailability.getInstance();
@@ -187,6 +231,11 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
             }
         }.start();
     }
+
+    public ArrayList<TimetableData> getEvents(){
+        return events;
+    }
+
     @Override
     public void onPermissionsGranted(int requestCode, List<String> requestPermissionList) {
 

@@ -59,7 +59,7 @@ public class TableRowView {
         textView.setBackgroundColor(Color.WHITE);
         textView.setGravity(Gravity.CENTER);
         textView.setTextSize(18);
-
+        textView.setPadding(0,0,0,0);
         textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.MATCH_PARENT));
 
         return textView;
@@ -73,10 +73,10 @@ public class TableRowView {
     public int[] getTBLocation(int week){
         int[] out = new int[2];
         int[] out2 = new int[2];
-        tv[week].getLocationInWindow(out);
-        tr.getLocationInWindow(out2);
-        out[0] += out2[0];
-        out[1] += out2[1];
+        tv[week].getLocationOnScreen(out);
+        tr.getLocationOnScreen(out2);
+        out[0] -= (out2[0] + 14);
+        out[1] = (int)tr.getY() - 18;
         return out;
     }
 
@@ -87,4 +87,5 @@ public class TableRowView {
     public int getTBHeight(int week){
         return tv[week].getHeight();
     }
+
 }

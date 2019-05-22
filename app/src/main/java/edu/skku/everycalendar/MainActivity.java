@@ -22,14 +22,19 @@ import android.widget.TableLayout;
 
 import com.google.api.client.util.DateTime;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     GoogleCalRequest gCR;
+    ET_TimetableRequest etR;
+    ArrayList<TimetableData> events;
+    TableView tv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
-
+        ConstraintLayout clToTable = findViewById(R.id.clToTable);
         Button btn = findViewById(R.id.btnMenu);
         btn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -38,57 +43,51 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        //ET_TimetableRequest etR = new ET_TimetableRequest("Cookie");
+        //etR = new ET_TimetableRequest("Cookie");
         //etR.makeTimeTable();
 
         //gCR = new GoogleCalRequest(getApplicationContext(), this, "Account");
-        //gCR.getCalendarData(new DateTime("2019-05-07T00:00:00.000+09:00"), new DateTime("2019-05-19T23:59:59.000+09:00"));
-        //
+        //gCR.getCalendarData(new DateTime("2019-05-12T00:00:00.000+09:00"), new DateTime("2019-05-18T23:59:59.000+09:00"));
 
+        //tv = new TableView(getApplicationContext());
+        //tv.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT));
+        //clToTable.addView(tv);
     }
 
     @Override
-    public void onWindowFocusChanged(boolean hasFocus)
-    {
-        String infService = Context.LAYOUT_INFLATER_SERVICE;
-        AbsoluteLayout cl = new AbsoluteLayout(getApplicationContext());
-        LayoutInflater li = (LayoutInflater)getSystemService(infService);
-        cl.setBackgroundColor(Color.parseColor("#00000000"));
-
-        //AbsoluteLayout v = (AbsoluteLayout)li.inflate(R.layout.activity_main, null);
-        //v.setBackgroundColor(Color.parseColor("#99000000"));
-        AbsoluteLayout.LayoutParams paramll = new AbsoluteLayout.LayoutParams
-                (AbsoluteLayout.LayoutParams.MATCH_PARENT, AbsoluteLayout.LayoutParams.MATCH_PARENT, 0, 0);
-        addContentView(cl, paramll);
-
-        cl.addView(addSchedule(new TimetableData("테스트", "", "", "2", 144, 156)));
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        ConstraintLayout clToTable = findViewById(R.id.clToTable);
+        buildTable(clToTable);
     }
 
-    public Button addSchedule(TimetableData event){
-        String title = event.getName();
-        String desc = event.getDescript();
-        Integer week = Integer.parseInt(event.getWeekDay());
-        Integer stTime = event.getStartTime();
-        Integer edTime = event.getEndTime();
-        int pos[];
-        int vWidth, vHeight;
+    private void buildTable(final ConstraintLayout clToTable){
+        new Thread(){
+            @Override
+            public void run(){
+                while(!gCR.getFinished()) {
+                    try {
+                        sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-        Button btnSched = new Button(getApplicationContext());
+                events = gCR.getEvents();
+                Log.d("LOG_BUILDTB", events.toString());
 
-        btnSched.setText(title);
-        btnSched.setTop(100);
-        btnSched.setLeft(100);
-        ConstraintLayout.LayoutParams btnLParam = new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                clToTable.post(new Runnable(){
+                    public void run(){
+                        tv.addEvents(events);
+                        clToTable.removeView(tv);
+                        clToTable.addView(tv);
+                    }
+                });
 
-        //Log.d("LOGPARAM", Integer.toString(100) + " " + vWidth);
-        btnLParam.leftMargin = 0;
-        btnLParam.rightMargin = 0;
-        btnLParam.width = 100;
-        btnLParam.height = (edTime - stTime) * 144 / 12;
-        btnSched.setLayoutParams(btnLParam);
-        return btnSched;
+            }
+        }.start();
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
