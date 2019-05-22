@@ -18,5 +18,6 @@
         android:id="@+id/action_combine"
         android:background="@drawable/bottom_navigation_selector"
         android:enabled="true"
+        android:icon="@drawable/ic_calendar"
         android:title="@string/bottom_menu_schedule" />
 </menu>
