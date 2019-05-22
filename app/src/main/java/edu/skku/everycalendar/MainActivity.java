@@ -46,19 +46,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //etR = new ET_TimetableRequest("Cookie");
         //etR.makeTimeTable();
 
-        //gCR = new GoogleCalRequest(getApplicationContext(), this, "Account");
-        //gCR.getCalendarData(new DateTime("2019-05-12T00:00:00.000+09:00"), new DateTime("2019-05-18T23:59:59.000+09:00"));
-
-        //tv = new TableView(getApplicationContext());
-        //tv.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT));
-        //clToTable.addView(tv);
+//        gCR = new GoogleCalRequest(getApplicationContext(), this, "Account");
+//        gCR.getCalendarData(new DateTime("2019-05-12T00:00:00.000+09:00"), new DateTime("2019-05-18T23:59:59.000+09:00"));
+//
+//        tv = new TableView(getApplicationContext());
+//        tv.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT));
+//        clToTable.addView(tv);
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         ConstraintLayout clToTable = findViewById(R.id.clToTable);
-        buildTable(clToTable);
+//        buildTable(clToTable);
     }
 
     private void buildTable(final ConstraintLayout clToTable){
