@@ -6,76 +6,99 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TableLayout
+        android:id="@+id/tbView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="8dp"
+        android:stretchColumns="*"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp"
-        android:stretchColumns="*">
+        tools:layout_editor_absoluteY="8dp">
 
-        <TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#D6D6D6">
 
             <TextView
                 android:id="@+id/nullTxt"
                 android:layout_width="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_height="wrap_content"
-                android:text=" " />
+                android:layout_height="match_parent"
+                android:layout_margin="1dp"
+                android:background="#F2F2F2"
+                android:gravity="center"
+                android:text="              " />
+
             <TextView
                 android:id="@+id/sun"
                 android:layout_width="wrap_content"
-                android:layout_margin="5dp"
-                android:textSize="20dp"
                 android:layout_height="wrap_content"
-                android:text="Sun" />
+                android:layout_margin="1dp"
+                android:background="#F2F2F2"
+                android:gravity="center"
+                android:text="Sun"
+                android:textSize="20dp" />
+
             <TextView
                 android:id="@+id/mon"
                 android:layout_width="wrap_content"
-                android:layout_margin="5dp"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:text="Mon" />
+                android:layout_margin="1dp"
+                android:background="#F2F2F2"
+                android:gravity="center"
+                android:text="Mon"
+                android:textSize="20dp" />
+
             <TextView
                 android:id="@+id/tue"
                 android:layout_width="wrap_content"
-                android:layout_margin="5dp"
-                android:textSize="20dp"
                 android:layout_height="wrap_content"
-                android:text="Tue" />
+                android:layout_margin="1dp"
+                android:background="#F2F2F2"
+                android:gravity="center"
+                android:text="Tue"
+                android:textSize="20dp" />
+
             <TextView
                 android:id="@+id/wed"
                 android:layout_width="wrap_content"
-                android:layout_margin="5dp"
-                android:textSize="20dp"
                 android:layout_height="wrap_content"
-                android:text="Wed" />
+                android:layout_margin="1dp"
+                android:background="#F2F2F2"
+                android:gravity="center"
+                android:text="Wed"
+                android:textSize="20dp" />
+
             <TextView
                 android:id="@+id/thu"
                 android:layout_width="wrap_content"
-                android:layout_margin="5dp"
-                android:textSize="20dp"
                 android:layout_height="wrap_content"
-                android:text="Thu" />
+                android:layout_margin="1dp"
+                android:background="#F2F2F2"
+                android:gravity="center"
+                android:text="Thu"
+                android:textSize="20dp" />
+
             <TextView
                 android:id="@+id/fri"
                 android:layout_width="wrap_content"
-                android:layout_margin="5dp"
-                android:textSize="20dp"
                 android:layout_height="wrap_content"
-                android:text="Fri" />
+                android:layout_margin="1dp"
+                android:background="#F2F2F2"
+                android:gravity="center"
+                android:text="Fri"
+                android:textSize="20dp" />
+
             <TextView
                 android:id="@+id/sat"
                 android:layout_width="wrap_content"
-                android:layout_margin="5dp"
-                android:textSize="20dp"
                 android:layout_height="wrap_content"
-                android:text="Sat" />
+                android:layout_margin="1dp"
+                android:background="#F2F2F2"
+                android:gravity="center"
+                android:text="Sat"
+                android:textSize="20dp" />
         </TableRow>
 
-        <edu.skku.everycalendar.TableRowView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:hour="0" />
-
-
     </TableLayout>
+
 </android.support.constraint.ConstraintLayout>
