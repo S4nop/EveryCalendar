@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TableLayout;
@@ -25,14 +26,15 @@ public class TableRowView {
         tv = new TextView[7];
     }
 
-    public TableRow makeRow(){
+    public void makeRow(){
         TableLayout tb = sup.findViewById(R.id.tbView);
         tr = new TableRow(sup.getContext());
         tr.setBackgroundColor(Color.parseColor("#d6d6d6"));
+        tr.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 1f));
+
         makeLeft();
         makeRights();
         tb.addView(tr);
-        return tr;
     }
 
     private void makeLeft(){
@@ -45,6 +47,7 @@ public class TableRowView {
     private void makeRights(){
         for(int i = 0; i < 7; i++){
             tv[i] = makeTextView("");
+            tv[i].setId(i);
             tr.addView(tv[i]);
             setMargin(tv[i]);
         }
@@ -54,8 +57,11 @@ public class TableRowView {
         TextView textView = new TextView(sup.getContext());
         textView.setText(sText);
         textView.setBackgroundColor(Color.WHITE);
-        textView.setGravity(1);
+        textView.setGravity(Gravity.CENTER);
         textView.setTextSize(18);
+
+        textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.MATCH_PARENT));
+
         return textView;
     }
 
@@ -66,7 +72,11 @@ public class TableRowView {
 
     public int[] getTBLocation(int week){
         int[] out = new int[2];
-        tv[week].getLocationOnScreen(out);
+        int[] out2 = new int[2];
+        tv[week].getLocationInWindow(out);
+        tr.getLocationInWindow(out2);
+        out[0] += out2[0];
+        out[1] += out2[1];
         return out;
     }
 

@@ -26,7 +26,7 @@
                 android:layout_margin="1dp"
                 android:background="#F2F2F2"
                 android:gravity="center"
-                android:text="              " />
+                android:text="            " />
 
             <TextView
                 android:id="@+id/sun"
@@ -83,6 +83,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
                 android:background="#F2F2F2"
                 android:gravity="center"
                 android:text="Fri"
