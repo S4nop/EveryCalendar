@@ -16,27 +16,41 @@ import android.support.v4.widget.DrawerLayout;
 
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+<<<<<<< HEAD
 import android.widget.AbsoluteLayout;
 import android.widget.Button;
 import android.widget.TableLayout;
 
 import com.google.api.client.util.DateTime;
+=======
+import android.widget.ImageButton;
+>>>>>>> BottomNavigationBar
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     GoogleCalRequest gCR;
+<<<<<<< HEAD
     ET_TimetableRequest etR;
     ArrayList<TimetableData> events;
     TableView tv;
+=======
+    ImageButton menu_btn;
+>>>>>>> BottomNavigationBar
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
+<<<<<<< HEAD
         ConstraintLayout clToTable = findViewById(R.id.clToTable);
         Button btn = findViewById(R.id.btnMenu);
         btn.setOnClickListener(new View.OnClickListener(){
+=======
+
+        menu_btn = findViewById(R.id.btnMenu);
+        menu_btn.setOnClickListener(new View.OnClickListener(){
+>>>>>>> BottomNavigationBar
             @Override
             public void onClick(View v) {
                 drawer.openDrawer(GravityCompat.START);
@@ -126,15 +140,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
+        if (id == R.id.nav_setting) {
             // Handle the camera action
-        } else if (id == R.id.nav_home) {
-
-        } else if (id == R.id.nav_friends) {
-
-        } else if (id == R.id.nav_maketime) {
-
-        } else if (id == R.id.nav_settings) {
+        } else if (id == R.id.nav_logout) {
 
         }
 
