@@ -27,19 +27,18 @@
             app:srcCompat="@drawable/ic_menu" />
     </LinearLayout>
 
-<<<<<<< HEAD
     <android.support.constraint.ConstraintLayout
         android:id="@+id/clToTable"
-        android:layout_width="match_parent"
-        android:layout_height="600dp"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnMenu">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBar">
 
     </android.support.constraint.ConstraintLayout>
-=======
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -62,6 +61,4 @@
         app:itemIconTint="@drawable/bottom_navigation_selector"
         app:itemTextColor="@drawable/bottom_navigation_selector"
         app:menu="@menu/bottom_navigation_menu" />
->>>>>>> BottomNavigationBar
-
 </android.support.constraint.ConstraintLayout>
