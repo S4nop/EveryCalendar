@@ -12,10 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
-import android.widget.Button;
 import android.widget.ImageButton;
-
-import com.google.api.client.util.DateTime;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     GoogleCalRequest gCR;
@@ -80,11 +77,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
+        if (id == R.id.nav_setting) {
             // Handle the camera action
-        } else if (id == R.id.nav_maketime) {
-
-        } else if (id == R.id.nav_settings) {
+        } else if (id == R.id.nav_logout) {
 
         }
 

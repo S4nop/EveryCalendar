@@ -21,7 +21,7 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.696"
+        app:layout_constraintVertical_bias="0.68"
         app:srcCompat="@drawable/logo_temp" />
 
     <EditText
@@ -54,8 +54,8 @@
         android:id="@+id/btnLogin"
         android:layout_width="227dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="144dp"
-        android:background="@drawable/btn_bolder_round"
+        android:layout_marginBottom="116dp"
+        android:background="@drawable/btn_filled_round"
         android:text="@string/login"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
