@@ -1,6 +1,7 @@
 package edu.skku.everycalendar;
 
 import android.accounts.AccountManager;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -27,18 +28,20 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     GoogleCalRequest gCR;
-    ET_TimetableRequest etR;
+    MyTimeTableReq etR;
     ArrayList<TimetableData> events;
     TableView tv;
     ImageButton menu_btn;
-
+    Context context;
+    Activity thisAct;
+    String cookie;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ConstraintLayout clToTable = findViewById(R.id.clToTable);
-
+        cookie = getIntent().getStringExtra("Cookie");
         menu_btn = findViewById(R.id.btnMenu);
         menu_btn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -47,29 +50,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        //etR = new ET_TimetableRequest("Cookie");
-        //etR.makeTimeTable();
+        context = getApplicationContext();
+        thisAct = this;
+        tv = new TableView(getApplicationContext());
+        tv.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT));
+        clToTable.addView(tv);
 
-//        gCR = new GoogleCalRequest(getApplicationContext(), this, "Account");
-//        gCR.getCalendarData(new DateTime("2019-05-12T00:00:00.000+09:00"), new DateTime("2019-05-18T23:59:59.000+09:00"));
-//
-//        tv = new TableView(getApplicationContext());
-//        tv.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT));
-//        clToTable.addView(tv);
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         ConstraintLayout clToTable = findViewById(R.id.clToTable);
-//        buildTable(clToTable);
+        buildTable(clToTable);
     }
 
     private void buildTable(final ConstraintLayout clToTable){
         new Thread(){
             @Override
             public void run(){
-                while(!gCR.getFinished()) {
+                etR = new MyTimeTableReq(cookie);
+                etR.makeTimeTable();
+
+//                gCR = new GoogleCalRequest(context, thisAct, "Account");
+//                gCR.getCalendarData(new DateTime("2019-05-12T00:00:00.000+09:00"), new DateTime("2019-05-18T23:59:59.000+09:00"));
+
+                while(!etR.getFinished()/* || !gCR.getFinished()*/) {
                     try {
                         sleep(500);
                     } catch (InterruptedException e) {
@@ -77,7 +83,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 }
 
-                events = gCR.getEvents();
+                events = etR.getClassList();
+                //events.addAll(gCR.getEvents());
                 Log.d("LOG_BUILDTB", events.toString());
 
                 clToTable.post(new Runnable(){

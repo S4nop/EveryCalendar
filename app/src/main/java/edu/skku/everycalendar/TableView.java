@@ -65,7 +65,7 @@ public class TableView extends ConstraintLayout {
         View v = li.inflate(R.layout.tableview, this, false);
         stTime = 9 * 12;
         //addView(v);
-        for(int i = 9; i < 16; i++){
+        for(int i = 8; i < 20; i++){
             TableRowView trv = new TableRowView(v, i);
             trv.makeRow();
             trs[i] = trv;
@@ -133,7 +133,7 @@ public class TableView extends ConstraintLayout {
         Button btnSched = new Button(getContext());
 
         btnSched.setText(title);
-        btnSched.setY(pos[1]);
+        btnSched.setY(pos[1] + vHeight * (stTime % 12) / 12);
         btnSched.setX(pos[0]);
         ConstraintLayout.LayoutParams btnLParam = new ConstraintLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);

@@ -27,9 +27,9 @@ public class LoginActivity extends AppCompatActivity {
                 while(!lr.getFinished()){
                     sleep(100);
                 }
-                if(true/*lr.getLogined()*/){
+                if(lr.getLogined()){ // 조건문 내부를 true로 바꾸시면 로그인 없이 화면 전환됩니다.
                     Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    mainIntent.putExtra("Cookie", lr.getCookie());
+                    mainIntent.putExtra("Cookie", lr.getCookie().split("etsid=")[1].split(";")[0]);
                     LoginActivity.this.startActivity(mainIntent);
                 }
                 else{
