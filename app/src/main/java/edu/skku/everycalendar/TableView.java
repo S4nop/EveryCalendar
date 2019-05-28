@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -23,8 +24,11 @@ public class TableView extends ConstraintLayout {
     ArrayList<TimetableData> events;
     ArrayList<Button> btnList = new ArrayList<>();
     Integer stTime;
+    Context context;
+    Toast toast;
     public TableView(Context context) {
         super(context);
+        this.context = context;
         init();
     }
 
@@ -126,10 +130,10 @@ public class TableView extends ConstraintLayout {
         vWidth = targTR.getTBWidth(week);
         vHeight = targTR.getTBHeight(week);
 
-        return makeButton(event.getName(), week, stTime, edTime, pos, vWidth, vHeight);
+        return setBtnClickListener(makeButton(event.getName(), week, stTime, edTime, pos, vWidth, vHeight), event);
     }
 
-    private Button makeButton(String title, Integer week, Integer stTime, Integer edTime, int pos[], int vWidth, int vHeight){
+    private Button makeButton(final String title, Integer week, Integer stTime, Integer edTime, int pos[], int vWidth, int vHeight){
         Button btnSched = new Button(getContext());
 
         btnSched.setText(title);
@@ -143,6 +147,26 @@ public class TableView extends ConstraintLayout {
         btnLParam.width = vWidth + 30;
         btnLParam.height = (edTime - stTime) * vHeight / 12  + 40 + 6 * ((edTime - stTime) / 12 - 1);
         btnSched.setLayoutParams(btnLParam);
+
+        btnSched.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Log.d("LOG_BTNSCHED", title);
+                Toast toast = Toast.makeText(context, title , Toast.LENGTH_LONG); toast.show();
+
+                //TODO : Need to show details of selected schedule
+            }
+        });
         return btnSched;
+    }
+
+    private Button setBtnClickListener(Button btn, final TimetableData event){
+        btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                ToastMaker.makeToast(context, String.format("[ %s ]\n%s\n%s", event.getName(), event.getDescript(), event.getPlace()));
+            }
+        });
+        return btn;
     }
 }
