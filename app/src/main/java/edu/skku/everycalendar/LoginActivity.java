@@ -23,6 +23,9 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+                //LoginActivity.this.startActivity(mainIntent);
+
                 LoginRequest lr = new LoginRequest(txtID.getText().toString(), txtPW.getText().toString());
                 while(!lr.getFinished()){
                     sleep(100);
@@ -44,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
                     AlertDialog ad = adb.create();
                     ad.show();
                 }
+
             }
         });
     }
