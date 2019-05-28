@@ -147,3 +147,15 @@ app/app.iml
 *.lock
 *.ser
 *.iml
+.idea/workspace.xml
+.idea/assetWizardSettings.xml
+.idea/workspace.xml
+.gradle/5.1.1/executionHistory/executionHistory.bin
+.gradle/5.1.1/executionHistory/executionHistory.lock
+.gradle/5.1.1/fileHashes/fileHashes.bin
+.gradle/5.1.1/fileHashes/fileHashes.lock
+.gradle/5.1.1/javaCompile/classAnalysis.bin
+.gradle/5.1.1/javaCompile/javaCompile.lock
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.idea/assetWizardSettings.xml
+.idea/workspace.xml
