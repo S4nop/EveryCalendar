@@ -20,15 +20,6 @@ public class TimetableData {
         this.idNum = idNum;
     }
 
-//    public TimetableData(String name, String place, String descript, Integer startTime, Integer endTime, Integer idNum) {
-//        this.name = name;
-//        this.place = place;
-//        this.descript = descript;
-//        this.weekDay = weekDay;
-//        this.startTime = startTime;
-//        this.endTime = endTime;
-//        this.idNum = idNum;
-//    }
     public String getWeekDay() {
         return weekDay;
     }
