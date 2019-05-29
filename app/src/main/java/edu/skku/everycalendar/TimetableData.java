@@ -1,6 +1,7 @@
 package edu.skku.everycalendar;
 
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
 
 public class TimetableData {
     private String name;
@@ -8,16 +9,20 @@ public class TimetableData {
     private String weekDay;
     private String descript;
     private Integer startTime, endTime;
-    private Integer idNum;
+    private Integer color;
 
-    public TimetableData(String name, String place, String descript, String weekDay, Integer startTime, Integer endTime, Integer idNum) {
+    public TimetableData(String name, String place, String descript, String weekDay, Integer startTime, Integer endTime, Integer color) {
         this.name = name;
         this.place = place;
         this.descript = descript;
         this.weekDay = weekDay;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.idNum = idNum;
+        this.color = color;
+    }
+
+    public Integer getIdNum(){
+        return color;
     }
 
     public String getWeekDay() {

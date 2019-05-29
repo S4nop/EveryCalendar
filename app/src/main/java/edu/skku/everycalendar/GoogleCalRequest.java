@@ -13,6 +13,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -138,11 +139,12 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
                 c.setTime(std);
 
                 int week = c.get(Calendar.DAY_OF_WEEK) - 1;
-                int id = new Random().nextInt(30) + 1;
+                Random rnd = new Random();
+                int color = Color.rgb(rnd.nextInt(255), rnd.nextInt(255), rnd.nextInt(255));
                 Log.d("LOG_COMPDATA", Long.toString(calDateDays));
                 for(long i = 0; i <= calDateDays; i++){
                     events.add(new TimetableData(event.getSummary(), event.getLocation(),
-                            event.getDescription(), Integer.toString(week), timeToInt(stDate), timeToInt(edDate), id));
+                            event.getDescription(), Integer.toString(week), timeToInt(stDate), timeToInt(edDate), color));
                 }
 
             } catch (ParseException e) {

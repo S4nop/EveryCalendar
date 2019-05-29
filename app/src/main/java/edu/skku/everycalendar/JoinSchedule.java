@@ -1,9 +1,12 @@
 package edu.skku.everycalendar;
 
+import android.graphics.Color;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Random;
 
 import static com.google.common.primitives.UnsignedInts.max;
 import static com.google.common.primitives.UnsignedInts.min;
@@ -51,10 +54,12 @@ public class JoinSchedule {
 
     private ArrayList<TimetableData> findTime(int idx){
         ArrayList<TimetableData> wRslt = new ArrayList<>();
+        Random rnd = new Random();
         Integer st = stTime, ed = edTime;
 
         for(TimetableData td : wEvents[idx]){
-            if(st < td.getStartTime()) wRslt.add(new TimetableData("","","","",st, min(ed, td.getStartTime()),1));
+            if(st < td.getStartTime()) wRslt.add(new TimetableData("","","","",st,
+                    min(ed, td.getStartTime()), Color.rgb(rnd.nextInt(255), rnd.nextInt(255), rnd.nextInt(255))));
             st = max(st, td.getEndTime());
 
             if(st >= ed) break;

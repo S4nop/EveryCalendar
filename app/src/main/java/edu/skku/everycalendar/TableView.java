@@ -130,33 +130,25 @@ public class TableView extends ConstraintLayout {
         vWidth = targTR.getTBWidth(week);
         vHeight = targTR.getTBHeight(week);
 
-        return setBtnClickListener(makeButton(event.getName(), week, stTime, edTime, pos, vWidth, vHeight), event);
+        return setBtnClickListener(makeButton(stTime, edTime, pos, vWidth, vHeight, event.getIdNum()), event);
     }
 
-    private Button makeButton(final String title, Integer week, Integer stTime, Integer edTime, int pos[], int vWidth, int vHeight){
+    private Button makeButton(Integer stTime, Integer edTime, int pos[], int vWidth, int vHeight, int clr){
         Button btnSched = new Button(getContext());
 
-        btnSched.setText(title);
-        btnSched.setY(pos[1] + vHeight * (stTime % 12) / 12);
-        btnSched.setX(pos[0]);
+        //btnSched.setText(title);
+        btnSched.setY(pos[1] + vHeight * (stTime % 12) / 12 + 18);
+        btnSched.setX(pos[0] + 12);
+        btnSched.setBackgroundColor(clr);
         ConstraintLayout.LayoutParams btnLParam = new ConstraintLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
         btnLParam.leftMargin = 0;
         btnLParam.rightMargin = 0;
-        btnLParam.width = vWidth + 30;
-        btnLParam.height = (edTime - stTime) * vHeight / 12  + 40 + 6 * ((edTime - stTime) / 12 - 1);
+        btnLParam.width = vWidth + 2;
+        btnLParam.height = (edTime - stTime) * vHeight / 12  + 40 + 6 * ((edTime - stTime) / 12 - 1) - 30;
         btnSched.setLayoutParams(btnLParam);
 
-        btnSched.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Log.d("LOG_BTNSCHED", title);
-                Toast toast = Toast.makeText(context, title , Toast.LENGTH_LONG); toast.show();
-
-                //TODO : Need to show details of selected schedule
-            }
-        });
         return btnSched;
     }
 

@@ -1,6 +1,7 @@
 package edu.skku.everycalendar;
 
 import android.content.ContentValues;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -20,19 +21,20 @@ public abstract class TimeTableRequest {
         String[] classes = resv.split("subject id");
         String[] dates;
         String name, prof, weekday, place;
-        Integer stTime, edTime, id;
+        Integer stTime, edTime, color;
         for(int i = 1; i < classes.length; i++){
             name = classes[i].split("name value=\"")[1].split("\"")[0];
             prof = classes[i].split("professor value=\"")[1].split("\"")[0];
             dates = classes[i].split("data day");
-            id = new Random().nextInt(30) + 1;
+            Random rnd = new Random();
+            color = Color.rgb(rnd.nextInt(155) + 100, rnd.nextInt(155) + 100, rnd.nextInt(155) + 100);
             for(int j = 1; j < dates.length; j++){
                 weekday = Integer.toString(Integer.parseInt(dates[j].split("=\"")[1].split("\"")[0]) + 1);
                 place = dates[j].split("place=\"")[1].split("\"")[0];
                 //Time = (Hour * 60 + Min) / 5
                 stTime = Integer.parseInt(dates[j].split("starttime=\"")[1].split("\"")[0]);
                 edTime = Integer.parseInt(dates[j].split("endtime=\"")[1].split("\"")[0]);
-                classList.add(new TimetableData(name, place, prof, weekday, stTime, edTime, id));
+                classList.add(new TimetableData(name, place, prof, weekday, stTime, edTime, color));
                 Log.d("LOG_PRSTT", name + " " + place + " " + prof + " " + weekday);
             }
         }
