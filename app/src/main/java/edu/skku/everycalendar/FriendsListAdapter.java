@@ -66,12 +66,35 @@ public class FriendsListAdapter extends BaseAdapter implements Filterable {
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            return null;
+            FilterResults results = new FilterResults();
+
+            if(constraint == null || constraint.length() == 0 ){
+                results.values = listViewItemList;
+                results.count = listViewItemList.size();
+            }else{
+                ArrayList<FriendsListItem> itemList = new ArrayList<>();
+                for(FriendsListItem item : listViewItemList){
+                    if(item.getFriend_name().toUpperCase().contains(constraint.toString().toUpperCase())){
+                        itemList.add(item);
+                    }
+                }
+                
+                results.values = itemList;
+                results.count = itemList.size();
+            }
+
+            return results;
         }
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
+            filteredItemList = (ArrayList<FriendsListItem>) results.values;
 
+            if(results.count>0){
+                notifyDataSetChanged();
+            }else{
+                notifyDataSetInvalidated();
+            }
         }
     }
 }
