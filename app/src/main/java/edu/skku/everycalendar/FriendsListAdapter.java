@@ -1,0 +1,77 @@
+package edu.skku.everycalendar;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+public class FriendsListAdapter extends BaseAdapter implements Filterable {
+    ArrayList<FriendsListItem> listViewItemList;
+    ArrayList<FriendsListItem> filteredItemList;
+    Context context;
+    Filter listFilter;
+
+    public FriendsListAdapter(Context context, ArrayList<FriendsListItem> listViewItemList){
+        this.context = context;
+        this.listViewItemList = listViewItemList;
+        this.filteredItemList = listViewItemList;
+    }
+
+    @Override
+    public int getCount() {
+        return filteredItemList.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return filteredItemList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        if(convertView == null){
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_friend,null);
+        }
+        TextView friend_name = convertView.findViewById(R.id.friend_name);
+        TextView friend_major = convertView.findViewById(R.id.friend_major);
+        TextView friend_tag = convertView.findViewById(R.id.friend_tag);
+
+        friend_name.setText(filteredItemList.get(position).getFriend_name());
+        friend_major.setText(filteredItemList.get(position).getFriend_major());
+        friend_tag.setText(filteredItemList.get(position).getFriend_tag());
+
+        return convertView;
+    }
+
+    @Override
+    public Filter getFilter() {
+        if(listFilter == null){
+            listFilter = new ListFilter();
+        }
+        return listFilter;
+    }
+
+    private class ListFilter extends Filter{
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            return null;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+        }
+    }
+}
