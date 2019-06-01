@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TableFragment tableFragment = new TableFragment();
     private FriendsFragment friendsFragment = new FriendsFragment();
     private AdjustFragment adjustFragment = new AdjustFragment();
+    private MonthCalendar monthCalendar = new MonthCalendar();
     Fragment active = tableFragment;
 
     @Override
@@ -73,7 +74,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         fragmentManager.beginTransaction().add(R.id.container, friendsFragment,"3").hide(friendsFragment).commit();
         fragmentManager.beginTransaction().add(R.id.container, adjustFragment,"2").hide(adjustFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.container, tableFragment,"1").commit();
+        fragmentManager.beginTransaction().add(R.id.container, tableFragment,"1").hide(tableFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.container, monthCalendar,"0").commit();
 
 
         bottomBar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

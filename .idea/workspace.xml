@@ -235,10 +235,10 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="991" />
-    <option name="width" value="936" />
-    <option name="height" value="1047" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="400" />
+    <option name="width" value="1528" />
+    <option name="height" value="1049" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -288,7 +288,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="device.picker.selection" value="04157df4bb532e1f" />
+    <property name="device.picker.selection" value="27fb5f20bc217ece" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../MyApplication3" />
     <property name="project.structure.last.edited" value="Dependencies" />
     <property name="project.structure.proportion" value="0.17" />
