@@ -14,6 +14,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 public class MonthCalendar extends Fragment {
 
     GridView monthView;
@@ -40,8 +42,10 @@ public class MonthCalendar extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 MonthItem curItem = (MonthItem) monthViewAdapter.getItem(position);
                 int day = curItem.getDay();
+                String firstday=getFirstday(curItem);
+                String lastday=getLastday(curItem);
                 if (day != 0) {
-                    Toast.makeText(context, "" + day, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, ""+firstday+" / "+lastday, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -76,6 +80,38 @@ public class MonthCalendar extends Fragment {
         curMonth = monthViewAdapter.getCurMonth();
 
         monthText.setText(curYear + "년 " + (curMonth + 1) + "월");
+    }
+    public String getFirstday(MonthItem item) {
+        java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy.MM.dd");
+
+        Calendar c = Calendar.getInstance();
+
+        int y = item.getYear();
+        int m = item.getMonth();
+        int w = item.getWeek();
+
+        c.set(Calendar.YEAR,y);
+        c.set(Calendar.MONTH,m);
+        c.set(Calendar.WEEK_OF_MONTH, w);
+        c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+
+        return formatter.format(c.getTime());
+    }
+    public String getLastday(MonthItem item) {
+        java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy.MM.dd");
+
+        Calendar c = Calendar.getInstance();
+
+        int y = item.getYear();
+        int m = item.getMonth();
+        int w = item.getWeek();
+
+        c.set(Calendar.YEAR,y);
+        c.set(Calendar.MONTH,m);
+        c.set(Calendar.WEEK_OF_MONTH, w);
+        c.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+
+        return formatter.format(c.getTime());
     }
 }
 

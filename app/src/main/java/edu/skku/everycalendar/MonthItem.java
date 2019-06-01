@@ -2,20 +2,27 @@ package edu.skku.everycalendar;
 
 
 public class MonthItem {
+    private int yearValue;
+    private int monthValue;
+    private int weekValue;
     private int dayValue;
-    public MonthItem() {
-    }
-
-    public MonthItem(int day) {
+    public MonthItem(int year, int month, int week, int day) {
+        yearValue=year;
+        monthValue=month;
+        weekValue=week;
         dayValue = day;
     }
 
     public int getDay() {
         return dayValue;
     }
-
-    public void setDay(int day) {
-        this.dayValue = day;
+    public int getYear(){
+        return yearValue;
     }
-
+    public int getMonth(){
+        return monthValue;
+    }
+    public int getWeek(){
+        return weekValue;
+    }
 }

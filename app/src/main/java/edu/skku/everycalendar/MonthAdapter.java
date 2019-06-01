@@ -94,8 +94,12 @@ public class MonthAdapter extends BaseAdapter {
             if (dayNumber < 1 || dayNumber > lastDay) {
                 dayNumber = 0;
             }
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.YEAR,curYear);
+            c.set(Calendar.MONTH,curMonth);
+            c.set(Calendar.DATE,dayNumber);
 
-            items[i] = new MonthItem(dayNumber);
+            items[i] = new MonthItem(curYear,curMonth,c.get(c.WEEK_OF_MONTH),dayNumber);
         }
     }
 
