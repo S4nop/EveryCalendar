@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     android:background="#00FFFFFF">
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="113dp"
+        android:layout_height="26dp"
+        android:text="show calendar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/clToTable"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/clToTable"
         android:layout_width="match_parent"

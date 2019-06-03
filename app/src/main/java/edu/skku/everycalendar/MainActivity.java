@@ -72,10 +72,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         context = getApplicationContext();
         thisAct = this;
 
+        fragmentManager.beginTransaction().add(R.id.container, monthCalendar,"4").hide(monthCalendar).commit();
         fragmentManager.beginTransaction().add(R.id.container, friendsFragment,"3").hide(friendsFragment).commit();
         fragmentManager.beginTransaction().add(R.id.container, adjustFragment,"2").hide(adjustFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.container, tableFragment,"1").hide(tableFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.container, monthCalendar,"0").commit();
+        fragmentManager.beginTransaction().add(R.id.container, tableFragment,"1").commit();
+        active = tableFragment;
 
 
         bottomBar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -164,5 +165,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (requestCode == GoogleCalRequest.REQUEST_ACC_PICK && resultCode == RESULT_OK && data != null && data.getExtras() != null) {
             tableFragment.onActivityResult(data);
         }
+    }
+
+    public void transTableToCal(){
+        fragmentManager.beginTransaction().hide(active).show(monthCalendar).commit();
+        active = monthCalendar;
     }
 }

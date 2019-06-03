@@ -2,7 +2,9 @@ package edu.skku.everycalendar;
 
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -45,6 +49,14 @@ public class TableFragment extends Fragment {
         clToTable.addView(tv);
 
         buildTable(clToTable);
+
+        Button btn = rootView.findViewById(R.id.button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.transTableToCal();
+            }
+        });
 
         return rootView;
     }
@@ -86,4 +98,5 @@ public class TableFragment extends Fragment {
     void onActivityResult(Intent data) {
         gCR.pickAcc(data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME));
     }
+
 }
