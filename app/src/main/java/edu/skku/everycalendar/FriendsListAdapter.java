@@ -49,7 +49,7 @@ public class FriendsListAdapter extends BaseAdapter implements Filterable {
 
         friend_name.setText(filteredItemList.get(position).getFriend_name());
         friend_major.setText(filteredItemList.get(position).getFriend_major());
-        friend_tag.setText(filteredItemList.get(position).getFriend_tag());
+        friend_tag.setText(new Integer(filteredItemList.get(position).getFriend_tag()).toString());
 
         return convertView;
     }
@@ -78,7 +78,7 @@ public class FriendsListAdapter extends BaseAdapter implements Filterable {
                         itemList.add(item);
                     }
                 }
-                
+
                 results.values = itemList;
                 results.count = itemList.size();
             }
