@@ -9,9 +9,10 @@
         android:id="@+id/tbView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="0dp"
         android:layout_margin="0dp"
+        android:padding="0dp"
         android:stretchColumns="*"
+        android:background="@drawable/btn_bolder_round"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp">
 
@@ -25,81 +26,79 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="1dp"
-                android:background="#F2F2F2"
+                android:background="@android:color/white"
                 android:gravity="center"
                 android:text="            " />
 
             <TextView
                 android:id="@+id/sun"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
                 android:layout_margin="1dp"
-                android:background="#F2F2F2"
+                android:layout_weight="1"
+                android:background="@android:color/white"
                 android:gravity="center"
-                android:text="Sun"
-                android:textSize="20dp" />
+                android:text="@string/sunday" />
 
             <TextView
                 android:id="@+id/mon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
                 android:layout_margin="1dp"
-                android:background="#F2F2F2"
+                android:layout_weight="1"
+                android:background="@android:color/white"
                 android:gravity="center"
-                android:text="Mon"
-                android:textSize="20dp" />
+                android:text="@string/monday" />
 
             <TextView
                 android:id="@+id/tue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
                 android:layout_margin="1dp"
-                android:background="#F2F2F2"
+                android:layout_weight="1"
+                android:background="@android:color/white"
                 android:gravity="center"
-                android:text="Tue"
-                android:textSize="20dp" />
+                android:text="@string/tuesday" />
 
             <TextView
                 android:id="@+id/wed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
                 android:layout_margin="1dp"
-                android:background="#F2F2F2"
+                android:layout_weight="1"
+                android:background="@android:color/white"
                 android:gravity="center"
-                android:text="Wed"
-                android:textSize="20dp" />
+                android:text="@string/wednesday" />
 
             <TextView
                 android:id="@+id/thu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
                 android:layout_margin="1dp"
-                android:background="#F2F2F2"
+                android:layout_weight="1"
+                android:background="@android:color/white"
                 android:gravity="center"
-                android:text="Thu"
-                android:textSize="20dp" />
+                android:text="@string/thursday" />
 
             <TextView
                 android:id="@+id/fri"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
                 android:layout_margin="1dp"
-                android:background="#F2F2F2"
+                android:layout_weight="1"
+                android:background="@android:color/white"
                 android:gravity="center"
-                android:paddingLeft="3dp"
-                android:paddingRight="3dp"
-                android:text="Fri"
-                android:textSize="20dp" />
+                android:text="@string/friday" />
 
             <TextView
                 android:id="@+id/sat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
                 android:layout_margin="1dp"
-                android:background="#F2F2F2"
+                android:layout_weight="1"
+                android:background="@android:color/white"
                 android:gravity="center"
-                android:text="Sat"
-                android:textSize="20dp" />
+                android:text="@string/saturday" />
         </TableRow>
 
     </TableLayout>

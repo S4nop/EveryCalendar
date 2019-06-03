@@ -17,4 +17,12 @@
     <string name="bottom_menu_home">홈</string>
     <string name="bottom_menu_friends">친구</string>
     <string name="bottom_menu_schedule">일정 조율</string>
+
+    <string name="monday">MON</string>
+    <string name="tuesday">TUE</string>
+    <string name="wednesday">WED</string>
+    <string name="thursday">THU</string>
+    <string name="friday">FRI</string>
+    <string name="saturday">SAT</string>
+    <string name="sunday">SUN</string>
 </resources>

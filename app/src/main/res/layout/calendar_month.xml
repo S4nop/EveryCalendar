@@ -6,46 +6,52 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="408dp"
-        android:layout_height="594dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="10dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="10dp"
         android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/head"
             android:layout_width="match_parent"
-            android:layout_height="61dp"
-            android:orientation="horizontal">
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <ImageButton
-                android:id="@+id/prev"
-                android:layout_width="20dp"
-                android:layout_height="61dp"
-                android:layout_marginLeft="60dp"
-                android:layout_weight="1"
-                android:src="@drawable/blue_arrow_left"
-                android:text="" />
+                android:id="@+id/btn_prev_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                app:srcCompat="@drawable/ic_arrow_backward" />
 
             <TextView
-                android:id="@+id/date"
+                android:id="@+id/text_month"
                 android:layout_width="wrap_content"
-                android:layout_height="61dp"
-                android:layout_weight="4"
-                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:text=""
+                android:textColor="@color/gray"
                 android:textSize="20sp" />
 
             <ImageButton
-                android:id="@+id/next"
-                android:layout_width="20dp"
-                android:layout_height="61dp"
-                android:layout_marginRight="60dp"
-                android:layout_weight="1"
-                android:src="@drawable/blue_arrow_right"
-                android:text="" />
+                android:id="@+id/btn_next_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                app:srcCompat="@drawable/ic_arrow_forward" />
         </LinearLayout>
 
         <LinearLayout
@@ -59,64 +65,70 @@
                 android:layout_width="wrap_content"
                 android:layout_height="49dp"
                 android:layout_weight="1"
-                android:gravity="left"
-                android:text="일"
-                android:textColor="#FF0000" />
+                android:gravity="center"
+                android:text="@string/sunday"
+                android:textColor="@color/gray" />
 
             <TextView
                 android:id="@+id/textview2"
                 android:layout_width="wrap_content"
                 android:layout_height="49dp"
                 android:layout_weight="1"
-                android:gravity="left"
-                android:text="월" />
+                android:gravity="center"
+                android:text="@string/monday"
+                android:textColor="@color/gray" />
 
             <TextView
                 android:id="@+id/textview3"
                 android:layout_width="wrap_content"
                 android:layout_height="49dp"
                 android:layout_weight="1"
-                android:gravity="left"
-                android:text="화" />
+                android:gravity="center"
+                android:text="@string/tuesday"
+                android:textColor="@color/gray" />
 
             <TextView
                 android:id="@+id/textview4"
                 android:layout_width="wrap_content"
                 android:layout_height="49dp"
                 android:layout_weight="1"
-                android:gravity="left"
-                android:text="수" />
+                android:gravity="center"
+                android:text="@string/wednesday"
+                android:textColor="@color/gray" />
 
             <TextView
                 android:id="@+id/textview5"
                 android:layout_width="wrap_content"
                 android:layout_height="49dp"
                 android:layout_weight="1"
-                android:gravity="left"
-                android:text="목" />
+                android:gravity="center"
+                android:text="@string/thursday"
+                android:textColor="@color/gray" />
 
             <TextView
                 android:id="@+id/textview6"
                 android:layout_width="wrap_content"
                 android:layout_height="49dp"
                 android:layout_weight="1"
-                android:gravity="left"
-                android:text="금" />
+                android:gravity="center"
+                android:text="@string/friday"
+                android:textColor="@color/gray" />
 
             <TextView
                 android:id="@+id/textview7"
                 android:layout_width="wrap_content"
                 android:layout_height="49dp"
                 android:layout_weight="1"
-                android:gravity="left"
-                android:text="토"
-                android:textColor="#0100FF" />
+                android:gravity="center"
+                android:text="@string/saturday"
+                android:textColor="@color/gray" />
         </LinearLayout>
 
         <GridView
             android:id="@+id/monthview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:gravity="center"
             android:numColumns="7" />
 

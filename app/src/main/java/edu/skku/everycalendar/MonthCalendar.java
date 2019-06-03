@@ -50,10 +50,10 @@ public class MonthCalendar extends Fragment {
             }
         });
 
-        monthText = rootView.findViewById(R.id.date);
+        monthText = rootView.findViewById(R.id.text_month);
         setMonthText();
 
-        ImageButton monthPrevious = rootView.findViewById(R.id.prev);
+        ImageButton monthPrevious = rootView.findViewById(R.id.btn_prev_month);
         monthPrevious.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 monthViewAdapter.setPreviousMonth();
@@ -63,7 +63,7 @@ public class MonthCalendar extends Fragment {
             }
         });
 
-        ImageButton monthNext = rootView.findViewById(R.id.next);
+        ImageButton monthNext = rootView.findViewById(R.id.btn_next_month);
         monthNext.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 monthViewAdapter.setNextMonth();
