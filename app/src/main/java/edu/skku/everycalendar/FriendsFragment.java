@@ -34,11 +34,6 @@ public class FriendsFragment extends Fragment {
     ImageButton deleteBtn;
     ImageButton addBtn;
 
-    CheckBox checkBox;
-
-    private enum Mode{ DELETE, NORMAL }
-    private Mode curMode = Mode.NORMAL;
-
     ArrayList<FriendsListItem> list;
     FriendsListAdapter adapter;
 
@@ -53,18 +48,19 @@ public class FriendsFragment extends Fragment {
         addBtn = rootView.findViewById(R.id.addBtn);
         deleteBtn = rootView.findViewById(R.id.deleteBtn);
 
-        checkBox = rootView.findViewById(R.id.checkBox);
 
         activity = (MainActivity) getActivity();
         context = activity.context;
 
         list = new ArrayList<>();
+        /*
         FriendsListItem item = new FriendsListItem("a","a",1);
         list.add(item);
         FriendsListItem item1 = new FriendsListItem("b","b",1);
         list.add(item1);
         FriendsListItem item2 = new FriendsListItem("aasdfa","a",1);
         list.add(item2);
+        */
         adapter = new FriendsListAdapter(context, list);
 
         friendsList.setTextFilterEnabled(true);
@@ -98,36 +94,10 @@ public class FriendsFragment extends Fragment {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (curMode){
-                    case NORMAL:
-                        curMode = Mode.DELETE;
-                        deleteBtn.setImageResource(R.drawable.ic_check);
-                        checkBox.setVisibility(CheckBox.VISIBLE);
-                        break;
 
-                    case DELETE:
-                        curMode = Mode.NORMAL;
-                        //deleteItem();
-                        deleteBtn.setImageResource(R.drawable.ic_delete_friend);
-                        checkBox.setVisibility(CheckBox.INVISIBLE);
-                        break;
-                }
             }
         });
+
         return rootView;
-    }
-
-    private void deleteItem(){
-        SparseBooleanArray checkedItems = friendsList.getCheckedItemPositions();
-        int cnt = adapter.getCount();
-
-        for(int i = cnt-1; i>=0; i--){
-            if(checkedItems.get(i)){
-                list.remove(i);
-            }
-        }
-
-        friendsList.clearChoices();
-        adapter.notifyDataSetChanged();
     }
 }

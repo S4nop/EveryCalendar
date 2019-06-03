@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "359287506872",
+    "firebase_url": "https://everycalendar-1b159.firebaseio.com",
+    "project_id": "everycalendar-1b159",
+    "storage_bucket": "everycalendar-1b159.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:359287506872:android:74e5fb889797804a",
+        "android_client_info": {
+          "package_name": "edu.skku.everycalendar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "359287506872-l3u3k99itnn2l45887s97esst1cqqdsn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWerXmrF_a16Df2XIO6vMftpMv8srK6Hc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "359287506872-l3u3k99itnn2l45887s97esst1cqqdsn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
