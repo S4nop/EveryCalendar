@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class TableFragment extends Fragment {
     MyTimeTableReq etR;
     ArrayList<TimetableData> events;
     TableView tv;
+    ImageButton select_week_btn;
 
     @Nullable
     @Override
@@ -38,6 +40,7 @@ public class TableFragment extends Fragment {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_table, container, false);
 
         clToTable = rootView.findViewById(R.id.clToTable);
+        select_week_btn = rootView.findViewById(R.id.select_week_btn);
 
         activity = (MainActivity) getActivity();
         context = activity.context;
@@ -50,8 +53,7 @@ public class TableFragment extends Fragment {
 
         buildTable(clToTable);
 
-        Button btn = rootView.findViewById(R.id.button);
-        btn.setOnClickListener(new View.OnClickListener() {
+        select_week_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 activity.transTableToCal();

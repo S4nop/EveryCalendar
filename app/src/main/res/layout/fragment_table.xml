@@ -6,23 +6,35 @@
     android:layout_height="match_parent"
     android:background="#00FFFFFF">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="113dp"
-        android:layout_height="26dp"
-        android:text="show calendar"
+    <ImageButton
+        android:id="@+id/select_week_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/clToTable"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:srcCompat="@drawable/ic_select_week" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/clToTable"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/select_week_btn" />
 
 </android.support.constraint.ConstraintLayout>

@@ -195,3 +195,14 @@ app/app.iml
 .idea/caches/gradle_models.ser
 .idea/workspace.xml
 app/app.iml
+.gradle/5.1.1/executionHistory/executionHistory.bin
+.gradle/5.1.1/executionHistory/executionHistory.lock
+.gradle/5.1.1/fileHashes/fileHashes.bin
+.gradle/5.1.1/fileHashes/fileHashes.lock
+.gradle/5.1.1/javaCompile/classAnalysis.bin
+.gradle/5.1.1/javaCompile/javaCompile.lock
+.gradle/5.1.1/javaCompile/taskHistory.bin
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/buildOutputCleanup/outputFiles.bin
+.idea/assetWizardSettings.xml
+.idea/workspace.xml
