@@ -47,6 +47,7 @@ public class MonthCalendar extends Fragment {
                 if (day != 0) {
                     Toast.makeText(context, ""+firstday+" / "+lastday, Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 

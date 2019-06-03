@@ -81,5 +81,4 @@ class UserLogIn {
 
         mPostReference.child("user").addValueEventListener(postListener);
     }
-
 }

@@ -17,9 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class TableFragment extends Fragment {
 
@@ -33,6 +35,7 @@ public class TableFragment extends Fragment {
     ArrayList<TimetableData> events;
     TableView tv;
     ImageButton select_week_btn;
+    TextView period;
 
     @Nullable
     @Override
@@ -59,6 +62,10 @@ public class TableFragment extends Fragment {
                 activity.transTableToCal();
             }
         });
+        String firstday = getCurSunday();
+        String lastday = getCurSaturday();
+        period = rootView.findViewById(R.id.textView);
+        period.setText(firstday+" ~ "+lastday);
 
         return rootView;
     }
@@ -101,4 +108,20 @@ public class TableFragment extends Fragment {
         gCR.pickAcc(data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME));
     }
 
+    public static String getCurSaturday(){
+        java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy.MM.dd");
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
+        return formatter.format(c.getTime());
+    }
+
+    public static String getCurSunday(){
+        java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy.MM.dd");
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+        return formatter.format(c.getTime());
+    }
+    public void setPeriod(String string){
+        period.setText(string);
+    }
 }
