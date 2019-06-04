@@ -17,6 +17,9 @@
     <string name="bottom_menu_home">홈</string>
     <string name="bottom_menu_friends">친구</string>
     <string name="bottom_menu_schedule">일정 조율</string>
+    <string name="bottom_menu_calendar">일정</string>
+
+    <string name="adjust_result">일정 조율 결과</string>
 
     <string name="monday">MON</string>
     <string name="tuesday">TUE</string>
