@@ -3,20 +3,13 @@ package edu.skku.everycalendar;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -47,7 +40,7 @@ public class MonthCalendar extends Dialog{
         layoutParams.dimAmount = 0.8f;
         getWindow().setAttributes(layoutParams);
 
-        setContentView(R.layout.calendar_month);
+        setContentView(R.layout.dialog_calendar_month);
 
         monthView = findViewById(R.id.monthview);
         monthViewAdapter = new MonthAdapter(context);
