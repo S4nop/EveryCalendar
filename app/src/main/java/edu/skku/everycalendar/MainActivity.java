@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TableFragment tableFragment = new TableFragment();
     private FriendsFragment friendsFragment = new FriendsFragment();
     private AdjustFragment adjustFragment = new AdjustFragment();
+    private GoogleCalFragment googleCalFragment = new GoogleCalFragment();
     Fragment active = tableFragment;
 
     @Override
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         context = getApplicationContext();
         thisAct = this;
 
+        fragmentManager.beginTransaction().add(R.id.container, googleCalFragment,"4").hide(googleCalFragment).commit();
         fragmentManager.beginTransaction().add(R.id.container, friendsFragment,"3").hide(friendsFragment).commit();
         fragmentManager.beginTransaction().add(R.id.container, adjustFragment,"2").hide(adjustFragment).commit();
         fragmentManager.beginTransaction().add(R.id.container, tableFragment,"1").commit();
@@ -78,6 +80,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.action_friends:{
                         fragmentManager.beginTransaction().hide(active).show(friendsFragment).commit();
                         active = friendsFragment;
+
+                        break;
+                    }
+
+                    case R.id.action_calendar:{
+                        fragmentManager.beginTransaction().hide(active).show(googleCalFragment).commit();
+                        active = googleCalFragment;
 
                         break;
                     }

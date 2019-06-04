@@ -7,12 +7,20 @@
         android:enabled="true"
         android:icon="@drawable/ic_home"
         android:title="@string/bottom_menu_home" />
+
     <item
         android:id="@+id/action_friends"
         android:background="@drawable/bottom_navigation_selector"
         android:enabled="true"
         android:icon="@drawable/ic_friends"
         android:title="@string/bottom_menu_friends" />
+
+    <item
+        android:id="@+id/action_calendar"
+        android:background="@drawable/bottom_navigation_selector"
+        android:enabled="true"
+        android:icon="@drawable/ic_modify_calendar"
+        android:title="@string/bottom_menu_calendar" />
 
     <item
         android:id="@+id/action_adjust"
