@@ -1,6 +1,7 @@
 package edu.skku.everycalendar;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -43,6 +44,7 @@ public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
                 addEvent();
             }
         } catch (Exception e) {
+            Log.d("LOG_DOINBACK", e.toString());
             cancel(true);
             return null;
         }
