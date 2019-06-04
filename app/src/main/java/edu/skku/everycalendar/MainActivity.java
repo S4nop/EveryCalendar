@@ -1,10 +1,9 @@
 package edu.skku.everycalendar;
 
-import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -21,11 +20,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
     GoogleCalRequest gCR;
     MyTimeTableReq etR;
     ArrayList<TimetableData> events;
@@ -159,6 +157,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void callDialog(){
         MonthCalendar monthCalendar = new MonthCalendar(MainActivity.this);
+        monthCalendar.setOnDismissListener(this);
         monthCalendar.show();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        MonthCalendar monthCalendar = (MonthCalendar) dialog;
+        Log.d("LOG_ONDISMISS", "here?");
+        if(monthCalendar.getCng()) {
+            tableFragment.makeTable(monthCalendar.getStDate(), monthCalendar.getEdDate());
+        }
     }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,9 @@ public class MonthCalendar extends Dialog{
     Context context;
     ImageButton monthPrevious;
     ImageButton monthNext;
+    String stDate, edDate;
+    OnDismissListener _listener;
+    boolean cng = false;
 
     public MonthCalendar(Context context) {
         super(context);
@@ -58,10 +62,15 @@ public class MonthCalendar extends Dialog{
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 MonthItem curItem = (MonthItem) monthViewAdapter.getItem(position);
                 int day = curItem.getDay();
-                String firstday=getFirstday(curItem);
-                String lastday=getLastday(curItem);
+                stDate=getFirstday(curItem);
+                edDate=getLastday(curItem);
                 if (day != 0) {
-                    Toast.makeText(context, ""+firstday+" / "+lastday, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "" + stDate + " / "+ edDate, Toast.LENGTH_SHORT).show();
+                    cng = true;
+                    Log.d("LOG_DISMISS", _listener == null ? "NULL" : "X");
+                    if(_listener != null)
+                        _listener.onDismiss(MonthCalendar.this);
+                    dismiss();
                 }
             }
         });
@@ -94,7 +103,7 @@ public class MonthCalendar extends Dialog{
         monthText.setText(curYear + "년 " + (curMonth + 1) + "월");
     }
     public String getFirstday(MonthItem item) {
-        java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy.MM.dd");
+        java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
 
         Calendar c = Calendar.getInstance();
 
@@ -110,7 +119,7 @@ public class MonthCalendar extends Dialog{
         return formatter.format(c.getTime());
     }
     public String getLastday(MonthItem item) {
-        java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy.MM.dd");
+        java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
 
         Calendar c = Calendar.getInstance();
 
@@ -125,5 +134,13 @@ public class MonthCalendar extends Dialog{
 
         return formatter.format(c.getTime());
     }
+
+    public void setOnDismissListener(OnDismissListener $listener){
+        _listener = $listener;
+    }
+
+    public boolean getCng() { return cng; }
+    public String getStDate(){ return stDate; }
+    public String getEdDate() { return edDate; }
 }
 

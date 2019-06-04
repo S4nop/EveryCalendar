@@ -2,32 +2,29 @@ package edu.skku.everycalendar;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class TableView extends ConstraintLayout {
 
-    String stHour, edHour;
+    int stHour, edHour;
     TableRowView[] trs = new TableRowView[24];
     ArrayList<TimetableData> events;
     ArrayList<Button> btnList = new ArrayList<>();
-    Integer stTime;
+    Integer stPos;
     Context context;
     Toast toast;
-    public TableView(Context context) {
+    public TableView(Context context, int stHour, int edHour) {
         super(context);
+        this.stHour = stHour;
+        this.edHour = edHour;
         this.context = context;
         init();
     }
@@ -40,22 +37,8 @@ public class TableView extends ConstraintLayout {
 
     public TableView(Context context, String stHour, String edHour, ArrayList<TimetableData> events){
         super(context);
-        this.stHour = stHour;
-        this.edHour = edHour;
         this.events = events;
         init();
-    }
-
-    public TableView(Context context, AttributeSet attrs) {
-        super(context);
-        init();
-        getAttrs(attrs);
-    }
-
-    public TableView(Context context, AttributeSet attrs, int dStyle) {
-        super(context);
-        init();
-        getAttrs(attrs, dStyle);
     }
 
     public void setEvents(ArrayList<TimetableData> events){
@@ -67,9 +50,9 @@ public class TableView extends ConstraintLayout {
         String infService = Context.LAYOUT_INFLATER_SERVICE;
         LayoutInflater li = (LayoutInflater) getContext().getSystemService(infService);
         View v = li.inflate(R.layout.tableview, this, false);
-        stTime = 9 * 12;
+        stPos = 9 * 12;
         //addView(v);
-        for(int i = 8; i < 20; i++){
+        for(int i = stHour; i < edHour; i++){
             TableRowView trv = new TableRowView(v, i);
             trv.makeRow();
             trs[i] = trv;
@@ -83,7 +66,7 @@ public class TableView extends ConstraintLayout {
 
     public void addEvents(ArrayList<TimetableData> events){
         int pos[];
-        pos = trs[stTime / 12].getTBLocation(1);
+        pos = trs[stPos / 12].getTBLocation(1);
         while(pos[0] == 0 && pos[1] == 0) {
             try {
                 wait(500);
@@ -98,25 +81,6 @@ public class TableView extends ConstraintLayout {
             }
     }
 
-    private void getAttrs(AttributeSet attrs){
-        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.TableView);
-
-        setTypeArray(typedArray);
-    }
-
-    private void getAttrs(AttributeSet attrs, int dStyle){
-        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.TableView, dStyle, 0);
-
-        setTypeArray(typedArray);
-    }
-
-    private void setTypeArray(TypedArray attrs){
-        stHour = attrs.getString(R.styleable.TableView_stHour);
-        edHour = attrs.getString(R.styleable.TableView_edHour);
-
-
-        attrs.recycle();
-    }
 
     private Button addSchedule(TimetableData event){
         Integer week = Integer.parseInt(event.getWeekDay());

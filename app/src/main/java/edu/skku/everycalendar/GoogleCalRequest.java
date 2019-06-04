@@ -128,23 +128,23 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
     public void compData(DateTime stDate, DateTime edDate, Event event)
     {
 
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
             Date std, edd;
             try {
-                std = format.parse(stDate.toString().substring(0, 9));
-                edd = format.parse(edDate.toString().substring(0, 9));
+                std = format.parse(stDate.toString().substring(0, 10));
+                edd = format.parse(edDate.toString().substring(0, 10));
                 long calDateDays = (edd.getTime() - std.getTime()) / ( 24*60*60*1000);
                 Calendar c = Calendar.getInstance();
                 c.setTime(std);
-
+                Log.d("LOG_CAL", c.toString());
                 int week = c.get(Calendar.DAY_OF_WEEK) - 1;
                 Random rnd = new Random();
                 int color = Color.rgb(rnd.nextInt(255), rnd.nextInt(255), rnd.nextInt(255));
                 Log.d("LOG_COMPDATA", Long.toString(calDateDays));
                 for(long i = 0; i <= calDateDays; i++){
-                    events.add(new TimetableData(event.getSummary(), event.getLocation(),
-                            event.getDescription(), Integer.toString(week), timeToInt(stDate), timeToInt(edDate), color));
+                    events.add(new TimetableData(event.getSummary(), event.getLocation() != null ? event.getLocation() : "",
+                            event.getDescription() != null ? event.getDescription() : "", Integer.toString(week), timeToInt(stDate), timeToInt(edDate), color));
                 }
 
             } catch (ParseException e) {
