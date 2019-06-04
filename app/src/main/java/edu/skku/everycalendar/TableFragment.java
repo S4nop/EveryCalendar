@@ -59,9 +59,10 @@ public class TableFragment extends Fragment {
         select_week_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.transTableToCal();
+                activity.callDialog();
             }
         });
+
         String firstday = getCurSunday();
         String lastday = getCurSaturday();
         period = rootView.findViewById(R.id.textView);

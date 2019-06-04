@@ -1,5 +1,6 @@
 package edu.skku.everycalendar;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -16,26 +19,39 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
-public class MonthCalendar extends Fragment {
+public class MonthCalendar extends Dialog{
 
     GridView monthView;
     MonthAdapter monthViewAdapter;
     TextView monthText;
     int curYear;
     int curMonth;
-    MainActivity activity;
     Context context;
+    ImageButton monthPrevious;
+    ImageButton monthNext;
 
-    @Nullable
+    public MonthCalendar(Context context) {
+        super(context);
+        this.context = context;
+    }
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
-        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.calendar_month, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        layoutParams.dimAmount = 0.8f;
+        getWindow().setAttributes(layoutParams);
 
-        activity=(MainActivity)getActivity();
-        context=activity.getApplicationContext();
-        monthView = rootView.findViewById(R.id.monthview);
+        setContentView(R.layout.calendar_month);
+
+        monthView = findViewById(R.id.monthview);
         monthViewAdapter = new MonthAdapter(context);
         monthView.setAdapter(monthViewAdapter);
+
+        monthNext = findViewById(R.id.btn_next_month);
+        monthPrevious = findViewById(R.id.btn_prev_month);
+        monthText = findViewById(R.id.text_month);
 
         monthView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -47,14 +63,11 @@ public class MonthCalendar extends Fragment {
                 if (day != 0) {
                     Toast.makeText(context, ""+firstday+" / "+lastday, Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
-        monthText = rootView.findViewById(R.id.text_month);
         setMonthText();
 
-        ImageButton monthPrevious = rootView.findViewById(R.id.btn_prev_month);
         monthPrevious.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 monthViewAdapter.setPreviousMonth();
@@ -64,7 +77,6 @@ public class MonthCalendar extends Fragment {
             }
         });
 
-        ImageButton monthNext = rootView.findViewById(R.id.btn_next_month);
         monthNext.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 monthViewAdapter.setNextMonth();
@@ -73,7 +85,6 @@ public class MonthCalendar extends Fragment {
                 setMonthText();
             }
         });
-        return rootView;
     }
 
     private void setMonthText() {
