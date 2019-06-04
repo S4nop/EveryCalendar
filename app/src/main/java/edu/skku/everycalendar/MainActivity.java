@@ -24,15 +24,11 @@ import android.widget.ImageButton;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
-    GoogleCalRequest gCR;
-    MyTimeTableReq etR;
-    ArrayList<TimetableData> events;
-    TableView tv;
-    ImageButton menu_btn;
-    Context context;
-    Activity thisAct;
-    String cookie;
-    BottomNavigationView bottomBar;
+    private ImageButton menu_btn;
+    private Context context;
+    private Activity thisAct;
+    private String cookie;
+    private BottomNavigationView bottomBar;
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private TableFragment tableFragment = new TableFragment();
@@ -153,6 +149,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (requestCode == GoogleCalRequest.REQUEST_ACC_PICK && resultCode == RESULT_OK && data != null && data.getExtras() != null) {
             tableFragment.onActivityResult(data);
         }
+    }
+
+    public Activity getThisAct() {
+        return thisAct;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public String getCookie() {
+        return cookie;
     }
 
     public void callDialog(){

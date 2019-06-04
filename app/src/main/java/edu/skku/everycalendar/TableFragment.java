@@ -50,9 +50,9 @@ public class TableFragment extends Fragment {
         period = rootView.findViewById(R.id.textView);
 
         activity = (MainActivity) getActivity();
-        context = activity.context;
-        thisAct = activity.thisAct;
-        cookie = activity.cookie;
+        context = activity.getContext();
+        thisAct = activity.getThisAct();
+        cookie = activity.getCookie();
 
         String firstday = getCurSunday();
         String lastday = getCurSaturday();

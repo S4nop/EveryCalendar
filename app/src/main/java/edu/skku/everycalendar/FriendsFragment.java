@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,15 +54,15 @@ public class FriendsFragment extends Fragment {
 
 
         activity = (MainActivity) getActivity();
-        context = activity.context;
+        context = activity.getContext();
 
         list = new ArrayList<>();
 
-        FriendsListRequest friendsListRequest = new FriendsListRequest(activity.cookie);
+        final FriendsListRequest friendsListRequest = new FriendsListRequest(activity.getCookie());
         friendsListRequest.makeFriendList();
 
         //Get FriendsList
-        Map<String, String> friendList = friendsListRequest.getFriendList();
+        final Map<String, String> friendList = friendsListRequest.getFriendList();
         Iterator<String> iterator = friendList.keySet().iterator();
         while(iterator.hasNext()){
             String name = iterator.next();
@@ -78,6 +79,16 @@ public class FriendsFragment extends Fragment {
         friendsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ArrayList<TimetableData> friendTT;
+                FriendTimetableReq friendTimetableReq = new FriendTimetableReq(activity.getCookie(), friendList.get(list.get(position).getFriend_name()));
+                try{
+                    friendTimetableReq.makeTimeTable();
+                    friendTT = friendTimetableReq.getClassList();
+                    //TODO : Make friend's timetable!!
+                    Log.d("LOG_FRIENDTT", friendTT.toString());
+                } catch(Exception e){
+                    ToastMaker.makeToast(context, "Cannot read friend's timetable data");
+                }
 
             }
         });
