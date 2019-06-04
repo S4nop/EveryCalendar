@@ -101,16 +101,16 @@ public class TableView extends ConstraintLayout {
         Button btnSched = new Button(getContext());
 
         //btnSched.setText(title);
-        btnSched.setY(pos[1] + vHeight * (stTime % 12) / 12 + 18);
-        btnSched.setX(pos[0] + 12);
+        btnSched.setY(pos[1] + vHeight * (stTime % 12) / 12 + 20);
+        btnSched.setX(pos[0] + 14);
         btnSched.setBackgroundColor(clr);
         ConstraintLayout.LayoutParams btnLParam = new ConstraintLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
         btnLParam.leftMargin = 0;
         btnLParam.rightMargin = 0;
-        btnLParam.width = vWidth + 2;
-        btnLParam.height = (edTime - stTime) * vHeight / 12  + 40 + 6 * ((edTime - stTime) / 12 - 1) - 30;
+        btnLParam.width = vWidth;
+        btnLParam.height = (edTime - stTime) * vHeight / 12 + 6 * ((edTime - stTime) / 12 - 1);
         btnSched.setLayoutParams(btnLParam);
 
         return btnSched;
@@ -120,7 +120,8 @@ public class TableView extends ConstraintLayout {
         btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                ToastMaker.makeToast(context, String.format("[ %s ]\n%s\n%s", event.getName(), event.getDescript(), event.getPlace()));
+                ToastMaker.makeToast(context, event.getName() + (event.getDescript() != null ? "\n" + event.getDescript() : "")
+                        + (event.getPlace() != null ? "\n" + event.getPlace() : ""));
             }
         });
         return btn;

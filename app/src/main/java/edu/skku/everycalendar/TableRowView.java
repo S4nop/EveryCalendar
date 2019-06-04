@@ -29,7 +29,7 @@ public class TableRowView {
     public void makeRow(){
         TableLayout tb = sup.findViewById(R.id.tbView);
         tr = new TableRow(sup.getContext());
-        tr.setBackgroundColor(Color.parseColor("#d6d6d6"));
+        tr.setBackgroundColor(Color.parseColor("#ffe3de"));
         tr.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 1f));
 
         makeLeft();

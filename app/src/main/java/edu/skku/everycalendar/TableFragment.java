@@ -88,22 +88,30 @@ public class TableFragment extends Fragment {
 
                 events = etR.getClassList();
                 events.addAll(gCR.getEvents());
+
                 clToTable.post(new Runnable(){
                     public void run(){
                         try{
                             clToTable.removeView(tv);
                         }catch(Exception E){}
 
-                        tv = new TableView(context, getStartTime(events), getEndTime(events));
+                        tv = new TableView(context, getStartTime(events), getEndTime(events) + 1);
                         tv.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT));
                         clToTable.addView(tv);
                         period.setText(stDate+" ~ "+edDate);
+                        clToTable.post(new Runnable(){
+                            public void run(){
+                                tv.addEvents(events);
+                                clToTable.removeView(tv);
+                                clToTable.addView(tv);
+                            }
+                        });
                     }
                 });
                 schedFin = true;
             }
         }.start();
-        buildTable();
+        //buildTable();
     }
 
 
@@ -121,13 +129,7 @@ public class TableFragment extends Fragment {
 
                 Log.d("LOG_BUILDTB", events.toString());
 
-                clToTable.post(new Runnable(){
-                    public void run(){
-                        tv.addEvents(events);
-                        clToTable.removeView(tv);
-                        clToTable.addView(tv);
-                    }
-                });
+
                 schedFin = false;
 
             }

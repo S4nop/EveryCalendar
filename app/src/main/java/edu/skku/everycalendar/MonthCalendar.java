@@ -65,7 +65,7 @@ public class MonthCalendar extends Dialog{
                 stDate=getFirstday(curItem);
                 edDate=getLastday(curItem);
                 if (day != 0) {
-                    Toast.makeText(context, "" + stDate + " / "+ edDate, Toast.LENGTH_SHORT).show();
+                    ToastMaker.makeToast(context, stDate + " / "+ edDate);
                     cng = true;
                     Log.d("LOG_DISMISS", _listener == null ? "NULL" : "X");
                     if(_listener != null)
