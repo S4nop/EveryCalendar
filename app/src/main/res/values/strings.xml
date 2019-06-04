@@ -19,6 +19,9 @@
     <string name="bottom_menu_schedule">일정 조율</string>
     <string name="bottom_menu_calendar">일정</string>
 
+    <string name="pick_friends">친구 선택</string>
+    <string name="pick_week">주 선택</string>
+    <string name="pick_time">시간 선택</string>
     <string name="adjust_result">일정 조율 결과</string>
 
     <string name="monday">MON</string>
