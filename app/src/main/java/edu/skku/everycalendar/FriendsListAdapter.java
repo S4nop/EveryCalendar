@@ -44,12 +44,8 @@ public class FriendsListAdapter extends BaseAdapter implements Filterable {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_friend,null);
         }
         TextView friend_name = convertView.findViewById(R.id.friend_name);
-        TextView friend_major = convertView.findViewById(R.id.friend_major);
-        TextView friend_tag = convertView.findViewById(R.id.friend_tag);
 
         friend_name.setText(filteredItemList.get(position).getFriend_name());
-        friend_major.setText(filteredItemList.get(position).getFriend_major());
-        friend_tag.setText(new Integer(filteredItemList.get(position).getFriend_tag()).toString());
 
         return convertView;
     }

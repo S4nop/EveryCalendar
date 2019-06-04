@@ -56,14 +56,6 @@ public class FriendsFragment extends Fragment {
         context = activity.context;
 
         list = new ArrayList<>();
-        /*
-        FriendsListItem item = new FriendsListItem("a","a",1);
-        list.add(item);
-        FriendsListItem item1 = new FriendsListItem("b","b",1);
-        list.add(item1);
-        FriendsListItem item2 = new FriendsListItem("aasdfa","a",1);
-        list.add(item2);
-        */
 
         FriendsListRequest friendsListRequest = new FriendsListRequest(activity.cookie);
         friendsListRequest.makeFriendList();
@@ -74,7 +66,7 @@ public class FriendsFragment extends Fragment {
         while(iterator.hasNext()){
             String name = iterator.next();
             String key = friendList.get(name);
-            FriendsListItem item = new FriendsListItem(name,"a",1);
+            FriendsListItem item = new FriendsListItem(name);
             list.add(item);
         }
 
