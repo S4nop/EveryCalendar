@@ -21,6 +21,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import static edu.skku.everycalendar.ToastMaker.toast;
 
@@ -61,6 +64,20 @@ public class FriendsFragment extends Fragment {
         FriendsListItem item2 = new FriendsListItem("aasdfa","a",1);
         list.add(item2);
         */
+
+        FriendsListRequest friendsListRequest = new FriendsListRequest(activity.cookie);
+        friendsListRequest.makeFriendList();
+
+        //Get FriendsList
+        Map<String, String> friendList = friendsListRequest.getFriendList();
+        Iterator<String> iterator = friendList.keySet().iterator();
+        while(iterator.hasNext()){
+            String name = iterator.next();
+            String key = friendList.get(name);
+            FriendsListItem item = new FriendsListItem(name,"a",1);
+            list.add(item);
+        }
+
         adapter = new FriendsListAdapter(context, list);
 
         friendsList.setTextFilterEnabled(true);

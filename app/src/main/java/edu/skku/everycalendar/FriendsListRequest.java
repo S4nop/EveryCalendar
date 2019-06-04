@@ -22,21 +22,21 @@ public class FriendsListRequest {
     }
 
     public void makeFriendList(){
-        friendList = new HashMap<>();
-        FriendListRequest flr = new FriendListRequest();
-        try {
-            String resp[] = flr.execute().get().split("friend");
+            friendList = new HashMap<>();
+            FriendListRequest flr = new FriendListRequest();
+            try {
+                String resp[] = flr.execute().get().split("friend");
 
-            for(int i = 1; i < resp.length; i++){
-                addFriendToMap(resp[i]);
-                Log.d("LOG_FRIEND", resp[i]);
+                for(int i = 1; i < resp.length; i++){
+                    addFriendToMap(resp[i]);
+                    Log.d("LOG_FRIEND", resp[i]);
+                }
+
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public Map<String, String> getFriendList(){
