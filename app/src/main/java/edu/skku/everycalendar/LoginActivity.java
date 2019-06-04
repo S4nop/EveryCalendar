@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             if(lr.getLogined()){ // 조건문 내부를 true로 바꾸시면 로그인 없이 화면 전환됩니다.
                 mainIntent.putExtra("Cookie", lr.getCookie().split("etsid=")[1].split(";")[0]);
+                mainIntent.putExtra("ID", login_id);
 
                 if(temp.chkUser(login_id,login_pw))
                     LoginActivity.this.startActivity(mainIntent);
@@ -62,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 if(lr.getLogined()){ // 조건문 내부를 true로 바꾸시면 로그인 없이 화면 전환됩니다.
                     mainIntent.putExtra("Cookie", lr.getCookie().split("etsid=")[1].split(";")[0]);
+                    mainIntent.putExtra("ID", login_id);
 
                     if(temp.chkUser(user_id,user_pw))
                         LoginActivity.this.startActivity(mainIntent);

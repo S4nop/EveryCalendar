@@ -20,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        setNickAndName();
     }
 
     @Override
@@ -161,6 +163,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public String getCookie() {
         return cookie;
+    }
+
+    private void setNickAndName(){
+        new Thread(){
+            @Override
+            public void run(){
+                NavigationView nv = findViewById(R.id.nav_view);
+                nv.setNavigationItemSelectedListener(MainActivity.this);
+                View nhv = nv.inflateHeaderView(R.layout.nav_header_main);
+                GetNameRequest gnr = new GetNameRequest(cookie);
+
+                String rslt = gnr.getName();
+                ((TextView)nhv.findViewById(R.id.txtNick)).setText(rslt.split("::")[0]);
+                ((TextView)nhv.findViewById(R.id.txtName)).setText(rslt.split("::")[1]);
+
+                //TODO : We have two navigation header!! T.T
+            }
+        }.start();
     }
 
     public void callDialog(){
