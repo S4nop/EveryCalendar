@@ -1,6 +1,8 @@
 package edu.skku.everycalendar;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -90,6 +92,34 @@ public class FriendsFragment extends Fragment {
                     ToastMaker.makeToast(context, "Cannot read friend's timetable data");
                 }
 
+            }
+        });
+
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater inflater = getLayoutInflater();
+                View alertLayoutView = inflater.inflate(R.layout.dialog_add_friend, null);
+
+                final EditText id_edit = alertLayoutView.findViewById(R.id.id_edit);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context); // context 변경 (-Activity.this -> this)
+                builder.setTitle("친구 추가하기");
+                builder.setView(alertLayoutView);
+                builder.setCancelable(false); // 바깥 클릭해도 안꺼지게
+
+                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String id_text = id_edit.getText().toString();
+                    }
+                });
+                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                });
+                builder.show();
             }
         });
 
