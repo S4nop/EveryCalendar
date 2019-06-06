@@ -101,12 +101,12 @@ public class FriendsFragment extends Fragment {
                 LayoutInflater inflater = getLayoutInflater();
                 View alertLayoutView = inflater.inflate(R.layout.dialog_add_friend, null);
 
-                final EditText id_edit = alertLayoutView.findViewById(R.id.id_edit);
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(context); // context 변경 (-Activity.this -> this)
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity.context); // context 변경 (-Activity.this -> this)
                 builder.setTitle("친구 추가하기");
                 builder.setView(alertLayoutView);
                 builder.setCancelable(false); // 바깥 클릭해도 안꺼지게
+
+                final EditText id_edit = alertLayoutView.findViewById(R.id.id_edit);
 
                 builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override

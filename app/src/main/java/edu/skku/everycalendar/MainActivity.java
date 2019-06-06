@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
     private ImageButton menu_btn;
-    private Context context;
+    public Context context;
     private Activity thisAct;
     private String cookie;
     private BottomNavigationView bottomBar;
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        context = getApplicationContext();
+        context = MainActivity.this;
         thisAct = this;
 
         fragmentManager.beginTransaction().add(R.id.container, googleCalFragment,"4").hide(googleCalFragment).commit();
