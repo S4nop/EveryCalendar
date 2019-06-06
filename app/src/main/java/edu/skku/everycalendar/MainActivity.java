@@ -24,6 +24,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import static android.app.Activity.RESULT_OK;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
     private ImageButton menu_btn;
     private Context context;
