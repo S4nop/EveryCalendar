@@ -22,16 +22,18 @@ import android.view.Menu;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
-import static android.app.Activity.RESULT_OK;
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
     private ImageButton menu_btn;
     private Context context;
     private Activity thisAct;
     private String cookie;
     private BottomNavigationView bottomBar;
+    private NavigationView nav_view;
+    private View nav_header;
+    private DrawerLayout drawer;
+
+    private TextView name_text;
+    private TextView info_text;
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private TableFragment tableFragment = new TableFragment();
@@ -45,11 +47,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bottomBar = findViewById(R.id.bottomNavigationView);
-
-        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
-
         cookie = getIntent().getStringExtra("Cookie");
+
+        bottomBar = findViewById(R.id.bottomNavigationView);
+        drawer = findViewById(R.id.drawer_layout);
+        nav_view = findViewById(R.id.nav_view);
+
+        nav_view.setNavigationItemSelectedListener(this);
+        nav_header = nav_view.getHeaderView(0);
+
+        name_text = nav_header.findViewById(R.id.name_text);
+        info_text = nav_header.findViewById(R.id.info_text);
+
+        //set nav_header's info
+        GetNameRequest gnr = new GetNameRequest(cookie);
+
+        String rslt = gnr.getName();
+        name_text.setText(rslt.split("::")[0]);
+        info_text.setText(rslt.split("::")[1]);
+
         menu_btn = findViewById(R.id.btnMenu);
         menu_btn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -104,8 +120,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             }
         });
-
-        setNickAndName();
     }
 
     @Override
@@ -174,24 +188,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public String getCookie() {
         return cookie;
-    }
-
-    private void setNickAndName(){
-        new Thread(){
-            @Override
-            public void run(){
-                NavigationView nv = findViewById(R.id.nav_view);
-                nv.setNavigationItemSelectedListener(MainActivity.this);
-                View nhv = nv.inflateHeaderView(R.layout.nav_header_main);
-                GetNameRequest gnr = new GetNameRequest(cookie);
-
-                String rslt = gnr.getName();
-                ((TextView)nhv.findViewById(R.id.txtNick)).setText(rslt.split("::")[0]);
-                ((TextView)nhv.findViewById(R.id.txtName)).setText(rslt.split("::")[1]);
-
-                //TODO : We have two navigation header!! T.T
-            }
-        }.start();
     }
 
     public void callDialog(){
