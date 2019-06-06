@@ -75,10 +75,11 @@ public class TableFragment extends Fragment {
                 etR = new MyTimeTableReq(cookie);
                 etR.makeTimeTable();
 
+                Log.d("LOG_MAKETABLE", stDate + " " + edDate);
                 gCR = new GoogleCalRequest(context, thisAct, "Account");
                 gCR.getCalendarData(new DateTime(stDate + "T00:00:00.000+09:00"), new DateTime(edDate + "T23:59:59.000+09:00"));
 
-                while(!etR.getFinished() || !gCR.getFinished()) {
+                while(!etR.getFinished() /*|| !gCR.getFinished()*/) {
                     try {
                         sleep(500);
                     } catch (InterruptedException e) {

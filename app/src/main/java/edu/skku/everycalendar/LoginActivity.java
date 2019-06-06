@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import static android.os.SystemClock.sleep;
@@ -23,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
         Button btnLogin = findViewById(R.id.btnLogin);
         final EditText txtID = findViewById(R.id.txtID);
         final EditText txtPW = findViewById(R.id.txtPW);
+        final CheckBox checkBox = findViewById(R.id.checkBox);
 
         final Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
         SharedPreferences loginPref = this.getPreferences(getApplicationContext().MODE_PRIVATE);
@@ -51,11 +53,18 @@ public class LoginActivity extends AppCompatActivity {
                 //LoginActivity.this.startActivity(mainIntent);
                 String user_id = txtID.getText().toString();
                 String user_pw = txtPW.getText().toString();
-                login_id=user_id;
-                login_pw=user_pw;
-                editor.putString("login",login_id);
-                editor.putString("pw",login_pw);
-                editor.commit();
+                if(checkBox.isChecked()){
+                    login_id=user_id;
+                    login_pw=user_pw;
+                    editor.putString("login",login_id);
+                    editor.putString("pw",login_pw);
+                    editor.commit();
+                }
+                else{
+                    editor.putString("login",null);
+                    editor.putString("pw",null);
+                    editor.commit();
+                }
 
                 LoginRequest lr = new LoginRequest(user_id, user_pw);
                 while(!lr.getFinished()){

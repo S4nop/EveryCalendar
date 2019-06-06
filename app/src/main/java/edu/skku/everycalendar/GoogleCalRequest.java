@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -104,6 +105,8 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (CancellationException e){
                         e.printStackTrace();
                     }
                 }
