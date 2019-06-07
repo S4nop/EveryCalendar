@@ -111,7 +111,15 @@ public class FriendsFragment extends Fragment {
                 builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        AddFriendRequest addf = new AddFriendRequest(activity.getCookie());
                         String id_text = id_edit.getText().toString();
+                        String rslt = addf.addFriend(id_text);
+                        if(rslt != null || rslt.equals("-1")){
+                            ToastMaker.makeToast(activity.getContext(), "친구 추가 요청을 실패했습니다");
+                        }
+                        else{
+                            ToastMaker.makeToast(activity.getContext(), "친구의 에브리타임 계정으로 친구 추가 요청을 보냈습니다");
+                        }
                     }
                 });
                 builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {

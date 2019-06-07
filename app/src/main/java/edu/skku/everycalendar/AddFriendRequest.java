@@ -13,17 +13,18 @@ public class AddFriendRequest {
         this.cookie = cookie;
     }
 
-    public void addFriend(String fid){
+    public String addFriend(String fid){
         AsyncAddFriendRequest afr = new AsyncAddFriendRequest();
         try {
             String result = afr.execute(fid).get();
             Log.d("LOG_ADDFRIEND", result);
+            return result.split("<response>")[1].split("</response>")[0];
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        return null;
     }
 
     private class AsyncAddFriendRequest extends AsyncTask<String, Void, String> {

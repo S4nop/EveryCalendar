@@ -99,8 +99,6 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
                             gThreadRunning = 1;
                             eventList = googleCalTask.execute().get();
                             parseEvents(eventList);
-                            gThreadRunning = 0;
-                            finished = true;
                         }
                     } catch (ExecutionException e) {
                         e.printStackTrace();
@@ -109,6 +107,8 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
                     } catch (CancellationException e){
                         e.printStackTrace();
                     }
+                    gThreadRunning = 0;
+                    finished = true;
                 }
             }.start();
 
