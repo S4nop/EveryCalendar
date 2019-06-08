@@ -22,11 +22,14 @@ import android.view.Menu;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import org.mortbay.jetty.Main;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
     private ImageButton menu_btn;
     public Context context;
     private Activity thisAct;
     private String cookie;
+    private String id;
     private BottomNavigationView bottomBar;
     private NavigationView nav_view;
     private View nav_header;
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         cookie = getIntent().getStringExtra("Cookie");
+        id = getIntent().getStringExtra("ID");
 
         bottomBar = findViewById(R.id.bottomNavigationView);
         drawer = findViewById(R.id.drawer_layout);
@@ -120,6 +124,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             }
         });
+
+        ServiceMaker sm = new ServiceMaker();
+        sm.setActivity(context, id);
+        sm.startServ();
+        sm.bindServ();
     }
 
     @Override
@@ -188,6 +197,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public String getCookie() {
         return cookie;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public void callDialog(){

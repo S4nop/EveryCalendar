@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "359287506872-54d0g7onf4kle2ae7sim7mfae1rr3gnf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.skku.everycalendar",
+            "certificate_hash": "479e7012bf13a3cf8bff000346215e6bbc2b34c9"
+          }
+        },
+        {
           "client_id": "359287506872-l3u3k99itnn2l45887s97esst1cqqdsn.apps.googleusercontent.com",
           "client_type": 3
         }
