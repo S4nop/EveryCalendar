@@ -1,6 +1,7 @@
 package edu.skku.everycalendar;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,13 +14,42 @@ import static com.google.common.primitives.UnsignedInts.min;
 
 public class JoinSchedule {
     Integer stTime, edTime;
-    ArrayList<TimetableData> wEvents[];
+    ArrayList<TimetableData>[] wEvents = new ArrayList[7];
+    boolean[][] ableTime = new boolean[7][24];
+    public void test(){
+        wEvents[1].add(new TimetableData("test1", null, null , "1", 144, 180, 1));
+        wEvents[1].add(new TimetableData("test1", null, null , "1", 132, 156, 1));
+        wEvents[1].add(new TimetableData("test1", null, null , "1", 108, 120, 1));
+        wEvents[2].add(new TimetableData("test1", null, null , "2", 108, 240, 1));
+        wEvents[3].add(new TimetableData("test1", null, null , "3", 108, 240, 1));
+        wEvents[4].add(new TimetableData("test1", null, null , "4", 108, 240, 1));
+        wEvents[5].add(new TimetableData("test1", null, null , "5", 108, 240, 1));
+        wEvents[6].add(new TimetableData("test1", null, null , "6", 108, 240, 1));
+
+        ArrayList<TimetableData> testres = getAbleTime();
+        int i = 0;
+        for(TimetableData td : testres){
+            Log.d("LOG_TEST", "" + td.getStartTime() + " ~ " + td.getEndTime() + " : " + td.getWeekDay() + " && " + i++);
+        }
+    }
 
     public JoinSchedule(Integer stTime, Integer edTime) {
         this.stTime = stTime;
         this.edTime = edTime;
 
-        wEvents = new ArrayList[7];
+
+        for(int i = 0; i < 7; i++)
+            for(int j = 0; j < 24; j++)
+                ableTime[i][j] = true;
+
+        for(int i = 0; i < 7; i++) {
+            for(int j = 0; j < stTime; j++)
+                ableTime[i][j] = false;
+            for(int j = edTime; j < 24; j++)
+                ableTime[i][j] = false;
+
+            wEvents[i] = new ArrayList<>();
+        }
     }
 
     public void addEvents(ArrayList<TimetableData> events){
@@ -28,44 +58,39 @@ public class JoinSchedule {
         }
     }
 
-    private void sortEvents(){
-        for(int i = 0; i < 7; i++)
-            Collections.sort(wEvents[i], new Comparator<TimetableData>() {
-                @Override
-                public int compare(TimetableData timetableData, TimetableData t1) {
-                    return (Integer.parseInt(timetableData.getWeekDay()) > Integer.parseInt(t1.getWeekDay()) ? 1 :
-                            timetableData.getStartTime() > t1.getStartTime() ? 1 :
-                                    timetableData.getEndTime() < t1.getEndTime() ? 1 : 0);
-                }
-            });
-
-
-    }
 
     public ArrayList<TimetableData> getAbleTime(){
         ArrayList<TimetableData> rslt = new ArrayList<>();
 
         for(int i = 0; i < 7; i++){
-            rslt.addAll(findTime(i));
+            findTime(i);
         }
 
-        return rslt;
+        return makeTimeTableList();
     }
 
-    private ArrayList<TimetableData> findTime(int idx){
-        ArrayList<TimetableData> wRslt = new ArrayList<>();
-        Random rnd = new Random();
-        Integer st = stTime, ed = edTime;
+    private void findTime(int idx){
+        Integer st, ed;
 
         for(TimetableData td : wEvents[idx]){
-            if(st < td.getStartTime()) wRslt.add(new TimetableData("","","","",st,
-                    min(ed, td.getStartTime()), Color.rgb(rnd.nextInt(255), rnd.nextInt(255), rnd.nextInt(255))));
-            st = max(st, td.getEndTime());
-
-            if(st >= ed) break;
+            st = td.getStartTime() / 12;
+            ed = td.getEndTime() / 12 + (td.getEndTime() % 12 == 0 ? 0 : 1);
+            for(int i = st; i < ed; i++){
+                ableTime[idx][i] = false;
+            }
         }
-
-        return wRslt;
     }
 
+    private ArrayList<TimetableData> makeTimeTableList(){
+        ArrayList<TimetableData> out = new ArrayList<>();
+        Random rnd = new Random();
+        for(int i = 0; i < 7; i++){
+            for(int j = 0; j < 24; j++){
+                Log.d("LOG_CHKABLETIME", "Abletime " + i + " " + j + " = " + ableTime[i][j]);
+                if(ableTime[i][j]) out.add(new TimetableData("","","",Integer.toString(i),j,
+        j+1, Color.rgb(rnd.nextInt(255), rnd.nextInt(255), rnd.nextInt(255))));
+            }
+        }
+        return out;
+    }
 }
