@@ -39,6 +39,7 @@ public class AlertService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("LOG_SERV", "onStart");
         id = intent.getStringExtra("ID");
+        Log.d("LOG_SERV", "onStart_ID : " + id);
         chkRequest();
         return super.onStartCommand(intent, flags, startId);
 
@@ -56,7 +57,7 @@ public class AlertService extends Service {
 
     public void chkRequest(){
         Log.d("LOG_SERV", "chkRequest called");
-        RealTimeDBPull.getDatatListFromDB(FirebaseDatabase.getInstance().getReference().child("SchedJoin").child("rshtiger"),
+        RealTimeDBPull.getDatatListFromDB(FirebaseDatabase.getInstance().getReference().child("SchedJoin"),
                 new CallArgFuncE(), null, true);
     }
 
@@ -64,9 +65,12 @@ public class AlertService extends Service {
         @Override
         public Void call() {
             try{
-                //TODO : Use class??
-                String msg = arg;
-                Log.d("LOG_MSG", msg);
+                Log.d("LOG_SERV", "[" + arg + "] : [" + id + "]");
+                if(id.equals(arg)){
+                    Log.d("LOG_SERV", "Alert!");
+                    Notification("EveryCalendar", "친구가 시간표 조율 요청을 보내왔습니다.\n친구에게 시간표를 전송하시겠습니까?", 23);
+
+                }
             }catch(Exception e){}
             return null;
         }
@@ -83,31 +87,16 @@ public class AlertService extends Service {
 //        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 //    }
 //
-//    private void HandleData(String data){
-//        String[] datas = data.split("\"rowid\"");
-//        Log.d("MainActivity_Log_HData", data.substring(11));
-//        String lecture, tio;
-//        for(int i = 1; i < datas.length; i++){
-//            String dt = datas[i];
-//
-//            lecture = dt.split("\"")[15];
-//            tio = dt.split("\"tot_dhw\":\"")[1].split("\"")[0]; // "tot":"   or    "jagwa3":"
-//            if(!tio.split(" / ")[0].equals(tio.split(" / ")[1])) {
-//                Notification("SugangAlarmy", lecture + " 의 자리가 났습니다!", i);
-//            }
-//        }
-//    }
-//
-//    private void Notification(String title, String body, int nid){
-//        NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(SearchService.this)
-//                .setSmallIcon(R.drawable.background)
-//                .setContentTitle(title)
-//                .setContentText(body)
-//                .setDefaults(Notification.DEFAULT_VIBRATE)
-//                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//                .setAutoCancel(true);
-//
-//        NotificationManager mNotManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-//        mNotManager.notify(nid, nBuilder.build());
-//    }
+    private void Notification(String title, String body, int nid){
+        NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(AlertService.this)
+                .setSmallIcon(R.drawable.ic_alarm)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setDefaults(Notification.DEFAULT_VIBRATE)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true);
+        Log.d("LOG_SERV", "NOTI");
+        NotificationManager mNotManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        mNotManager.notify(nid, nBuilder.build());
+    }
 }

@@ -1,6 +1,7 @@
 package edu.skku.everycalendar;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -51,8 +52,9 @@ public class ServiceMaker extends AppCompatActivity {
 
     public void startServ(){
         Intent srv = new Intent(context, AlertService.class);
+        Log.d("LOG_SERVMAKER", id);
         srv.putExtra("ID", id);
-        context.startService(new Intent(context, AlertService.class));
+        context.startService(srv);
     }
 
     public void stopServ(){
@@ -77,5 +79,4 @@ public class ServiceMaker extends AppCompatActivity {
         unbindServ();
         stopServ();
     }
-
 }
