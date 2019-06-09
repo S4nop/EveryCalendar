@@ -3,6 +3,7 @@ package edu.skku.everycalendar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -56,7 +57,7 @@ public class FriendsFragment extends Fragment {
 
 
         activity = (MainActivity) getActivity();
-        context = activity.getContext();
+        context = activity.context;
 
         list = new ArrayList<>();
 
@@ -88,6 +89,9 @@ public class FriendsFragment extends Fragment {
                     friendTT = friendTimetableReq.getClassList();
                     //TODO : Make friend's timetable!!
                     Log.d("LOG_FRIENDTT", friendTT.toString());
+
+                    Intent intent = new Intent(context, FriendsActivity.class);
+                    startActivity(intent);
                 } catch(Exception e){
                     ToastMaker.makeToast(context, "Cannot read friend's timetable data");
                 }
