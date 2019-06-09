@@ -50,8 +50,7 @@ public class FirebasePost {
             Map<String, Object> pack = new HashMap<>();
             val.put("name", name);
             val.put("id", id);
-            pack.put(id, val);
-            out.put("/ClassData/" + td.getIdNum() + "/", pack);
+            out.put("/ClassData/" + td.getIdNum() + "/" + id + "/", val);
         }
         FirebaseDatabase.getInstance().getReference().updateChildren(out);
 

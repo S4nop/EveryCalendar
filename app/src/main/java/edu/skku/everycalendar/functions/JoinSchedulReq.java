@@ -15,9 +15,7 @@ import java.util.Random;
 
 public class JoinSchedulReq {
 
-    ArrayList<String> idList = new ArrayList<>();
-
-    public void joinRequst(final String stDate, final String edDate, final ArrayList<String> friends){
+    public void joinRequest(final String stDate, final String edDate, final ArrayList<String> friends){
         FirebaseDatabase.getInstance().getReference().child("SchedJoinReq").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -38,10 +36,12 @@ public class JoinSchedulReq {
                 Map<String, Object> out = new HashMap<>();
                 for(String nid : friends){
                     Map<String, String> val = new HashMap<>();
+                    Map<String, Object> pack = new HashMap<>();
                     val.put("edDate", edDate);
                     val.put("stDate", stDate);
                     val.put("reqID", id);
-                    out.put("/SchedJoinReq/" + nid, val);
+                    pack.put(nid, val);
+                    out.put("/SchedJoinReq/" + nid + "/request", val);
                 }
                 FirebaseDatabase.getInstance().getReference().updateChildren(out);
 

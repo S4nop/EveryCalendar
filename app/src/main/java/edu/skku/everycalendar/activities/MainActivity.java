@@ -37,6 +37,7 @@ import edu.skku.everycalendar.everytime.MyTimeTableReq;
 import edu.skku.everycalendar.friends.FriendsListItem;
 import edu.skku.everycalendar.functions.CallableArg;
 import edu.skku.everycalendar.R;
+import edu.skku.everycalendar.functions.JoinSchedulReq;
 import edu.skku.everycalendar.functions.Utilities;
 import edu.skku.everycalendar.service.ServiceMaker;
 import edu.skku.everycalendar.everytime.GetNameRequest;
@@ -79,6 +80,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //-------------TESTING----------------
+//        ArrayList<String> tmp = new ArrayList<>();
+//        tmp.add("182812");
+//        tmp.add("12178141");
+//        JoinSchedulReq jsr = new JoinSchedulReq();
+//        jsr.joinRequest("2019-06-09", "2019-06-15", tmp);
+        //------------------------------------
 
         cookie = getIntent().getStringExtra("Cookie");
         id = getIntent().getStringExtra("ID");
