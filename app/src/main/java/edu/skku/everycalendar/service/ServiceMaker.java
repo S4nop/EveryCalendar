@@ -59,15 +59,15 @@ public class ServiceMaker extends AppCompatActivity {
     public void bindServ(){
         if(!isBind) {
             Log.d("LOG_ISBIND", "false");
+            try {
             context.bindService(new Intent(context, AlertService.class), sconn, BIND_AUTO_CREATE);
+            }catch(Exception e){}
         }
     }
 
     public void unbindServ(){
         if(isBind)
-            try {
-                context.unbindService(sconn);
-            }catch(Exception e){}
+            context.unbindService(sconn);
     }
 
     @Override
