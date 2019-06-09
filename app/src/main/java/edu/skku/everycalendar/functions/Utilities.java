@@ -6,6 +6,11 @@ import android.widget.Toast;
 
 public class Utilities {
     static Toast toast;
+    static Context context;
+
+    public static void setContext(Context c){
+        context = c;
+    }
 
     public static void makeToast(Context context, String msg){
         try{
@@ -16,4 +21,12 @@ public class Utilities {
         toast.show();
     }
 
+    public static void makeToast(String msg){
+        try{
+            toast.cancel();
+        }
+        catch(Exception e){}
+        toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
+        toast.show();
+    }
 }

@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ServiceMaker sm = new ServiceMaker();
 
     public ArrayList<FriendsListItem> friends_list;
+    public HashMap<String, String> friends_list_with_id;
     public Map<String, String> friendList;
 
     @Override
@@ -88,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        JoinSchedulReq jsr = new JoinSchedulReq();
 //        jsr.joinRequest("2019-06-09", "2019-06-15", tmp);
         //------------------------------------
-
         cookie = getIntent().getStringExtra("Cookie");
         id = getIntent().getStringExtra("ID");
 
@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mainContext = MainActivity.this;
         thisAct = this;
 
+        Utilities.setContext(mainContext);
         //get friends list
         friends_list = new ArrayList<>();
 
@@ -132,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         friendsListRequest.makeFriendList();
 
         friendList = friendsListRequest.getFriendList();
+        friends_list_with_id = friendsListRequest.getFriendListForJoin();
         Iterator<String> iterator = friendList.keySet().iterator();
         while(iterator.hasNext()){
             String name = iterator.next();

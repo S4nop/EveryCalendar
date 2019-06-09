@@ -16,15 +16,18 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import edu.skku.everycalendar.friends.FriendsListItem;
 import edu.skku.everycalendar.friends.FriendsSelectAdapter;
+import edu.skku.everycalendar.functions.JoinSchedulReq;
 import edu.skku.everycalendar.functions.JoinSchedule;
 import edu.skku.everycalendar.R;
+import edu.skku.everycalendar.functions.Utilities;
 import edu.skku.everycalendar.monthItems.MonthCalendar;
 
 public class AdjustFragment extends Fragment {
@@ -40,7 +43,7 @@ public class AdjustFragment extends Fragment {
     ListView listView;
     TextView selected_week;
 
-    ArrayList<FriendsListItem> friends_list;
+    HashMap<String, String> friends_list;
     FriendsSelectAdapter adapter;
 
     Map<String, String> list_map;
@@ -67,10 +70,17 @@ public class AdjustFragment extends Fragment {
         start_picker = rootView.findViewById(R.id.start_time);
         end_picker = rootView.findViewById(R.id.end_time);
 
-        friends_list = activity.friends_list;
+        friends_list = activity.friends_list_with_id;
         list_map = activity.friendList;
 
-        adapter = new FriendsSelectAdapter(friends_list);
+        final ArrayList<FriendsListItem> friends = new ArrayList<>();
+        Iterator<String> iterator = friends_list.keySet().iterator();
+        while(iterator.hasNext()){
+            String name = iterator.next();
+            FriendsListItem item = new FriendsListItem(name);
+            friends.add(item);
+        }
+        adapter = new FriendsSelectAdapter(friends);
         listView.setAdapter(adapter);
 
         result_btn.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +98,7 @@ public class AdjustFragment extends Fragment {
 
                 for (int i = count-1; i >= 0; i--) {
                     if (isChecked.get(i)) {
-                        FriendsListItem item = friends_list.get(i);
+                        FriendsListItem item = friends.get(i);
                         checked_list.add(item);
                     }
                 }
@@ -104,13 +114,13 @@ public class AdjustFragment extends Fragment {
                 //st_date, ed_date 저장되어 있음
 
                 if(checked_list.size()==0){
-                    Toast.makeText(context, "친구를 선택해 주세요!",Toast.LENGTH_LONG).show();
+                    Utilities.makeToast("친구를 선택해 주세요!");
                 }
                 else if (st_date==null||ed_date==null){
-                    Toast.makeText(context, "주를 선택해 주세요!",Toast.LENGTH_LONG).show();
+                    Utilities.makeToast("주를 선택해 주세요!");
                 }
                 else if((start_hour==end_hour)&&(start_min==end_min)){
-                    Toast.makeText(context, "시간 선택이 올바르지 않습니다",Toast.LENGTH_LONG).show();
+                    Utilities.makeToast("시간 선택이 올바르지 않습니다");
                 }
                 else{
                     Intent intent = new Intent(context, AdjustResultActivity.class);
@@ -135,7 +145,10 @@ public class AdjustFragment extends Fragment {
                 monthCalendar.show();
             }
         });
-        JoinSchedule js = new JoinSchedule(9, 20);
+        JoinSchedulReq js = new JoinSchedulReq();
+        ArrayList<String> tmp = new ArrayList<>();
+        tmp.add("12178141");
+        js.joinRequest("2019-06-09", "2019-06-15", tmp);
         //js.test();
         return rootView;
     }

@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class JoinSchedulReq {
-
+    String id;
     public void joinRequest(final String stDate, final String edDate, final ArrayList<String> friends){
         FirebaseDatabase.getInstance().getReference().child("SchedJoinReq").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -23,7 +23,7 @@ public class JoinSchedulReq {
                 Iterator<DataSnapshot> child = dataSnapshot.getChildren().iterator();
 
                 Random rnd = new Random();
-                String id = Integer.toString(rnd.nextInt(50000));
+                id = Integer.toString(rnd.nextInt(50000));
                 while(child.hasNext())
                 {
                     if(id.equals(child)){
@@ -31,7 +31,6 @@ public class JoinSchedulReq {
                         child = dataSnapshot.getChildren().iterator();
                     }
                 }
-
 
                 Map<String, Object> out = new HashMap<>();
                 for(String nid : friends){
@@ -53,5 +52,5 @@ public class JoinSchedulReq {
         });
     }
 
-
+    public String getID(){ return id; }
 }

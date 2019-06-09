@@ -3,6 +3,8 @@ package edu.skku.everycalendar.functions;
 import android.graphics.Color;
 import android.util.Log;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -11,31 +13,20 @@ import edu.skku.everycalendar.dataType.TimetableData;
 public class JoinSchedule {
     Integer stTime, edTime;
     ArrayList<TimetableData>[] wEvents = new ArrayList[7];
+    ArrayList<String> uploadedFriend;
     boolean[][] ableTime = new boolean[7][24];
+    int fNum = 0;
 
+    String id;
 
-
-    public void test(){
-//        wEvents[1].add(new TimetableData("test1", null, null , "1", 144, 180, 1));
-//        wEvents[1].add(new TimetableData("test1", null, null , "1", 132, 156, 1));
-//        wEvents[1].add(new TimetableData("test1", null, null , "1", 108, 120, 1));
-//        wEvents[2].add(new TimetableData("test1", null, null , "2", 108, 240, 1));
-//        wEvents[3].add(new TimetableData("test1", null, null , "3", 108, 240, 1));
-//        wEvents[4].add(new TimetableData("test1", null, null , "4", 108, 240, 1));
-//        wEvents[5].add(new TimetableData("test1", null, null , "5", 108, 240, 1));
-//        wEvents[6].add(new TimetableData("test1", null, null , "6", 108, 240, 1));
-        ArrayList<TimetableData> testres = getAbleTime();
-        int i = 0;
-        for(TimetableData td : testres){
-            Log.d("LOG_TEST", "" + td.getStartTime() + " ~ " + td.getEndTime() + " : " + td.getWeekDay() + " && " + i++);
-        }
-    }
-
-    public JoinSchedule(Integer stTime, Integer edTime) {
+    public JoinSchedule(String stDate, String edDate, Integer stTime, Integer edTime, ArrayList<String> friends) {
         this.stTime = stTime;
         this.edTime = edTime;
-
-
+        fNum = friends.size();
+        JoinSchedulReq jsr = new JoinSchedulReq();
+        jsr.joinRequest(stDate, edDate, friends);
+        uploadedFriend = new ArrayList<>();
+        Utilities.makeToast("친구들에게 시간표 조율 요청을 전송했습니다.\n친구들의 확인이 완료되면 작업이 시작됩니다");
         for(int i = 0; i < 7; i++)
             for(int j = 0; j < 24; j++)
                 ableTime[i][j] = true;
@@ -48,7 +39,18 @@ public class JoinSchedule {
 
             wEvents[i] = new ArrayList<>();
         }
+
+        id = jsr.getID();
+        chkRequest();
     }
+
+    public void chkRequest(){
+        Log.d("LOG_SERV", "chkRequest called");
+        RealTimeDBPull.getDatatListFromDB(FirebaseDatabase.getInstance().getReference().child("SchedJoin").child(id),
+                new CallArgFuncE(), null, true);
+    }
+
+
 
     public void addEvents(ArrayList<TimetableData> events){
         for(TimetableData td : events){
@@ -90,5 +92,20 @@ public class JoinSchedule {
             }
         }
         return out;
+    }
+
+    class CallArgFuncE extends CallableArg<String> {
+        @Override
+        public Void call() {
+            try{
+                if(!uploadedFriend.contains(arg)){
+                    uploadedFriend.add(arg);
+                    if(uploadedFriend.size() == fNum){
+                        //TODO : Receive friend's timetable data
+                    }
+                }
+            }catch(Exception e){}
+            return null;
+        }
     }
 }

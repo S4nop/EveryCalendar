@@ -56,6 +56,10 @@ public class FriendsListRequest {
         friendListForJoin.put(name, id);
     }
 
+    public HashMap<String, String> getFriendListForJoin() {
+        return friendListForJoin;
+    }
+
     private class FriendListRequest extends AsyncTask<String, Void, String> {
 
         private Exception exception;
@@ -94,5 +98,6 @@ public class FriendsListRequest {
             // TODO: do something with the feed
         }
     }
+
 
 }
