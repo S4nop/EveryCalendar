@@ -61,6 +61,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:background="@color/transparent"
+        android:gravity="start|center_vertical"
         android:text="초기화"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -71,6 +72,7 @@
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
         android:background="@color/transparent"
+        android:gravity="center_vertical|end"
         android:text="조율하기"
         app:layout_constraintEnd_toStartOf="@+id/imageView6"
         app:layout_constraintTop_toTopOf="parent" />

@@ -34,6 +34,12 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <activity
+            android:name=".FriendsActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
         <meta-data
             android:name="com.google.android.calendar.API_KEY"
             android:value="AIzaSyBZnrkRXWJXCczAVSXqBsUYmYcTOISrhHk" />
