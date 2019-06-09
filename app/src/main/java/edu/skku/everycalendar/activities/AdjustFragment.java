@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -44,8 +45,8 @@ public class AdjustFragment extends Fragment {
 
     Map<String, String> list_map;
 
-    String ed_date;
-    String st_date;
+    String ed_date = null;
+    String st_date = null;
 
 
     @Nullable
@@ -87,7 +88,8 @@ public class AdjustFragment extends Fragment {
 
                 for (int i = count-1; i >= 0; i--) {
                     if (isChecked.get(i)) {
-                        checked_list.add(friends_list.get(i));
+                        FriendsListItem item = friends_list.get(i);
+                        checked_list.add(item);
                     }
                 }
 
@@ -101,8 +103,20 @@ public class AdjustFragment extends Fragment {
 
                 //st_date, ed_date 저장되어 있음
 
-                Intent intent = new Intent(context, AdjustResultActivity.class);
-                startActivity(intent);
+                if(checked_list.size()==0){
+                    Toast.makeText(context, "친구를 선택해 주세요!",Toast.LENGTH_LONG).show();
+                }
+                else if (st_date==null||ed_date==null){
+                    Toast.makeText(context, "주를 선택해 주세요!",Toast.LENGTH_LONG).show();
+                }
+                else if((start_hour==end_hour)&&(start_min==end_min)){
+                    Toast.makeText(context, "시간 선택이 올바르지 않습니다",Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Intent intent = new Intent(context, AdjustResultActivity.class);
+                    startActivity(intent);
+                }
+
             }
         });
 
