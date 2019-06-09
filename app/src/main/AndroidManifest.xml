@@ -35,7 +35,7 @@
         </activity>
 
         <activity
-            android:name=".friends.FriendsActivity"
+            android:name=".activities.LoginActivity$FriendsActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

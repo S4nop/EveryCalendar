@@ -22,11 +22,13 @@ public abstract class TimeTableRequest {
     protected void parseTimeTable(String resv){
         String[] classes = resv.split("subject id");
         String[] dates;
-        String name, prof, weekday, place;
+        String name, prof, weekday, place, idNum;
         Integer stTime, edTime, color;
         for(int i = 1; i < classes.length; i++){
             name = classes[i].split("name value=\"")[1].split("\"")[0];
             prof = classes[i].split("professor value=\"")[1].split("\"")[0];
+
+            idNum = classes[i].split("=\"")[1].split("\"")[0];
             dates = classes[i].split("data day");
             Random rnd = new Random();
             color = Color.rgb(rnd.nextInt(155) + 100, rnd.nextInt(155) + 100, rnd.nextInt(155) + 100);
@@ -36,7 +38,7 @@ public abstract class TimeTableRequest {
                 //Time = (Hour * 60 + Min) / 5
                 stTime = Integer.parseInt(dates[j].split("starttime=\"")[1].split("\"")[0]);
                 edTime = Integer.parseInt(dates[j].split("endtime=\"")[1].split("\"")[0]);
-                classList.add(new TimetableData(name, place, prof, weekday, stTime, edTime, color));
+                classList.add(new TimetableData(name, place, prof, weekday, stTime, edTime, idNum, color));
                 Log.d("LOG_PRSTT", name + " " + place + " " + prof + " " + weekday);
             }
         }

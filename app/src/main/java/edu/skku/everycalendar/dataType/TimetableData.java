@@ -10,21 +10,24 @@ public class TimetableData {
     private String descript;
     private Integer startTime, endTime;
     private Integer color;
+    private String idNum;
 
-    public TimetableData(String name, String place, String descript, String weekDay, Integer startTime, Integer endTime, Integer color) {
+    public TimetableData(String name, String place, String descript, String weekDay, Integer startTime, Integer endTime, String idNum, Integer color) {
         this.name = name;
         this.place = place;
         this.descript = descript;
         this.weekDay = weekDay;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.idNum = idNum;
         this.color = color;
     }
 
-    public Integer getIdNum(){
-        return color;
+    public String getIdNum(){
+        return idNum;
     }
 
+    public Integer getColor() { return color; }
     public String getWeekDay() {
         return weekDay;
     }

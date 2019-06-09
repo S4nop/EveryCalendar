@@ -62,7 +62,7 @@ public class TableView extends ConstraintLayout {
 
         addView(v);
 
-        addView(addSchedule(new TimetableData("테스트", "", "", "3", 120, 144, 1)));
+        //addView(addSchedule(new TimetableData("테스트", "", "", "3", 120, 144, 1)));
 
     }
 
@@ -96,7 +96,7 @@ public class TableView extends ConstraintLayout {
         vWidth = targTR.getTBWidth(week);
         vHeight = targTR.getTBHeight(week);
 
-        return setBtnClickListener(makeButton(stTime, edTime, pos, vWidth, vHeight, event.getIdNum()), event);
+        return setBtnClickListener(makeButton(stTime, edTime, pos, vWidth, vHeight, event.getColor()), event);
     }
 
     private Button makeButton(Integer stTime, Integer edTime, int pos[], int vWidth, int vHeight, int clr){

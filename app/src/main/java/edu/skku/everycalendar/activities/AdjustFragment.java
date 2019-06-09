@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +42,7 @@ public class AdjustFragment extends Fragment {
         inflater.inflate(R.layout.fragment_adjust, container, false);
 
         activity = (MainActivity) getActivity();
-        context = activity.context;
+        context = activity.mainContext;
 
         listView = rootView.findViewById(R.id.friends_list);
         result_btn = rootView.findViewById(R.id.btn_result);

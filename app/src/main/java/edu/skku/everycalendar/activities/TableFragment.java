@@ -70,7 +70,7 @@ public class TableFragment extends Fragment {
         period = rootView.findViewById(R.id.textView);
 
         activity = (MainActivity) getActivity();
-        context = activity.getContext();
+        context = activity.getMainContext();
         thisAct = activity.getThisAct();
         cookie = activity.getCookie();
 
@@ -109,6 +109,7 @@ public class TableFragment extends Fragment {
                 }
 
                 events = etR.getClassList();
+                postUser(user_id,user_name,events);
                 events.addAll(gCR.getEvents());
 
                 clToTable.post(new Runnable(){
@@ -131,7 +132,6 @@ public class TableFragment extends Fragment {
                     }
                 });
                 schedFin = true;
-                postUser(user_id,user_name,events);
             }
         }.start();
         //buildTable();
@@ -198,7 +198,7 @@ public class TableFragment extends Fragment {
         Map<String, Object> user = new HashMap<>();
         FirebasePost post = new FirebasePost(user_id,user_name,events);
         user = post.toMap();
-        user_update.put("/User_information/"+user_id, user);
+        user_update.put("/ClassData/", user);
         Log.d("user_update", user_update.toString());
         mPostReference.updateChildren(user_update);
         Log.d("user_updated",user_update.toString());

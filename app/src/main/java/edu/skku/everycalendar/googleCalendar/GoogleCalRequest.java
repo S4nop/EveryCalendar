@@ -148,7 +148,7 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
                 Log.d("LOG_COMPDATA", Long.toString(calDateDays));
                 for(long i = 0; i <= calDateDays; i++){
                     events.add(new TimetableData(event.getSummary(), event.getLocation(),
-                            event.getDescription(), Integer.toString(week), timeToInt(stDate), timeToInt(edDate), color));
+                            event.getDescription(), Integer.toString(week), timeToInt(stDate), timeToInt(edDate), "", color));
                 }
 
             } catch (ParseException e) {

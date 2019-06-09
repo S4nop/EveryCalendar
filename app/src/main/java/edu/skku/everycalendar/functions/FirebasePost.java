@@ -13,16 +13,16 @@ public class FirebasePost {
     public FirebasePost(){
         // Default constructor required for calls to DataSnapshot.getValue(FirebasePost.class)
     }
-    public FirebasePost(String id) {
-        this.id = id;
-        this.name = null;
-        this.table = null;
-    }
-    public FirebasePost(String id, String name) {
-        this.id = id;
-        this.name = name;
-        this.table = null;
-    }
+//    public FirebasePost(String id) {
+//        this.id = id;
+//        this.name = null;
+//        this.table = null;
+//    }
+//    public FirebasePost(String id, String name) {
+//        this.id = id;
+//        this.name = name;
+//        this.table = null;
+//    }
     public FirebasePost(String id, String name, ArrayList<TimetableData> table) {
         this.id = id;
         this.name = name;
@@ -38,11 +38,19 @@ public class FirebasePost {
     public ArrayList<TimetableData> getTable(){
         return this.table;
     }
+
     public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("id", id);
-        result.put("name", name);
-        result.put("table",table);
-        return result;
+        Map<String, Object> out = new HashMap<>();
+        for(TimetableData td : table){
+            Map<String, String> val = new HashMap<>();
+            Map<String, Object> pack = new HashMap<>();
+            val.put("name", name);
+            val.put("id", id);
+            pack.put(id, val);
+            out.put(td.getIdNum(), pack);
+        }
+
+        return out;
     }
+
 }

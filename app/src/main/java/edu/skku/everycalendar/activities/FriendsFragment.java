@@ -27,7 +27,6 @@ import edu.skku.everycalendar.R;
 import edu.skku.everycalendar.dataType.TimetableData;
 import edu.skku.everycalendar.functions.Utilities;
 import edu.skku.everycalendar.everytime.AddFriendRequest;
-import edu.skku.everycalendar.friends.FriendsActivity;
 import edu.skku.everycalendar.friends.FriendsListAdapter;
 import edu.skku.everycalendar.friends.FriendsListItem;
 
@@ -58,7 +57,7 @@ public class FriendsFragment extends Fragment {
         deleteBtn = rootView.findViewById(R.id.deleteBtn);
 
         activity = (MainActivity) getActivity();
-        context = activity.context;
+        context = activity.mainContext;
 
         list = activity.friends_list;
         adapter = new FriendsListAdapter(context, list);
@@ -78,7 +77,7 @@ public class FriendsFragment extends Fragment {
                     //TODO : Make friend's timetable!!
                     Log.d("LOG_FRIENDTT", friendTT.toString());
 
-                    Intent intent = new Intent(context, FriendsActivity.class);
+                    Intent intent = new Intent(context, LoginActivity.FriendsActivity.class);
                     startActivity(intent);
                 } catch(Exception e){
                     Utilities.makeToast(context, "Cannot read friend's timetable data");
@@ -93,7 +92,7 @@ public class FriendsFragment extends Fragment {
                 LayoutInflater inflater = getLayoutInflater();
                 View alertLayoutView = inflater.inflate(R.layout.dialog_add_friend, null);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity.context); // context 변경 (-Activity.this -> this)
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity.mainContext); // mainContext 변경 (-Activity.this -> this)
                 builder.setTitle("친구 추가하기");
                 builder.setView(alertLayoutView);
                 builder.setCancelable(false); // 바깥 클릭해도 안꺼지게
@@ -107,10 +106,10 @@ public class FriendsFragment extends Fragment {
                         String id_text = id_edit.getText().toString();
                         String rslt = addf.addFriend(id_text);
                         if(rslt != null || rslt.equals("-1")){
-                            Utilities.makeToast(activity.getContext(), "친구 추가 요청을 실패했습니다");
+                            Utilities.makeToast(activity.getMainContext(), "친구 추가 요청을 실패했습니다");
                         }
                         else{
-                            Utilities.makeToast(activity.getContext(), "친구의 에브리타임 계정으로 친구 추가 요청을 보냈습니다");
+                            Utilities.makeToast(activity.getMainContext(), "친구의 에브리타임 계정으로 친구 추가 요청을 보냈습니다");
                         }
                     }
                 });

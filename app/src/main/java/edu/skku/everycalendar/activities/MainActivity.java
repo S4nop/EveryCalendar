@@ -49,7 +49,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
     private ImageButton menu_btn;
-    public Context context;
+    public Context mainContext;
     private Activity thisAct;
     private String cookie;
     private String id, idNum;
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        context = MainActivity.this;
+        mainContext = MainActivity.this;
         thisAct = this;
 
         //get friends list
@@ -190,9 +190,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 }
                 if(!isServiceRunningCheck()){
-                    sm.setActivity(context, idNum);
+                    sm.setActivity(mainContext, idNum);
                     sm.startServ();
-                    sm.bindServ();
+                    try{
+                        sm.bindServ();
+                    }catch(Exception e){}
                 }
             }
         }.start();
@@ -211,8 +213,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             sendTables(stDate, edDate, reqID);
-
-                            //TODO remove request
+                            FirebaseDatabase.getInstance().getReference().child("SchedJoinReq").child(idNum).removeValue();
+                            Utilities.makeToast(mainContext, "시간표가 전송되었습니다");
                         }
                     }
              );
@@ -227,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 MyTimeTableReq etR = new MyTimeTableReq(cookie);
                 etR.makeTimeTable();
 
-                GoogleCalRequest gCR = new GoogleCalRequest(context, thisAct, "Account");
+                GoogleCalRequest gCR = new GoogleCalRequest(mainContext, thisAct, "Account");
                 gCR.getCalendarData(new DateTime(stDate + "T00:00:00.000+09:00"), new DateTime(edDate + "T23:59:59.000+09:00"));
 
                 while(!etR.getFinished() || !gCR.getFinished()) {
@@ -246,7 +248,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
                 upd.put("/SchedJoin/" + reqID, pack);
                 mRef.updateChildren(upd);
-                Utilities.makeToast(context, "시간표가 전송되었습니다");
             }
         }.start();
     }
@@ -264,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void makeAlert(String title, String msg, String posBtn, boolean setCancelable, DialogInterface.OnClickListener listener){
-        AlertDialog.Builder adb = new AlertDialog.Builder(context);
+        AlertDialog.Builder adb = new AlertDialog.Builder(mainContext);
 
         adb.setTitle(title);
 
@@ -337,8 +338,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return thisAct;
     }
 
-    public Context getContext() {
-        return context;
+    public Context getMainContext() {
+        return mainContext;
     }
 
     public String getCookie() {
