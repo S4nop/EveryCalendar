@@ -22,6 +22,10 @@ import android.view.Menu;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
     private ImageButton menu_btn;
     public Context context;
@@ -41,6 +45,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private AdjustFragment adjustFragment = new AdjustFragment();
     private GoogleCalFragment googleCalFragment = new GoogleCalFragment();
     Fragment active = tableFragment;
+
+    public ArrayList<FriendsListItem> friends_list;
+    public Map<String, String> friendList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +83,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         context = MainActivity.this;
         thisAct = this;
+
+        //get friends list
+        friends_list = new ArrayList<>();
+
+        final FriendsListRequest friendsListRequest = new FriendsListRequest(getCookie());
+        friendsListRequest.makeFriendList();
+
+        friendList = friendsListRequest.getFriendList();
+        Iterator<String> iterator = friendList.keySet().iterator();
+        while(iterator.hasNext()){
+            String name = iterator.next();
+            String key = friendList.get(name);
+            FriendsListItem item = new FriendsListItem(name);
+            friends_list.add(item);
+        }
 
         fragmentManager.beginTransaction().add(R.id.container, googleCalFragment,"4").hide(googleCalFragment).commit();
         fragmentManager.beginTransaction().add(R.id.container, friendsFragment,"3").hide(friendsFragment).commit();

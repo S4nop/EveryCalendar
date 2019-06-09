@@ -44,6 +44,8 @@ public class FriendsFragment extends Fragment {
     ArrayList<FriendsListItem> list;
     FriendsListAdapter adapter;
 
+    Map<String, String> list_map;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
@@ -55,26 +57,12 @@ public class FriendsFragment extends Fragment {
         addBtn = rootView.findViewById(R.id.addBtn);
         deleteBtn = rootView.findViewById(R.id.deleteBtn);
 
-
         activity = (MainActivity) getActivity();
         context = activity.context;
 
-        list = new ArrayList<>();
-
-        final FriendsListRequest friendsListRequest = new FriendsListRequest(activity.getCookie());
-        friendsListRequest.makeFriendList();
-
-        //Get FriendsList
-        final Map<String, String> friendList = friendsListRequest.getFriendList();
-        Iterator<String> iterator = friendList.keySet().iterator();
-        while(iterator.hasNext()){
-            String name = iterator.next();
-            String key = friendList.get(name);
-            FriendsListItem item = new FriendsListItem(name);
-            list.add(item);
-        }
-
+        list = activity.friends_list;
         adapter = new FriendsListAdapter(context, list);
+        list_map = activity.friendList;
 
         friendsList.setTextFilterEnabled(true);
         friendsList.setAdapter(adapter);
@@ -83,7 +71,7 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ArrayList<TimetableData> friendTT;
-                FriendTimetableReq friendTimetableReq = new FriendTimetableReq(activity.getCookie(), friendList.get(list.get(position).getFriend_name()));
+                FriendTimetableReq friendTimetableReq = new FriendTimetableReq(activity.getCookie(), list_map.get(list.get(position).getFriend_name()));
                 try{
                     friendTimetableReq.makeTimeTable();
                     friendTT = friendTimetableReq.getClassList();
