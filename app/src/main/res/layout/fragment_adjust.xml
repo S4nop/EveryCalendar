@@ -116,7 +116,7 @@
             app:srcCompat="@color/gray" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btn_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
@@ -166,7 +166,7 @@
                 android:text="시작 시간" />
 
             <TimePicker
-                android:id="@+id/timePicker"
+                android:id="@+id/start_time"
                 style="@android:style/Widget.Material.Light.TimePicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -190,7 +190,7 @@
                 android:text="끝 시간" />
 
             <TimePicker
-                android:id="@+id/timePicker2"
+                android:id="@+id/end_time"
                 style="@android:style/Widget.Material.Light.TimePicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

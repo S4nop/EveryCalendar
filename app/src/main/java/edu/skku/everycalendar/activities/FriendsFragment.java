@@ -77,7 +77,7 @@ public class FriendsFragment extends Fragment {
                     //TODO : Make friend's timetable!!
                     Log.d("LOG_FRIENDTT", friendTT.toString());
 
-                    Intent intent = new Intent(context, LoginActivity.FriendsActivity.class);
+                    Intent intent = new Intent(context, FriendsActivity.class);
                     startActivity(intent);
                 } catch(Exception e){
                     Utilities.makeToast(context, "Cannot read friend's timetable data");
