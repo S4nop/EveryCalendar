@@ -349,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void callDialog(){
-        MonthCalendar monthCalendar = new MonthCalendar(MainActivity.this);
+        MonthCalendar monthCalendar = new MonthCalendar(MainActivity.this,0);
         monthCalendar.setOnDismissListener(this);
         monthCalendar.show();
     }
@@ -358,7 +358,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onDismiss(DialogInterface dialog) {
         MonthCalendar monthCalendar = (MonthCalendar) dialog;
         Log.d("LOG_ONDISMISS", "here?");
-        if(monthCalendar.getCng()) {
+        if(monthCalendar.getFlag()==1){
+            adjustFragment.setWeek(monthCalendar.getStDate(), monthCalendar.getEdDate());
+        }
+        else if(monthCalendar.getCng()) {
             tableFragment.makeTable(monthCalendar.getStDate(), monthCalendar.getEdDate());
         }
     }

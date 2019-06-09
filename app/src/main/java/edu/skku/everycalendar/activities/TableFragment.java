@@ -17,16 +17,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.api.client.util.DateTime;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 import edu.skku.everycalendar.functions.FirebasePost;
 import edu.skku.everycalendar.R;
@@ -66,7 +59,7 @@ public class TableFragment extends Fragment {
 
         clToTable = rootView.findViewById(R.id.clToTable);
         select_week_btn = rootView.findViewById(R.id.select_week_btn);
-        period = rootView.findViewById(R.id.textView);
+        period = rootView.findViewById(R.id.week_selected);
 
         activity = (MainActivity) getActivity();
         context = activity.getMainContext();

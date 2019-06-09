@@ -1,6 +1,7 @@
 package edu.skku.everycalendar.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import edu.skku.everycalendar.friends.FriendsListItem;
 import edu.skku.everycalendar.friends.FriendsSelectAdapter;
 import edu.skku.everycalendar.functions.JoinSchedule;
 import edu.skku.everycalendar.R;
+import edu.skku.everycalendar.monthItems.MonthCalendar;
 
 public class AdjustFragment extends Fragment {
     Button result_btn;
@@ -34,11 +37,15 @@ public class AdjustFragment extends Fragment {
     MainActivity activity;
     Context context;
     ListView listView;
+    TextView selected_week;
 
     ArrayList<FriendsListItem> friends_list;
     FriendsSelectAdapter adapter;
 
     Map<String, String> list_map;
+
+    String ed_date;
+    String st_date;
 
 
     @Nullable
@@ -50,9 +57,11 @@ public class AdjustFragment extends Fragment {
         activity = (MainActivity) getActivity();
         context = activity.mainContext;
 
+        selected_week = rootView.findViewById(R.id.selected_week);
         listView = rootView.findViewById(R.id.friends_list);
         result_btn = rootView.findViewById(R.id.btn_result);
         reset_btn = rootView.findViewById(R.id.btn_reset);
+        month_btn = rootView.findViewById(R.id.btn_month);
 
         start_picker = rootView.findViewById(R.id.start_time);
         end_picker = rootView.findViewById(R.id.end_time);
@@ -90,6 +99,8 @@ public class AdjustFragment extends Fragment {
                 end_hour = end_picker.getHour();
                 end_min = end_picker.getMinute();
 
+                //st_date, ed_date 저장되어 있음
+
                 Intent intent = new Intent(context, AdjustResultActivity.class);
                 startActivity(intent);
             }
@@ -105,11 +116,19 @@ public class AdjustFragment extends Fragment {
         month_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //activity.callDialog();
+                MonthCalendar monthCalendar = new MonthCalendar(context,1);
+                monthCalendar.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
+                monthCalendar.show();
             }
         });
         JoinSchedule js = new JoinSchedule(9, 20);
         //js.test();
         return rootView;
+    }
+
+    public void setWeek(String st_date, String ed_date){
+        this.ed_date = ed_date;
+        this.st_date = st_date;
+        selected_week.setText(st_date+" ~ "+ed_date);
     }
 }

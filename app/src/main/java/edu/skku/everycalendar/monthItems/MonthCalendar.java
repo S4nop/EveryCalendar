@@ -29,10 +29,12 @@ public class MonthCalendar extends Dialog{
     String stDate, edDate;
     OnDismissListener _listener;
     boolean cng = false;
+    int fragment_flag; //0:table, 1:adjust
 
-    public MonthCalendar(Context context) {
+    public MonthCalendar(Context context, int flag) {
         super(context);
         this.context = context;
+        this.fragment_flag = flag;
     }
 
     @Override
@@ -68,6 +70,7 @@ public class MonthCalendar extends Dialog{
                         _listener.onDismiss(MonthCalendar.this);
                     dismiss();
                 }
+
             }
         });
 
@@ -138,5 +141,6 @@ public class MonthCalendar extends Dialog{
     public boolean getCng() { return cng; }
     public String getStDate(){ return stDate; }
     public String getEdDate() { return edDate; }
+    public int getFlag(){return fragment_flag;}
 }
 

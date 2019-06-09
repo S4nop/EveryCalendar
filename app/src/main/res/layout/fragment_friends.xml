@@ -29,7 +29,7 @@
             android:padding="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/addBtn"
-            app:layout_constraintStart_toEndOf="@id/textView"
+            app:layout_constraintStart_toEndOf="@id/week_selected"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
@@ -50,7 +50,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/week_selected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
