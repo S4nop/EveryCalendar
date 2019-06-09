@@ -16,13 +16,14 @@ public class RealTimeDBPull {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d("onDataChange", "Data is Updated");
-                if(funcCng != null) funcCng.call();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     String key = postSnapshot.getKey();
                     Log.d("getFirebaseDatabase", "key: " + (getKeyMode ? postSnapshot.getKey() : postSnapshot.getValue()));
                     funcEach.setArg((getKeyMode ? postSnapshot.getKey() : postSnapshot.getValue()).toString());
                     funcEach.call();
                 }
+
+                if(funcCng != null) funcCng.call();
             }
 
             @Override

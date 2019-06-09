@@ -145,10 +145,10 @@ public class AdjustFragment extends Fragment {
                 monthCalendar.show();
             }
         });
-        JoinSchedulReq js = new JoinSchedulReq();
-        ArrayList<String> tmp = new ArrayList<>();
-        tmp.add("12178141");
-        js.joinRequest("2019-06-09", "2019-06-15", tmp);
+        //JoinSchedulReq js = new JoinSchedulReq();
+        //ArrayList<String> tmp = new ArrayList<>();
+        //tmp.add("12178141");
+        //js.joinRequest("2019-06-09", "2019-06-15", tmp);
         //js.test();
         return rootView;
     }

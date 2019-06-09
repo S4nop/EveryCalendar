@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,19 +14,16 @@ import edu.skku.everycalendar.dataType.TimetableData;
 public class JoinSchedule {
     Integer stTime, edTime;
     ArrayList<TimetableData>[] wEvents = new ArrayList[7];
-    ArrayList<String> uploadedFriend;
     boolean[][] ableTime = new boolean[7][24];
-    int fNum = 0;
+    int fNum = 0, dbNum = 0;
 
     String id;
 
-    public JoinSchedule(String stDate, String edDate, Integer stTime, Integer edTime, ArrayList<String> friends) {
+    public JoinSchedule(Integer stTime, Integer edTime, ArrayList<String> friends) {
         this.stTime = stTime;
         this.edTime = edTime;
+        dbNum = 0;
         fNum = friends.size();
-        JoinSchedulReq jsr = new JoinSchedulReq();
-        jsr.joinRequest(stDate, edDate, friends);
-        uploadedFriend = new ArrayList<>();
         Utilities.makeToast("친구들에게 시간표 조율 요청을 전송했습니다.\n친구들의 확인이 완료되면 작업이 시작됩니다");
         for(int i = 0; i < 7; i++)
             for(int j = 0; j < 24; j++)
@@ -39,23 +37,17 @@ public class JoinSchedule {
 
             wEvents[i] = new ArrayList<>();
         }
-
-        id = jsr.getID();
-        chkRequest();
-    }
-
-    public void chkRequest(){
-        Log.d("LOG_SERV", "chkRequest called");
-        RealTimeDBPull.getDatatListFromDB(FirebaseDatabase.getInstance().getReference().child("SchedJoin").child(id),
-                new CallArgFuncE(), null, true);
     }
 
 
+    public void makeTableView(){
+        ArrayList<TimetableData> rslt = getAbleTime();
+        //TODO : Show timetable
+    }
 
-    public void addEvents(ArrayList<TimetableData> events){
-        for(TimetableData td : events){
-            wEvents[Integer.parseInt(td.getWeekDay())].add(td);
-        }
+
+    public void addEvents(TimetableData event, int week){
+        wEvents[week].add(event);
     }
 
 
@@ -94,18 +86,4 @@ public class JoinSchedule {
         return out;
     }
 
-    class CallArgFuncE extends CallableArg<String> {
-        @Override
-        public Void call() {
-            try{
-                if(!uploadedFriend.contains(arg)){
-                    uploadedFriend.add(arg);
-                    if(uploadedFriend.size() == fNum){
-                        //TODO : Receive friend's timetable data
-                    }
-                }
-            }catch(Exception e){}
-            return null;
-        }
-    }
 }
