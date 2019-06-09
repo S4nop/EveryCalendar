@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.firebase.database.FirebaseDatabase;
@@ -42,6 +43,7 @@ public class AlertService extends Service {
         id = intent.getStringExtra("ID");
         Log.d("LOG_SERV", "onStart_ID : " + id);
         chkRequest();
+
         return super.onStartCommand(intent, flags, startId);
 
     }
@@ -58,20 +60,19 @@ public class AlertService extends Service {
 
     public void chkRequest(){
         Log.d("LOG_SERV", "chkRequest called");
-        RealTimeDBPull.getDatatListFromDB(FirebaseDatabase.getInstance().getReference().child("SchedJoin"),
-            new CallArgFuncE(), null, true);
+        RealTimeDBPull.getDatatListFromDB(FirebaseDatabase.getInstance().getReference().child("SchedJoinReq").child(id),
+            new CallArgFuncE(), null, false);
     }
 
     class CallArgFuncE extends CallableArg<String> {
         @Override
         public Void call() {
             try{
-                Log.d("LOG_SERV", "[" + arg + "] : [" + id + "]");
-                if(id.equals(arg)){
-                    Log.d("LOG_SERV", "Alert!");
-                    Notification("EveryCalendar", "친구가 시간표 조율 요청을 보내왔습니다.", 23);
-
-                }
+                Log.d("LOG_SERV", "[" + arg + "]");
+                Notification("EveryCalendar", "친구가 시간표 조율 요청을 보내왔습니다.", 23);
+                sendMessage(arg);
+//                if(id.equals(arg)){
+//                }
             }catch(Exception e){}
             return null;
         }
@@ -80,14 +81,14 @@ public class AlertService extends Service {
     public void setId(String id) {
         this.id = id;
     }
-//
-//    private void SendMessage(String message){
-//        Log.d("messageService", "Broadcasting message");
-//        Intent intent = new Intent("DataReceiver");
-//        intent.putExtra("RcvData", message);
-//        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-//    }
-//
+
+    private void sendMessage(String message){
+        Log.d("messageService", "Broadcasting message");
+        Intent intent = new Intent("DataReceiver");
+        intent.putExtra("RcvData", message);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
     private void Notification(String title, String body, int nid){
         NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(AlertService.this)
                 .setSmallIcon(R.drawable.ic_alarm)

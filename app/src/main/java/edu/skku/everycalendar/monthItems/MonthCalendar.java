@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.Calendar;
 
 import edu.skku.everycalendar.R;
-import edu.skku.everycalendar.functions.ToastMaker;
+import edu.skku.everycalendar.functions.Utilities;
 
 public class MonthCalendar extends Dialog{
 
@@ -61,7 +61,7 @@ public class MonthCalendar extends Dialog{
                 stDate=getFirstday(curItem);
                 edDate=getLastday(curItem);
                 if (day != 0) {
-                    ToastMaker.makeToast(context, stDate + " / "+ edDate);
+                    Utilities.makeToast(context, stDate + " / "+ edDate);
                     cng = true;
                     Log.d("LOG_DISMISS", _listener == null ? "NULL" : "X");
                     if(_listener != null)

@@ -19,15 +19,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import edu.skku.everycalendar.everytime.FriendTimetableReq;
-import edu.skku.everycalendar.everytime.FriendsListRequest;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 
 import edu.skku.everycalendar.R;
 import edu.skku.everycalendar.dataType.TimetableData;
-import edu.skku.everycalendar.functions.ToastMaker;
+import edu.skku.everycalendar.functions.Utilities;
 import edu.skku.everycalendar.everytime.AddFriendRequest;
 import edu.skku.everycalendar.friends.FriendsActivity;
 import edu.skku.everycalendar.friends.FriendsListAdapter;
@@ -83,7 +81,7 @@ public class FriendsFragment extends Fragment {
                     Intent intent = new Intent(context, FriendsActivity.class);
                     startActivity(intent);
                 } catch(Exception e){
-                    ToastMaker.makeToast(context, "Cannot read friend's timetable data");
+                    Utilities.makeToast(context, "Cannot read friend's timetable data");
                 }
 
             }
@@ -109,10 +107,10 @@ public class FriendsFragment extends Fragment {
                         String id_text = id_edit.getText().toString();
                         String rslt = addf.addFriend(id_text);
                         if(rslt != null || rslt.equals("-1")){
-                            ToastMaker.makeToast(activity.getContext(), "친구 추가 요청을 실패했습니다");
+                            Utilities.makeToast(activity.getContext(), "친구 추가 요청을 실패했습니다");
                         }
                         else{
-                            ToastMaker.makeToast(activity.getContext(), "친구의 에브리타임 계정으로 친구 추가 요청을 보냈습니다");
+                            Utilities.makeToast(activity.getContext(), "친구의 에브리타임 계정으로 친구 추가 요청을 보냈습니다");
                         }
                     }
                 });

@@ -2,14 +2,18 @@ package edu.skku.everycalendar.activities;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
@@ -23,15 +27,23 @@ import android.view.Menu;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.api.client.util.DateTime;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import edu.skku.everycalendar.dataType.TimetableData;
 import edu.skku.everycalendar.everytime.FriendsListRequest;
+import edu.skku.everycalendar.everytime.MyTimeTableReq;
 import edu.skku.everycalendar.friends.FriendsListItem;
 import edu.skku.everycalendar.functions.CallableArg;
 import edu.skku.everycalendar.R;
+import edu.skku.everycalendar.functions.Utilities;
 import edu.skku.everycalendar.service.ServiceMaker;
 import edu.skku.everycalendar.everytime.GetNameRequest;
 import edu.skku.everycalendar.googleCalendar.GoogleCalRequest;
 import edu.skku.everycalendar.monthItems.MonthCalendar;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -184,6 +196,85 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         }.start();
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("RcvData");
+            final String stDate = message.split("stDate=")[1].split("\\}")[0];
+            final String edDate = message.split("edDate=")[1].split(",")[0];
+            final String reqID = message.split("reqID=")[1].split(",")[0];
+            Log.d("receiver", "Got message");
+            makeAlert("시간표 조율 요청", "친구가 시간표 조율을 요청했습니다.\n친구에게 시간표를 전송하시겠습니까?",
+                    "전송", true,
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            sendTables(stDate, edDate, reqID);
+
+                            //TODO remove request
+                        }
+                    }
+             );
+        }
+    };
+
+    private void sendTables(final String stDate, final String edDate, final String reqID){
+        new Thread(){
+            @Override
+            public void run(){
+                ArrayList<TimetableData> events;
+                MyTimeTableReq etR = new MyTimeTableReq(cookie);
+                etR.makeTimeTable();
+
+                GoogleCalRequest gCR = new GoogleCalRequest(context, thisAct, "Account");
+                gCR.getCalendarData(new DateTime(stDate + "T00:00:00.000+09:00"), new DateTime(edDate + "T23:59:59.000+09:00"));
+
+                while(!etR.getFinished() || !gCR.getFinished()) {
+                    try {
+                        sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                events = etR.getClassList();
+                events.addAll(gCR.getEvents());
+
+                Map<String, Object> upd = new HashMap<>();
+                Map<String, ArrayList<TimetableData>> pack = new HashMap<>();
+                pack.put(idNum, events);
+                DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+                upd.put("/SchedJoin/" + reqID, pack);
+                mRef.updateChildren(upd);
+                Utilities.makeToast(context, "시간표가 전송되었습니다");
+            }
+        }.start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver( mMessageReceiver, new IntentFilter("DataReceiver"));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver( mMessageReceiver);
+    }
+
+    private void makeAlert(String title, String msg, String posBtn, boolean setCancelable, DialogInterface.OnClickListener listener){
+        AlertDialog.Builder adb = new AlertDialog.Builder(context);
+
+        adb.setTitle(title);
+
+        adb
+                .setMessage(msg)
+                .setPositiveButton(posBtn, listener)
+                .setNegativeButton("취소", null)
+                .setCancelable(setCancelable);
+        AlertDialog ad = adb.create();
+        ad.show();
     }
 
     @Override

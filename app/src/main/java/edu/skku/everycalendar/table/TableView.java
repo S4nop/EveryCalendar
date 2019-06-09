@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import edu.skku.everycalendar.R;
 import edu.skku.everycalendar.dataType.TimetableData;
-import edu.skku.everycalendar.functions.ToastMaker;
+import edu.skku.everycalendar.functions.Utilities;
 
 public class TableView extends ConstraintLayout {
 
@@ -122,7 +122,7 @@ public class TableView extends ConstraintLayout {
         btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                ToastMaker.makeToast(context, event.getName() + (event.getDescript() != null ? "\n" + event.getDescript() : "")
+                Utilities.makeToast(context, event.getName() + (event.getDescript() != null ? "\n" + event.getDescript() : "")
                         + (event.getPlace() != null ? "\n" + event.getPlace() : ""));
             }
         });

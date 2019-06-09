@@ -28,6 +28,7 @@ public class FirebasePost {
         this.name = name;
         this.table = table;
     }
+
     public String getId(){
         return this.id;
     }
