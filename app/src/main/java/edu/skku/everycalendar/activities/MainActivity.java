@@ -29,6 +29,9 @@ import edu.skku.everycalendar.service.ServiceMaker;
 import edu.skku.everycalendar.everytime.GetNameRequest;
 import edu.skku.everycalendar.googleCalendar.GoogleCalRequest;
 import edu.skku.everycalendar.monthItems.MonthCalendar;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
     private ImageButton menu_btn;
@@ -51,8 +54,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FriendsFragment friendsFragment = new FriendsFragment();
     private AdjustFragment adjustFragment = new AdjustFragment();
     private CallableArg.GoogleCalFragment googleCalFragment = new CallableArg.GoogleCalFragment();
+    
     Fragment active = tableFragment;
     ServiceMaker sm = new ServiceMaker();
+
+    public ArrayList<FriendsListItem> friends_list;
+    public Map<String, String> friendList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +101,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         context = MainActivity.this;
         thisAct = this;
+
+        //get friends list
+        friends_list = new ArrayList<>();
+
+        final FriendsListRequest friendsListRequest = new FriendsListRequest(getCookie());
+        friendsListRequest.makeFriendList();
+
+        friendList = friendsListRequest.getFriendList();
+        Iterator<String> iterator = friendList.keySet().iterator();
+        while(iterator.hasNext()){
+            String name = iterator.next();
+            String key = friendList.get(name);
+            FriendsListItem item = new FriendsListItem(name);
+            friends_list.add(item);
+        }
 
         fragmentManager.beginTransaction().add(R.id.container, googleCalFragment,"4").hide(googleCalFragment).commit();
         fragmentManager.beginTransaction().add(R.id.container, friendsFragment,"3").hide(friendsFragment).commit();
