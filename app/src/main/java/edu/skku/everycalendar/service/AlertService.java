@@ -69,7 +69,7 @@ public class AlertService extends Service {
                 Log.d("LOG_SERV", "[" + arg + "] : [" + id + "]");
                 if(id.equals(arg)){
                     Log.d("LOG_SERV", "Alert!");
-                    Notification("EveryCalendar", "친구가 시간표 조율 요청을 보내왔습니다.\n친구에게 시간표를 전송하시겠습니까?", 23);
+                    Notification("EveryCalendar", "친구가 시간표 조율 요청을 보내왔습니다.", 23);
 
                 }
             }catch(Exception e){}

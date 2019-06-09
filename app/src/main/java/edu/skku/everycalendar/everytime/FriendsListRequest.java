@@ -16,6 +16,7 @@ public class FriendsListRequest {
 
     String cookie;
     HashMap<String, String> friendList;
+    HashMap<String, String> friendListForJoin;
     ArrayList<TimetableData> fClassList = new ArrayList<>();
     boolean finished = false;
 
@@ -25,6 +26,7 @@ public class FriendsListRequest {
 
     public void makeFriendList(){
             friendList = new HashMap<>();
+            friendListForJoin = new HashMap<>();
             FriendListRequest flr = new FriendListRequest();
             try {
                 String resp[] = flr.execute().get().split("friend");
@@ -46,10 +48,12 @@ public class FriendsListRequest {
     }
 
     private void addFriendToMap(String line){
-        String name, key;
+        String name, key, id;
         name = line.split("name=\"")[1].split("\"")[0];
         key = line.split("userid=\"")[1].split("\"")[0];
+        id = line.split("id=\"")[1].split("\"")[0];
         friendList.put(name, key);
+        friendListForJoin.put(name, id);
     }
 
     private class FriendListRequest extends AsyncTask<String, Void, String> {

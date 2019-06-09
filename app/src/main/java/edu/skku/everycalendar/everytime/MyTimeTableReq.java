@@ -9,7 +9,7 @@ import java.util.concurrent.ExecutionException;
 import edu.skku.everycalendar.functions.Http_Request;
 
 public class MyTimeTableReq extends TimeTableRequest {
-
+    private String tNum;
     public MyTimeTableReq(String cookie){
         this.cookie = cookie;
     }
@@ -17,7 +17,7 @@ public class MyTimeTableReq extends TimeTableRequest {
     @Override
     public void makeTimeTable() {
         finished = false;
-        String tNum = getTTNum();
+        tNum = getTTNum();
         if(tNum == null){
             Log.d("LOG_MakeTimeTable", "getting tNum failed");
             return;
@@ -54,6 +54,10 @@ public class MyTimeTableReq extends TimeTableRequest {
 
     private String parseTTNum(String resv){
         return resv.split("id=\"")[1].split("\"")[0];
+    }
+
+    public String gettNum() {
+        return tNum;
     }
 
     class TNumRequest extends AsyncTask<Void, Void, String> {

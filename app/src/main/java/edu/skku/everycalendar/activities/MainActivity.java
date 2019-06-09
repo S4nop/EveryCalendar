@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public Context context;
     private Activity thisAct;
     private String cookie;
-    private String id;
+    private String id, idNum;
     private String name;
     private String info;
     private BottomNavigationView bottomBar;
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private AdjustFragment adjustFragment = new AdjustFragment();
     private CallableArg.GoogleCalFragment googleCalFragment = new CallableArg.GoogleCalFragment();
     Fragment active = tableFragment;
-
+    ServiceMaker sm = new ServiceMaker();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Bundle bundle = new Bundle();
         bundle.putString("ID", id);
-        bundle.putString("Name",name_text.getText().toString());
+        bundle.putString("Name",name);
         tableFragment.setArguments(bundle);
 
         menu_btn = findViewById(R.id.btnMenu);
@@ -138,13 +138,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        ServiceMaker sm = new ServiceMaker();
-        if(!isServiceRunningCheck()){
-            sm.setActivity(context, id);
-            sm.startServ();
-            sm.bindServ();
-        }
+        startService();
     }
+
+    private void startService(){
+        new Thread(){
+            @Override
+            public void run(){
+                while(idNum == null) {
+                    try {
+                        sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(!isServiceRunningCheck()){
+                    sm.setActivity(context, idNum);
+                    sm.startServ();
+                    sm.bindServ();
+                }
+            }
+        }.start();
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -235,10 +251,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean isServiceRunningCheck() {
         ActivityManager manager = (ActivityManager) this.getSystemService(Activity.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if ("edu.skku.everycalendar".equals(service.service.getClassName())) {
+            if ("edu.skku.everycalendar.service".equals(service.service.getClassName())) {
                 return true;
             }
         }
         return false;
+    }
+
+    public void setIdNum(String idNum) {
+        this.idNum = idNum;
+    }
+
+    public String getIdNum() {
+        return idNum;
     }
 }

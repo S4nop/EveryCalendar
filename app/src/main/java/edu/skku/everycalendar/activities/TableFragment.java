@@ -94,6 +94,7 @@ public class TableFragment extends Fragment {
             public void run(){
                 etR = new MyTimeTableReq(cookie);
                 etR.makeTimeTable();
+                activity.setIdNum(etR.gettNum());
 
                 Log.d("LOG_MAKETABLE", stDate + " " + edDate);
                 gCR = new GoogleCalRequest(context, thisAct, "Account");

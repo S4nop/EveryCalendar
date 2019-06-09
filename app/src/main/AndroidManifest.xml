@@ -42,7 +42,7 @@
 
         <meta-data
             android:name="com.google.android.calendar.API_KEY"
-            android:value="AIzaSyBZnrkRXWJXCczAVSXqBsUYmYcTOISrhHk" />
+            android:value="AIzaSyAKf7zZkgCzj_45IyDxTibWN_BXwvmnQF8" />
 
         <meta-data
             android:name="com.google.android.gms.version"

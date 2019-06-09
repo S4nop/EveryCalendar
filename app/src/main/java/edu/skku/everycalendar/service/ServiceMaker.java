@@ -47,8 +47,8 @@ public class ServiceMaker extends AppCompatActivity {
 
     public void startServ(){
         Intent srv = new Intent(context, AlertService.class);
-        Log.d("LOG_SERVMAKER", "startServ");
-        //srv.putExtra("ID", id);
+        Log.d("LOG_SERVMAKER", id);
+        srv.putExtra("ID", id);
         context.startService(srv);
     }
 
@@ -73,5 +73,9 @@ public class ServiceMaker extends AppCompatActivity {
         super.onDestroy();
         unbindServ();
         stopServ();
+    }
+
+    public void setBind(boolean bind) {
+        isBind = bind;
     }
 }
