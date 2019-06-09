@@ -57,8 +57,8 @@ public class AlertService extends Service {
 
     public void chkRequest(){
         Log.d("LOG_SERV", "chkRequest called");
-        RealTimeDBPull.getDatatListFromDB(FirebaseDatabase.getInstance().getReference().child("SchedJoin"),
-                new CallArgFuncE(), null, true);
+       // RealTimeDBPull.getDatatListFromDB(FirebaseDatabase.getInstance().getReference().child("SchedJoin"),
+       //     new CallArgFuncE(), null, true);
     }
 
     class CallArgFuncE extends CallableArg<String>{

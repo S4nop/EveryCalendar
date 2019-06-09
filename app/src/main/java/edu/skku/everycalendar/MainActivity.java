@@ -57,6 +57,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         cookie = getIntent().getStringExtra("Cookie");
         id = getIntent().getStringExtra("ID");
 
+        Bundle bundle = new Bundle();
+        bundle.putString("ID", id);
+        tableFragment.setArguments(bundle);
+
         bottomBar = findViewById(R.id.bottomNavigationView);
         drawer = findViewById(R.id.drawer_layout);
         nav_view = findViewById(R.id.nav_view);
