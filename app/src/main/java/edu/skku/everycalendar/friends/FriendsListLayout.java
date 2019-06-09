@@ -1,10 +1,12 @@
-package edu.skku.everycalendar;
+package edu.skku.everycalendar.friends;
 
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.widget.CheckBox;
 import android.widget.Checkable;
+
+import edu.skku.everycalendar.R;
 
 public class FriendsListLayout extends ConstraintLayout implements Checkable {
     public FriendsListLayout(Context context, AttributeSet attrs) {

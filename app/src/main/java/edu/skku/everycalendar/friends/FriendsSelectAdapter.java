@@ -1,4 +1,4 @@
-package edu.skku.everycalendar;
+package edu.skku.everycalendar.friends;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import edu.skku.everycalendar.R;
 
 public class FriendsSelectAdapter extends BaseAdapter {
     ArrayList<FriendsListItem> list;

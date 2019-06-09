@@ -17,6 +17,8 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Map;
 
+import edu.skku.everycalendar.friends.FriendsListItem;
+import edu.skku.everycalendar.friends.FriendsSelectAdapter;
 import edu.skku.everycalendar.functions.JoinSchedule;
 import edu.skku.everycalendar.R;
 
@@ -68,10 +70,10 @@ public class AdjustFragment extends Fragment {
                     }
                 }
 
+                listView.clearChoices();
+
                 Intent intent = new Intent(context, AdjustResultActivity.class);
                 startActivity(intent);
-
-                listView.clearChoices();
             }
         });
 

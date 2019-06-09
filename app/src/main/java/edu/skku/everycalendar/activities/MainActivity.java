@@ -23,6 +23,8 @@ import android.view.Menu;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import edu.skku.everycalendar.everytime.FriendsListRequest;
+import edu.skku.everycalendar.friends.FriendsListItem;
 import edu.skku.everycalendar.functions.CallableArg;
 import edu.skku.everycalendar.R;
 import edu.skku.everycalendar.service.ServiceMaker;
