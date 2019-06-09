@@ -12,6 +12,9 @@ public class JoinSchedule {
     Integer stTime, edTime;
     ArrayList<TimetableData>[] wEvents = new ArrayList[7];
     boolean[][] ableTime = new boolean[7][24];
+
+
+
     public void test(){
 //        wEvents[1].add(new TimetableData("test1", null, null , "1", 144, 180, 1));
 //        wEvents[1].add(new TimetableData("test1", null, null , "1", 132, 156, 1));
@@ -21,7 +24,6 @@ public class JoinSchedule {
 //        wEvents[4].add(new TimetableData("test1", null, null , "4", 108, 240, 1));
 //        wEvents[5].add(new TimetableData("test1", null, null , "5", 108, 240, 1));
 //        wEvents[6].add(new TimetableData("test1", null, null , "6", 108, 240, 1));
-
         ArrayList<TimetableData> testres = getAbleTime();
         int i = 0;
         for(TimetableData td : testres){
