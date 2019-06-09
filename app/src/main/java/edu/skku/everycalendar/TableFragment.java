@@ -41,6 +41,7 @@ public class TableFragment extends Fragment {
     Activity thisAct;
     String cookie;
     String user_id;
+    String user_name;
     GoogleCalRequest gCR;
     MyTimeTableReq etR;
     ArrayList<TimetableData> events;
@@ -56,6 +57,7 @@ public class TableFragment extends Fragment {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_table, container, false);
         if(getArguments()!=null){
             user_id=getArguments().getString("ID");
+            user_name=getArguments().getString("Name");
         }
 
         clToTable = rootView.findViewById(R.id.clToTable);
@@ -123,7 +125,7 @@ public class TableFragment extends Fragment {
                     }
                 });
                 schedFin = true;
-                postUser(user_id,events);
+                postUser(user_id,user_name,events);
             }
         }.start();
         //buildTable();
@@ -184,16 +186,16 @@ public class TableFragment extends Fragment {
         c.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
         return formatter.format(c.getTime());
     }
-    public void postUser(String user_id,ArrayList<TimetableData> events){
+    public void postUser(String user_id, String user_name, ArrayList<TimetableData> events){
 
         Map<String, Object> user_update = new HashMap<>();
         Map<String, Object> user = new HashMap<>();
-        FirebasePost post = new FirebasePost(user_id,"",events);
+        Log.d("user_id",user_id);
+        Log.d("name",user_name);
+        FirebasePost post = new FirebasePost(user_id,user_name,events);
         user = post.toMap();
         user_update.put("/User_information/"+user_id, user);
-        Log.d("user_update", user_update.toString());
         mPostReference.updateChildren(user_update);
-        Log.d("user_updated",user_update.toString());
     }
     public void getFirebaseDatabase() {
         final ValueEventListener postListener = new ValueEventListener() {

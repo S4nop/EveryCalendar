@@ -57,10 +57,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         cookie = getIntent().getStringExtra("Cookie");
         id = getIntent().getStringExtra("ID");
 
-        Bundle bundle = new Bundle();
-        bundle.putString("ID", id);
-        tableFragment.setArguments(bundle);
-
         bottomBar = findViewById(R.id.bottomNavigationView);
         drawer = findViewById(R.id.drawer_layout);
         nav_view = findViewById(R.id.nav_view);
@@ -77,6 +73,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String rslt = gnr.getName();
         name_text.setText(rslt.split("::")[0]);
         info_text.setText(rslt.split("::")[1]);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("ID", id);
+        bundle.putString("Name",name_text.getText().toString());
+        tableFragment.setArguments(bundle);
 
         menu_btn = findViewById(R.id.btnMenu);
         menu_btn.setOnClickListener(new View.OnClickListener(){
