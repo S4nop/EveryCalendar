@@ -65,7 +65,9 @@ public class ServiceMaker extends AppCompatActivity {
 
     public void unbindServ(){
         if(isBind)
-            context.unbindService(sconn);
+            try {
+                context.unbindService(sconn);
+            }catch(Exception e){}
     }
 
     @Override

@@ -192,9 +192,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if(!isServiceRunningCheck()){
                     sm.setActivity(mainContext, idNum);
                     sm.startServ();
-                    try{
-                        sm.bindServ();
-                    }catch(Exception e){}
+                    sm.bindServ();
                 }
             }
         }.start();
