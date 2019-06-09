@@ -54,7 +54,6 @@ public class TableFragment extends Fragment {
     ImageButton select_week_btn;
     TextView period;
     boolean schedFin = false;
-    DatabaseReference mPostReference= FirebaseDatabase.getInstance().getReference();
     ArrayList<FirebasePost> inf = new ArrayList<FirebasePost>();
     @Nullable
     @Override
@@ -192,37 +191,32 @@ public class TableFragment extends Fragment {
         c.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
         return formatter.format(c.getTime());
     }
-    public void postUser(String user_id, String user_name, ArrayList<TimetableData> events){
 
-        Map<String, Object> user_update = new HashMap<>();
-        Map<String, Object> user = new HashMap<>();
+    public void postUser(String user_id, String user_name, ArrayList<TimetableData> events){
         FirebasePost post = new FirebasePost(user_id,user_name,events);
-        user = post.toMap();
-        user_update.put("/ClassData/", user);
-        Log.d("user_update", user_update.toString());
-        mPostReference.updateChildren(user_update);
-        Log.d("user_updated",user_update.toString());
+        post.postDB();
     }
-    public void getFirebaseDatabase() {
-        final ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d("onDataChange", "Data is Updated");
-                Log.d("getFirebase",snapshot.getKey());
-                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                    Log.d("key",snapshot1.getKey());
-                    FirebasePost get = snapshot1.getValue(FirebasePost.class);
-                    FirebasePost i1 = new FirebasePost(get.getId(), get.getName(), get.getTable());
-                    Log.d("getFirebase","getFirebase start");
-                    Log.d("getFirebase",get.getId());
-                    inf.add(i1);
-                    Log.d("inf size",Integer.toString(inf.size()));
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        };
-        mPostReference.child("User_information").addValueEventListener(postListener);
-    }
+
+//    public void getFirebaseDatabase() {
+//        final ValueEventListener postListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                Log.d("onDataChange", "Data is Updated");
+//                Log.d("getFirebase",snapshot.getKey());
+//                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+//                    Log.d("key",snapshot1.getKey());
+//                    FirebasePost get = snapshot1.getValue(FirebasePost.class);
+//                    FirebasePost i1 = new FirebasePost(get.getId(), get.getName(), get.getTable());
+//                    Log.d("getFirebase","getFirebase start");
+//                    Log.d("getFirebase",get.getId());
+//                    inf.add(i1);
+//                    Log.d("inf size",Integer.toString(inf.size()));
+//                }
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        };
+//        mPostReference.child("User_information").addValueEventListener(postListener);
+//    }
 }

@@ -83,7 +83,7 @@ public class AdjustFragment extends Fragment {
             }
         });
         JoinSchedule js = new JoinSchedule(9, 20);
-        js.test();
+        //js.test();
         return rootView;
     }
 }

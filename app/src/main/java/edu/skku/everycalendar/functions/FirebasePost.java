@@ -1,5 +1,9 @@
 package edu.skku.everycalendar.functions;
 
+import android.util.Log;
+
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +43,7 @@ public class FirebasePost {
         return this.table;
     }
 
-    public Map<String, Object> toMap() {
+    public void postDB() {
         Map<String, Object> out = new HashMap<>();
         for(TimetableData td : table){
             Map<String, String> val = new HashMap<>();
@@ -47,10 +51,10 @@ public class FirebasePost {
             val.put("name", name);
             val.put("id", id);
             pack.put(id, val);
-            out.put(td.getIdNum(), pack);
+            out.put("/ClassData/" + td.getIdNum() + "/", pack);
         }
+        FirebaseDatabase.getInstance().getReference().updateChildren(out);
 
-        return out;
     }
 
 }
