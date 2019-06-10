@@ -35,6 +35,7 @@ import edu.skku.everycalendar.dataType.TimetableData;
 import edu.skku.everycalendar.everytime.FriendsListRequest;
 import edu.skku.everycalendar.everytime.MyTimeTableReq;
 import edu.skku.everycalendar.friends.FriendsListItem;
+import edu.skku.everycalendar.functions.BackButtonHandler;
 import edu.skku.everycalendar.functions.CallableArg;
 import edu.skku.everycalendar.R;
 import edu.skku.everycalendar.functions.JoinSchedulReq;
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public ArrayList<FriendsListItem> friends_list;
     public HashMap<String, String> friends_list_with_id;
     public Map<String, String> friendList;
-
+    private BackButtonHandler backButtonHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //------------------------------------
         cookie = getIntent().getStringExtra("Cookie");
         id = getIntent().getStringExtra("ID");
+        backButtonHandler = new BackButtonHandler(this);
 
         bottomBar = findViewById(R.id.bottomNavigationView);
         drawer = findViewById(R.id.drawer_layout);
@@ -293,7 +295,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            //super.onBackPressed();
+            backButtonHandler.onBackPressed();
         }
     }
 
