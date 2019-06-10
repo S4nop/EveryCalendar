@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String id, idNum;
     private String name;
     private String info;
-    private BottomNavigationView bottomBar;
+    public BottomNavigationView bottomBar;
     private NavigationView nav_view;
     private View nav_header;
     private DrawerLayout drawer;

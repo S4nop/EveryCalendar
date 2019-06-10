@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -99,11 +100,10 @@ public class AdjustFragment extends Fragment {
                 for (int i = count-1; i >= 0; i--) {
                     if (isChecked.get(i)) {
                         FriendsListItem item = friends.get(i);
+                        Log.d("get_checked",item.getFriend_name());
                         checked_list.add(item);
                     }
                 }
-
-                listView.clearChoices();
 
                 //hour은 24시 기준 (오후 10시 -> 22시)
                 start_hour = start_picker.getHour();
@@ -123,6 +123,7 @@ public class AdjustFragment extends Fragment {
                     Utilities.makeToast("시간 선택이 올바르지 않습니다");
                 }
                 else{
+                    reset_btn.callOnClick();
                     Intent intent = new Intent(context, AdjustResultActivity.class);
                     startActivity(intent);
                 }
@@ -133,7 +134,20 @@ public class AdjustFragment extends Fragment {
         reset_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                listView.clearChoices();
+                selected_week.setText("");
+                
+                long now_time = System.currentTimeMillis();
+                Date date = new Date(now_time);
+                int hour = date.getHours();
+                int min = date.getMinutes();
 
+                start_picker.setHour(hour);
+                start_picker.setMinute(min);
+                end_picker.setHour(hour);
+                end_picker.setMinute(min);
+
+                activity.bottomBar.setSelectedItemId(4);
             }
         });
 
