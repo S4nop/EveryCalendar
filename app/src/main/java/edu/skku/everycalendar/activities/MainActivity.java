@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         public void onClick(DialogInterface dialog, int which) {
                             sendTables(stDate, edDate, reqID);
                             FirebaseDatabase.getInstance().getReference().child("SchedJoinReq").child(idNum).removeValue();
-                            Utilities.makeToast(mainContext, "시간표가 전송되었습니다");
+                            //Utilities.makeToast(mainContext, "시간표가 전송되었습니다");
                         }
                     }
              );

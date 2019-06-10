@@ -55,6 +55,7 @@ public class TableView extends ConstraintLayout {
         stPos = 9 * 12;
         //addView(v);
         for(int i = stHour; i < edHour; i++){
+            Log.d("LOG_TABLEINIT", "" + i + " : " + stHour + " : " + edHour);
             TableRowView trv = new TableRowView(v, i);
             trv.makeRow();
             trs[i] = trv;
@@ -68,6 +69,7 @@ public class TableView extends ConstraintLayout {
 
     public void addEvents(ArrayList<TimetableData> events){
         int pos[];
+        Log.d("LOGEVENT", ""+ stPos);
         pos = trs[stPos / 12].getTBLocation(1);
         while(pos[0] == 0 && pos[1] == 0) {
             try {
@@ -88,14 +90,14 @@ public class TableView extends ConstraintLayout {
         Integer week = Integer.parseInt(event.getWeekDay());
         Integer stTime = event.getStartTime();
         Integer edTime = event.getEndTime();
-        Log.d("LOG_STTIME", Integer.toString(stTime));
+        Log.d("LOG_STTIME", Integer.toString(stTime) + (trs[stTime / 12] == null ? "NULL" : "X") + (week == null ? "NULL" : week));
         TableRowView targTR = trs[stTime / 12];
         int pos[];
         int vWidth, vHeight;
-        pos = targTR.getTBLocation(week);
         vWidth = targTR.getTBWidth(week);
+        pos = targTR.getTBLocation(week);
         vHeight = targTR.getTBHeight(week);
-
+        Log.d("LOG_ADDSCHED", "" + stTime + edTime+pos+vWidth+vHeight+event.getColor()+event);
         return setBtnClickListener(makeButton(stTime, edTime, pos, vWidth, vHeight, event.getColor()), event);
     }
 
@@ -119,13 +121,14 @@ public class TableView extends ConstraintLayout {
     }
 
     private Button setBtnClickListener(Button btn, final TimetableData event){
-        btn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Utilities.makeToast(context, event.getName() + (event.getDescript() != null ? "\n" + event.getDescript() : "")
-                        + (event.getPlace() != null ? "\n" + event.getPlace() : ""));
-            }
-        });
+        if(!event.getName().equals(""))
+            btn.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    Utilities.makeToast(context, event.getName() + (event.getDescript() != null ? "\n" + event.getDescript() : "")
+                            + (event.getPlace() != null ? "\n" + event.getPlace() : ""));
+                }
+            });
         return btn;
     }
 }

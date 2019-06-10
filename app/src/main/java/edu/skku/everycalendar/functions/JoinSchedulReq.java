@@ -1,5 +1,6 @@
 package edu.skku.everycalendar.functions;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -19,9 +20,10 @@ public class JoinSchedulReq {
     JoinSchedule js;
     ArrayList<String> uploadedFriend;
     String id;
+    Context context;
     int fNum, dbNum;
-    public void joinRequest(final String stDate,final String edDate, Integer stTime, Integer edTime, final ArrayList<String> friends){
-        js = new JoinSchedule(stTime, edTime, friends);
+    public void joinRequest(final String stDate,final String edDate, final ArrayList<String> friends, JoinSchedule js){
+        this.js = js;
         fNum = friends.size();
         FirebaseDatabase.getInstance().getReference().child("SchedJoinReq").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

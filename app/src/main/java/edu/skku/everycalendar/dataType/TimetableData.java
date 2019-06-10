@@ -1,9 +1,12 @@
 package edu.skku.everycalendar.dataType;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 
-public class TimetableData {
+public class TimetableData implements Parcelable {
     private String name;
     private String place;
     private String weekDay;
@@ -23,6 +26,15 @@ public class TimetableData {
         this.color = color;
     }
 
+    public TimetableData(Parcel in){
+        this.name = in.readString();
+        this.place = in.readString();
+        this.descript = in.readString();
+        this.weekDay = in.readString();
+        this.startTime = in.readInt();
+        this.endTime = in.readInt();
+        this.color = in.readInt();
+    }
     public String getIdNum(){
         return idNum;
     }
@@ -76,4 +88,32 @@ public class TimetableData {
         this.place = place;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(place);
+        dest.writeString(descript);
+        dest.writeString(weekDay);
+        dest.writeInt(startTime);
+        dest.writeInt(endTime);
+        dest.writeInt(color);
+    }
+
+    @SuppressWarnings("rawtypes")
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator(){
+        @Override
+        public Object createFromParcel(Parcel source) {
+            return new TimetableData(source);
+        }
+
+        @Override
+        public Object[] newArray(int size) {
+            return new TimetableData[size];
+        }
+    };
 }

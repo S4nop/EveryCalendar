@@ -51,7 +51,7 @@ public class AdjustFragment extends Fragment {
 
     String ed_date = null;
     String st_date = null;
-
+    JoinSchedule js;
 
     @Nullable
     @Override
@@ -113,25 +113,47 @@ public class AdjustFragment extends Fragment {
 
                 //st_date, ed_date 저장되어 있음
 
-                if(checked_list.size()==0){
+                if(false && checked_list.size()==0){
                     Utilities.makeToast("친구를 선택해 주세요!");
                 }
                 else if (st_date==null||ed_date==null){
                     Utilities.makeToast("주를 선택해 주세요!");
                 }
-                else if((start_hour==end_hour)&&(start_min==end_min)){
+                else if((start_hour>=end_hour)){
                     Utilities.makeToast("시간 선택이 올바르지 않습니다");
                 }
                 else{
+                    Log.d("HERERHE","11");
+                    JoinSchedulReq jsr = new JoinSchedulReq();
+                    ArrayList<String> fList = new ArrayList<>();
+                    for(FriendsListItem fl : checked_list){
+                        fList.add(friends_list.get(fl.getFriend_name()));
+                    }
+                    fList.add("12178141"); //For test, need to remove
+                    js = new JoinSchedule(start_picker.getHour(), end_picker.getHour(), fList);
+                    jsr.joinRequest(st_date, ed_date, fList, js);
                     reset_btn.callOnClick();
-                    Intent intent = new Intent(context, AdjustResultActivity.class);
-                    startActivity(intent);
                 }
-                JoinSchedulReq js = new JoinSchedulReq();
-                ArrayList<String> tmp = new ArrayList<>();
-                tmp.add("12178141");
-                js.joinRequest("2019-06-09", "2019-06-15", 9, 22, tmp);
+//                JoinSchedulReq jsr = new JoinSchedulReq();
+//                ArrayList<String> tmp = new ArrayList<>();
+//                tmp.add("12178141");
+//                final JoinSchedule js = new JoinSchedule(9, 22, tmp);
+//                jsr.joinRequest("2019-06-09", "2019-06-15", tmp, js);
 
+                new Thread(){
+                    @Override
+                    public void run(){
+                        try {
+                            while(js==null || !js.getFinished())
+                                sleep(1000);
+                            Intent intent = new Intent(context, AdjustResultActivity.class);
+                            intent.putParcelableArrayListExtra("Timetable", js.getRslt());
+                            intent.putExtra("stTime", js.getStTime());
+                            intent.putExtra("edTime", js.getEdTime());
+                            startActivity(intent);
+                        } catch (InterruptedException e) {}
+                    }
+                }.start();
             }
         });
 
@@ -172,4 +194,5 @@ public class AdjustFragment extends Fragment {
         this.st_date = st_date;
         selected_week.setText(st_date+" ~ "+ed_date);
     }
+
 }

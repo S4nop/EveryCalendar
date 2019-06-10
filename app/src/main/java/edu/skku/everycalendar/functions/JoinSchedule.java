@@ -1,5 +1,7 @@
 package edu.skku.everycalendar.functions;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 
@@ -9,19 +11,23 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
+import edu.skku.everycalendar.activities.AdjustFragment;
+import edu.skku.everycalendar.activities.AdjustResultActivity;
 import edu.skku.everycalendar.dataType.TimetableData;
 
 public class JoinSchedule {
     Integer stTime, edTime;
     ArrayList<TimetableData>[] wEvents = new ArrayList[7];
+    ArrayList<TimetableData> rslt;
     boolean[][] ableTime = new boolean[7][24];
     int fNum = 0, dbNum = 0;
-
+    boolean finished = false;
     String id;
 
     public JoinSchedule(Integer stTime, Integer edTime, ArrayList<String> friends) {
         this.stTime = stTime;
         this.edTime = edTime;
+        finished = false;
         dbNum = 0;
         fNum = friends.size();
         Utilities.makeToast("친구들에게 시간표 조율 요청을 전송했습니다.\n친구들의 확인이 완료되면 작업이 시작됩니다");
@@ -32,16 +38,30 @@ public class JoinSchedule {
         for(int i = 0; i < 7; i++) {
             for(int j = 0; j < stTime; j++)
                 ableTime[i][j] = false;
-            for(int j = edTime; j < 24; j++)
+            for(int j = edTime + 1; j < 24; j++)
                 ableTime[i][j] = false;
 
             wEvents[i] = new ArrayList<>();
         }
     }
 
+    public boolean getFinished(){ return finished; }
+
+    public Integer getStTime() {
+        return stTime;
+    }
+
+    public Integer getEdTime() {
+        return edTime;
+    }
+
+    public ArrayList<TimetableData> getRslt() {
+        return rslt;
+    }
 
     public void makeTableView(){
-        ArrayList<TimetableData> rslt = getAbleTime();
+        rslt = getAbleTime();
+        finished = true;
         //TODO : Show timetable
     }
 
@@ -79,8 +99,8 @@ public class JoinSchedule {
         for(int i = 0; i < 7; i++){
             for(int j = 0; j < 24; j++){
                 Log.d("LOG_CHKABLETIME", "Abletime " + i + " " + j + " = " + ableTime[i][j]);
-                if(ableTime[i][j]) out.add(new TimetableData("","","",Integer.toString(i),j,
-        j+1, "", Color.rgb(rnd.nextInt(255), rnd.nextInt(255), rnd.nextInt(255))));
+                if(ableTime[i][j]) out.add(new TimetableData("","","",Integer.toString(i),j * 12,
+                        (j+1)*12, "", Color.parseColor("#FF9B9B")));
             }
         }
         return out;
