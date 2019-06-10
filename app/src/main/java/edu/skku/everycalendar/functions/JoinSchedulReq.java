@@ -85,7 +85,7 @@ public class JoinSchedulReq {
     public void getFriendsTT(){
         Log.d("LOG_SERV", "chkRequest called");
         for(String s : uploadedFriend)
-            RealTimeDBPull.getDatatListFromDB(FirebaseDatabase.getInstance().getReference().child("SchedJoin").child(s),
+            RealTimeDBPull.getDatatListFromDB(FirebaseDatabase.getInstance().getReference().child("SchedJoin").child(id).child(s),
                     new CallArgFuncE_Join(), new CallArgFuncC_Join(), false);
     }
 
@@ -93,12 +93,15 @@ public class JoinSchedulReq {
         @Override
         public Void call() {
             try{
-                String stTime = arg.split("startTime=\"")[1].split(",")[0];
-                String edTime = arg.split("endTime=\"")[1].split(",")[0];
-                String week = arg.split("weekDay=\"")[1].split("\\}")[0];
+                Log.d("LOG_CALLARGEJOIN", arg);
+                String stTime = arg.split("startTime=")[1].split(",")[0];
+                String edTime = arg.split("endTime=")[1].split(",")[0];
+                String week = arg.split("weekDay=")[1].split(",")[0];
                 js.addEvents(new TimetableData("","","",week,
                         Integer.parseInt(stTime), Integer.parseInt(edTime), "", 0), Integer.parseInt(week));
-            }catch(Exception e){}
+            }catch(Exception e){
+                e.printStackTrace();
+            }
             return null;
         }
     }
