@@ -10,15 +10,20 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 import edu.skku.everycalendar.R;
 import edu.skku.everycalendar.activities.MainActivity;
 import edu.skku.everycalendar.everytime.AddFriendRequest;
+import edu.skku.everycalendar.googleCalendar.EventListAdapter;
+import edu.skku.everycalendar.googleCalendar.EventListItem;
 import edu.skku.everycalendar.monthItems.MonthCalendar;
 
 public abstract class CallableArg<T> implements Callable<Void> {
@@ -38,11 +43,16 @@ public abstract class CallableArg<T> implements Callable<Void> {
 
         TextView week_text;
 
+        ListView listView;
+
         MainActivity activity;
         Context context;
 
         String st_date;
         String ed_date;
+
+        ArrayList<EventListItem> list;
+        EventListAdapter adapter;
 
         @Nullable
         @Override
@@ -57,6 +67,15 @@ public abstract class CallableArg<T> implements Callable<Void> {
             btn_month = rootView.findViewById(R.id.month_btn);
 
             week_text = rootView.findViewById(R.id.week_text);
+
+            listView = rootView.findViewById(R.id.listView);
+
+            list = new ArrayList<>();
+            EventListItem item = new EventListItem("name","0101","서울","이벤트");
+            list.add(item);
+            adapter = new EventListAdapter(list,context);
+
+            listView.setAdapter(adapter);
 
             btn_add.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -119,6 +138,47 @@ public abstract class CallableArg<T> implements Callable<Void> {
                     MonthCalendar monthCalendar = new MonthCalendar(context,2);
                     monthCalendar.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
                     monthCalendar.show();
+                }
+            });
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    LayoutInflater inflater = getLayoutInflater();
+                    View alertLayoutView = inflater.inflate(R.layout.dialog_event_info, null);
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("일정 정보");
+                    builder.setView(alertLayoutView);
+
+                    TextView name_text = alertLayoutView.findViewById(R.id.name);
+                    TextView date_text = alertLayoutView.findViewById(R.id.date);
+                    TextView loca_text = alertLayoutView.findViewById(R.id.loca);
+                    TextView desc_text = alertLayoutView.findViewById(R.id.desc);
+
+                    EventListItem item = list.get(position);
+
+                    String name = item.getEvent_name();
+                    String date = item.getEvent_date();
+                    String loca = item.getEvent_loca();
+                    String desc = item.getEvent_desc();
+
+                    name_text.setText(name);
+                    date_text.setText(date);
+                    loca_text.setText(loca);
+                    desc_text.setText(desc);
+
+                    builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    });
+                    builder.setNegativeButton("삭제", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    });
+                    builder.show();
                 }
             });
 
