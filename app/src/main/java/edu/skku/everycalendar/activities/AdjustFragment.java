@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import edu.skku.everycalendar.everytime.FriendTimetableReq;
 import edu.skku.everycalendar.friends.FriendsListItem;
 import edu.skku.everycalendar.friends.FriendsSelectAdapter;
 import edu.skku.everycalendar.functions.CheckOurUser;
@@ -51,6 +52,7 @@ public class AdjustFragment extends Fragment {
     ScrollView scrollView;
 
     HashMap<String, String> friends_list;
+    Map<String, String> friends_list_to_tt;
     FriendsSelectAdapter adapter;
 
 
@@ -78,6 +80,7 @@ public class AdjustFragment extends Fragment {
         end_picker = rootView.findViewById(R.id.end_time);
 
         friends_list = activity.friends_list_with_id;
+        friends_list_to_tt = activity.friendList;
 
         listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -106,7 +109,6 @@ public class AdjustFragment extends Fragment {
                 int start_min;
                 int end_hour;
                 int end_min;
-
                 //check된 친구 item들이 들어있는 list 
                 ArrayList<FriendsListItem> checked_list = new ArrayList<>();
 
@@ -139,15 +141,35 @@ public class AdjustFragment extends Fragment {
                     Log.d("HERERHE","11");
                     jsr = new JoinSchedulReq();
                     ArrayList<String> fList = new ArrayList<>();
-                    fList.add("12178141"); //For test, need to remove
+                    fList.add(activity.getIdNum());
                     js = new JoinSchedule(start_picker.getHour(), end_picker.getHour());
 
-                    for(FriendsListItem fl : checked_list){
+                    for(final FriendsListItem fl : checked_list){
                         if(CheckOurUser.chkUser(friends_list.get(fl.getFriend_name())))
                             fList.add(friends_list.get(fl.getFriend_name()));
+                        else {
+                            Utilities.makeToast("EveryCalendar를 사용하지 않는 인원이 포함되어 있습니다\n해당 인원은 Everytime시간표를 이용하여 조율합니다");
+                            new Thread(){
+                                @Override
+                                public void run(){
+                                    FriendTimetableReq ftr = new FriendTimetableReq(activity.getCookie(), friends_list_to_tt.get(fl.getFriend_name()));
+                                    ftr.makeTimeTable();
+                                    while(!ftr.getFinished()) {
+                                        try {
+                                            sleep(500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    js.addEvents(ftr.getClassList());
+                                    jsr.addDBNum();
+                                }
+                            }.start();
+                        }
                         //TODO : Check friend is user of our app
                     }
-
+                    jsr.setfNum2(fList.size());
+                    jsr.setFnum(checked_list.size() + 1);
                     jsr.joinRequest(st_date, ed_date, fList, js);
                     reset_btn.callOnClick();
                 }

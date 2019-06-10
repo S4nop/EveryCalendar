@@ -22,10 +22,25 @@ public class JoinSchedulReq {
     ArrayList<String> uList = new ArrayList<>();
     String id;
     Context context;
-    int fNum, dbNum;
+    int fNum, fNum2, dbNum;
+
+    public void setFnum(int n){
+        fNum = n;
+    }
+
+    public void setfNum2(int fNum2) {
+        this.fNum2 = fNum2;
+    }
+
+    public synchronized void addDBNum(){
+        Log.d("LOG_DBNUM", "" + (dbNum + 1));
+        if(++dbNum == fNum){
+            js.makeTableView();
+        }
+    }
+
     public void joinRequest(final String stDate,final String edDate, final ArrayList<String> friends, JoinSchedule js){
         this.js = js;
-        fNum = friends.size();
         FirebaseDatabase.getInstance().getReference().child("SchedJoinReq").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -64,8 +79,7 @@ public class JoinSchedulReq {
 
     public void chkRequest(){
         uploadedFriend = new ArrayList<>();
-        dbNum = 0;
-        Log.d("LOG_SERV", "chkRequest called");
+        Log.d("LOG_SERV", "chkRequest called with id : " + id);
         RealTimeDBPull.getDatatListFromDB(FirebaseDatabase.getInstance().getReference().child("SchedJoin").child(id),
                 new CallArgFuncE_Req(), null, true);
     }
@@ -76,7 +90,7 @@ public class JoinSchedulReq {
             try{
                 if(!uploadedFriend.contains(arg)){
                     uploadedFriend.add(arg);
-                    if(uploadedFriend.size() == fNum){
+                    if(uploadedFriend.size() == fNum2){
                         getFriendsTT();
                     }
                 }
@@ -86,10 +100,11 @@ public class JoinSchedulReq {
     }
 
     public void getFriendsTT(){
-        Log.d("LOG_SERV", "chkRequest called");
-        for(String s : uploadedFriend)
+        for(String s : uploadedFriend) {
+            Log.d("LOG_SERV", "getFriendsTT called with id : " + s);
             RealTimeDBPull.getDatatListFromDB(FirebaseDatabase.getInstance().getReference().child("SchedJoin").child(id).child(s),
                     new CallArgFuncE_Join(), new CallArgFuncC_Join(), false);
+        }
     }
 
     class CallArgFuncE_Join extends CallableArg<String> {
@@ -100,7 +115,7 @@ public class JoinSchedulReq {
                 String stTime = arg.split("startTime=")[1].split(",")[0];
                 String edTime = arg.split("endTime=")[1].split(",")[0];
                 String week = arg.split("weekDay=")[1].split(",")[0];
-                js.addEvents(new TimetableData("","","",week,
+                js.addEvent(new TimetableData("","","",week,
                         Integer.parseInt(stTime), Integer.parseInt(edTime), "", 0), Integer.parseInt(week));
             }catch(Exception e){
                 e.printStackTrace();
@@ -113,9 +128,8 @@ public class JoinSchedulReq {
         @Override
         public Void call() {
             try{
-                if(++dbNum == fNum){
-                    js.makeTableView();
-                }
+                Log.d("LOGCALL", "HERE");
+                addDBNum();
             }catch(Exception e){}
             return null;
         }

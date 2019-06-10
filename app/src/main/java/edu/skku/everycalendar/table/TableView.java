@@ -52,7 +52,7 @@ public class TableView extends ConstraintLayout {
         String infService = Context.LAYOUT_INFLATER_SERVICE;
         LayoutInflater li = (LayoutInflater) getContext().getSystemService(infService);
         View v = li.inflate(R.layout.tableview, this, false);
-        stPos = 9 * 12;
+        stPos = stHour * 12;
         //addView(v);
         for(int i = stHour; i < edHour; i++){
             Log.d("LOG_TABLEINIT", "" + i + " : " + stHour + " : " + edHour);

@@ -64,9 +64,14 @@ public class JoinSchedule {
         //TODO : Show timetable
     }
 
-
-    public void addEvents(TimetableData event, int week){
-        wEvents[week].add(event);
+    public void addEvent(TimetableData event, int week){
+            wEvents[week].add(event);
+    }
+    public void addEvents(ArrayList<TimetableData> event){
+        for(TimetableData td : event){
+            wEvents[Integer.parseInt(td.getWeekDay())].add(td);
+            Log.d("LOG_ADDEVENTS", td.getName());
+        }
     }
 
 
