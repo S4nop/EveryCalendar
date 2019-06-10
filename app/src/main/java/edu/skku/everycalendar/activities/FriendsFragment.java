@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -39,6 +40,7 @@ public class FriendsFragment extends Fragment {
 
     ImageButton deleteBtn;
     ImageButton addBtn;
+    FloatingActionButton fab_plus;
 
     ArrayList<FriendsListItem> list;
     FriendsListAdapter adapter;
@@ -55,6 +57,7 @@ public class FriendsFragment extends Fragment {
 
         addBtn = rootView.findViewById(R.id.addBtn);
         deleteBtn = rootView.findViewById(R.id.deleteBtn);
+        fab_plus = rootView.findViewById(R.id.fab_plus);
 
         activity = (MainActivity) getActivity();
         context = activity.mainContext;
@@ -119,6 +122,14 @@ public class FriendsFragment extends Fragment {
                     }
                 });
                 builder.show();
+            }
+        });
+
+        fab_plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, FriendsRecommActivity.class);
+                startActivity(intent);
             }
         });
 

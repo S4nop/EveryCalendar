@@ -136,7 +136,7 @@ public class AdjustFragment extends Fragment {
             public void onClick(View v) {
                 listView.clearChoices();
                 selected_week.setText("");
-                
+
                 long now_time = System.currentTimeMillis();
                 Date date = new Date(now_time);
                 int hour = date.getHours();
