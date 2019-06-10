@@ -18,6 +18,23 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            app:srcCompat="@drawable/ic_select_week" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:background="@drawable/btn_bolder_round"
+            android:gravity="center"
+            android:padding="5dp" />
+
+        <ImageButton
             android:id="@+id/btn_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,17 +51,13 @@
             app:srcCompat="@drawable/ic_alendar_minus" />
     </LinearLayout>
 
-    <FrameLayout
+    <ListView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@id/linearLayout" />
 
-    </FrameLayout>
 </android.support.constraint.ConstraintLayout>
