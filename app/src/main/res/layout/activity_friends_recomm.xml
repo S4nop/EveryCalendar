@@ -64,7 +64,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/transparent"
-                    android:orientation="vertical" />
+                    android:orientation="vertical" >
+
+                    <ListView
+                        android:id="@+id/listView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    </ListView>
+                </LinearLayout>
 
                 <!-- 두 번째 페이지. content2 -->
                 <LinearLayout
