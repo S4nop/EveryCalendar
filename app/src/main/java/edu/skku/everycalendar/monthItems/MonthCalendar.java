@@ -29,7 +29,7 @@ public class MonthCalendar extends Dialog{
     String stDate, edDate;
     OnDismissListener _listener;
     boolean cng = false;
-    int fragment_flag; //0:table, 1:adjust
+    int fragment_flag; //0:table, 1:adjust, 2:calendar
 
     public MonthCalendar(Context context, int flag) {
         super(context);

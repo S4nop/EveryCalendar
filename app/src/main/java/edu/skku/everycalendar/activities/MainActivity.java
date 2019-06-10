@@ -378,6 +378,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(monthCalendar.getFlag()==1){
             adjustFragment.setWeek(monthCalendar.getStDate(), monthCalendar.getEdDate());
         }
+        else if(monthCalendar.getFlag()==2){
+            googleCalFragment.setWeek(monthCalendar.getStDate(), monthCalendar.getEdDate());
+        }
         else if(monthCalendar.getCng()) {
             tableFragment.makeTable(monthCalendar.getStDate(), monthCalendar.getEdDate());
         }

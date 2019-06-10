@@ -12,12 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.concurrent.Callable;
 
 import edu.skku.everycalendar.R;
 import edu.skku.everycalendar.activities.MainActivity;
 import edu.skku.everycalendar.everytime.AddFriendRequest;
+import edu.skku.everycalendar.monthItems.MonthCalendar;
 
 public abstract class CallableArg<T> implements Callable<Void> {
     public T arg;
@@ -32,9 +34,15 @@ public abstract class CallableArg<T> implements Callable<Void> {
     public static class GoogleCalFragment extends Fragment {
         ImageButton btn_add;
         ImageButton btn_delete;
+        ImageButton btn_month;
+
+        TextView week_text;
 
         MainActivity activity;
         Context context;
+
+        String st_date;
+        String ed_date;
 
         @Nullable
         @Override
@@ -46,6 +54,9 @@ public abstract class CallableArg<T> implements Callable<Void> {
 
             btn_add = rootView.findViewById(R.id.btn_add);
             btn_delete = rootView.findViewById(R.id.btn_delete);
+            btn_month = rootView.findViewById(R.id.month_btn);
+
+            week_text = rootView.findViewById(R.id.week_text);
 
             btn_add.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -102,7 +113,22 @@ public abstract class CallableArg<T> implements Callable<Void> {
                 }
             });
 
+            btn_month.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MonthCalendar monthCalendar = new MonthCalendar(context,2);
+                    monthCalendar.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
+                    monthCalendar.show();
+                }
+            });
+
             return rootView;
+        }
+
+        public void setWeek(String st_date, String ed_date){
+            this.ed_date = ed_date;
+            this.st_date = st_date;
+            week_text.setText(st_date+" ~ "+ed_date);
         }
     }
 }
