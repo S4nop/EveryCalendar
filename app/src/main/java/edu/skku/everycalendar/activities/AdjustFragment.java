@@ -10,10 +10,12 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -43,6 +45,7 @@ public class AdjustFragment extends Fragment {
     Context context;
     ListView listView;
     TextView selected_week;
+    ScrollView scrollView;
 
     HashMap<String, String> friends_list;
     FriendsSelectAdapter adapter;
@@ -67,12 +70,21 @@ public class AdjustFragment extends Fragment {
         result_btn = rootView.findViewById(R.id.btn_result);
         reset_btn = rootView.findViewById(R.id.btn_reset);
         month_btn = rootView.findViewById(R.id.btn_month);
+        scrollView = rootView.findViewById(R.id.scroll);
 
         start_picker = rootView.findViewById(R.id.start_time);
         end_picker = rootView.findViewById(R.id.end_time);
 
         friends_list = activity.friends_list_with_id;
         list_map = activity.friendList;
+
+        listView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                scrollView.requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
 
         final ArrayList<FriendsListItem> friends = new ArrayList<>();
         Iterator<String> iterator = friends_list.keySet().iterator();
