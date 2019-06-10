@@ -14,6 +14,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import edu.skku.everycalendar.R;
 import edu.skku.everycalendar.everytime.LoginRequest;
 
@@ -96,4 +101,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

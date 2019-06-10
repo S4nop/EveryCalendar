@@ -17,9 +17,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.api.client.util.DateTime;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import edu.skku.everycalendar.functions.FirebasePost;
 import edu.skku.everycalendar.R;
@@ -79,7 +82,12 @@ public class TableFragment extends Fragment {
 
         return rootView;
     }
+    public void postDB(String idNum) {
+        Map<String, Object> out = new HashMap<>();
+        out.put("/User_information/" + idNum + "/", "O");
+        FirebaseDatabase.getInstance().getReference().updateChildren(out);
 
+    }
     public void makeTable(final String stDate, final String edDate){
         new Thread(){
             @Override
@@ -87,6 +95,7 @@ public class TableFragment extends Fragment {
                 etR = new MyTimeTableReq(cookie);
                 etR.makeTimeTable();
                 activity.setIdNum(etR.gettNum());
+                postDB(etR.gettNum());
 
                 Log.d("LOG_MAKETABLE", stDate + " " + edDate);
                 gCR = new GoogleCalRequest(context, thisAct, "Account");
@@ -101,6 +110,9 @@ public class TableFragment extends Fragment {
                 }
 
                 events = etR.getClassList();
+                activity.getRcmFrnd().setClasses(events);
+                activity.getRcmFrnd().recommmend();
+
                 postUser(user_id,user_name,events);
                 events.addAll(gCR.getEvents());
 

@@ -35,10 +35,11 @@ import edu.skku.everycalendar.dataType.TimetableData;
 import edu.skku.everycalendar.everytime.FriendsListRequest;
 import edu.skku.everycalendar.everytime.MyTimeTableReq;
 import edu.skku.everycalendar.friends.FriendsListItem;
+import edu.skku.everycalendar.friends.recommendFriend;
 import edu.skku.everycalendar.functions.BackButtonHandler;
 import edu.skku.everycalendar.functions.CallableArg;
 import edu.skku.everycalendar.R;
-import edu.skku.everycalendar.functions.JoinSchedulReq;
+import edu.skku.everycalendar.functions.CheckOurUser;
 import edu.skku.everycalendar.functions.Utilities;
 import edu.skku.everycalendar.service.ServiceMaker;
 import edu.skku.everycalendar.everytime.GetNameRequest;
@@ -70,7 +71,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FriendsFragment friendsFragment = new FriendsFragment();
     private AdjustFragment adjustFragment = new AdjustFragment();
     private CallableArg.GoogleCalFragment googleCalFragment = new CallableArg.GoogleCalFragment();
-    
+    private recommendFriend rcmFrnd = new recommendFriend();
+
     Fragment active = tableFragment;
     ServiceMaker sm = new ServiceMaker();
 
@@ -110,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String rslt = gnr.getName();
         name_text.setText(name = rslt.split("::")[0]);
         info_text.setText(info = rslt.split("::")[1]);
-
+        rcmFrnd.setId(name);
         Bundle bundle = new Bundle();
         bundle.putString("ID", id);
         bundle.putString("Name",name);
@@ -150,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentManager.beginTransaction().add(R.id.container, tableFragment,"1").commit();
         active = tableFragment;
 
+        CheckOurUser.getUserList();
 
         bottomBar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -396,5 +399,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public String getIdNum() {
         return idNum;
+    }
+
+
+    public recommendFriend getRcmFrnd() {
+        return rcmFrnd;
     }
 }

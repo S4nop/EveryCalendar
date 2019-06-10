@@ -22,6 +22,8 @@ import android.widget.ListView;
 import edu.skku.everycalendar.everytime.FriendTimetableReq;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import edu.skku.everycalendar.R;
@@ -73,14 +75,14 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ArrayList<TimetableData> friendTT;
-                FriendTimetableReq friendTimetableReq = new FriendTimetableReq(activity.getCookie(), list_map.get(list.get(position).getFriend_name()));
                 try{
-                    friendTimetableReq.makeTimeTable();
-                    friendTT = friendTimetableReq.getClassList();
                     //TODO : Make friend's timetable!!
-                    Log.d("LOG_FRIENDTT", friendTT.toString());
+                    //Log.d("LOG_FRIENDTT", friendTT.toString());
 
                     Intent intent = new Intent(context, FriendsActivity.class);
+                    intent.putExtra("Cookie", activity.getCookie());
+                    intent.putExtra("Key", list_map.get(list.get(position).getFriend_name()));
+                    intent.putExtra("Name", list.get(position).getFriend_name());
                     startActivity(intent);
                 } catch(Exception e){
                     Utilities.makeToast(context, "Cannot read friend's timetable data");
@@ -128,7 +130,19 @@ public class FriendsFragment extends Fragment {
         fab_plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                HashMap<String, String> fl = activity.getRcmFrnd().getFriendList();
+                Log.d("LOG_FRIENDFRAG", ""+fl.size());
+                ArrayList<String> fName = new ArrayList<>();
+                ArrayList<String> fid = new ArrayList<>();
+                for(String name : fl.keySet()){
+                    Log.d("LOG_FRIENDFRAG", "::" +  name);
+                    fName.add(name);
+                    fid.add(fl.get(name));
+                }
                 Intent intent = new Intent(context, FriendsRecommActivity.class);
+                intent.putStringArrayListExtra("fName",fName);
+                intent.putStringArrayListExtra("fid",fid);
+                intent.putExtra("Cookie", activity.getCookie());
                 startActivity(intent);
             }
         });

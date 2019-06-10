@@ -22,7 +22,7 @@ public class recommendFriend {
         for(TimetableData td : classes) {
             if(td.getIdNum() != "")
                 RealTimeDBPull.getDatatListFromDB(FirebaseDatabase.getInstance().getReference().child("ClassData").child(td.getIdNum()),
-                    new CallArgFuncE(), null, true);
+                    new CallArgFuncE(), null, false);
         }
     }
 
@@ -30,8 +30,9 @@ public class recommendFriend {
         @Override
         public Void call() {
             try{
-                if(!id.equals(arg.split("id=\"")[1].split(",")[0]))
-                    friendList.put(arg.split("name=\"")[1].split("\\}")[0], arg.split("id=\"")[1].split(",")[0]);
+                if(!id.equals(arg.split("name=")[1].split(",")[0]))
+                    friendList.put(arg.split("name=")[1].split(",")[0], arg.split("id=")[1].split("\\}")[0]);
+                    Log.d("LOG_RECOMMEND", "put!!");
             }catch(Exception e){}
             return null;
         }
@@ -43,5 +44,9 @@ public class recommendFriend {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public HashMap<String, String> getFriendList() {
+        return friendList;
     }
 }

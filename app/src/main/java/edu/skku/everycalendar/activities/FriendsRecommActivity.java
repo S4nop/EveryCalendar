@@ -13,16 +13,20 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import edu.skku.everycalendar.R;
+import edu.skku.everycalendar.everytime.AddFriendRequest;
 import edu.skku.everycalendar.friends.FriendsListAdapter;
 import edu.skku.everycalendar.friends.FriendsListItem;
+import edu.skku.everycalendar.functions.Utilities;
 
 public class FriendsRecommActivity extends AppCompatActivity {
     ImageButton btn_back;
     ListView listView;
 
     ArrayList<FriendsListItem> friends_list;
+    ArrayList<String> fName;
+    ArrayList<String> fid;
     FriendsListAdapter adapter;
-
+    String cookie;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,16 +38,21 @@ public class FriendsRecommActivity extends AppCompatActivity {
 
         friends_list = new ArrayList<>();
 
-        FriendsListItem item_temp = new FriendsListItem("친구1");
 
-        friends_list.add(item_temp);
+        fName = getIntent().getStringArrayListExtra("fName");
+        fid = getIntent().getStringArrayListExtra("fid");
+        cookie = getIntent().getStringExtra("Cookie");
+        for(String name : fName)
+            friends_list.add(new FriendsListItem(name));
+
         adapter = new FriendsListAdapter(FriendsRecommActivity.this, friends_list);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(FriendsRecommActivity.this, "item clicked", Toast.LENGTH_SHORT).show();
+                AddFriendRequest afr = new AddFriendRequest(cookie);
+                Utilities.makeToast(afr.addFriend(fid.get(position)));
             }
         });
 

@@ -20,7 +20,7 @@ public class AddFriendRequest {
         try {
             String result = afr.execute(fid).get();
             Log.d("LOG_ADDFRIEND", result);
-            return result.split("<response>")[1].split("</response>")[0];
+            return result.split("<response>")[1].split("</response>")[0].equals("-1") ? "친구 요청을 실패했습니다" : "친구 요청을 전송했습니다";
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

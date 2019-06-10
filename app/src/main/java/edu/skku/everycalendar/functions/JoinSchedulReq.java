@@ -19,6 +19,7 @@ import edu.skku.everycalendar.dataType.TimetableData;
 public class JoinSchedulReq {
     JoinSchedule js;
     ArrayList<String> uploadedFriend;
+    ArrayList<String> uList = new ArrayList<>();
     String id;
     Context context;
     int fNum, dbNum;

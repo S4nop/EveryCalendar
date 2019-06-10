@@ -34,6 +34,7 @@ public abstract class TimeTableRequest {
             color = Color.rgb(rnd.nextInt(155) + 100, rnd.nextInt(155) + 100, rnd.nextInt(155) + 100);
             for(int j = 1; j < dates.length; j++){
                 weekday = Integer.toString(Integer.parseInt(dates[j].split("=\"")[1].split("\"")[0]) + 1);
+                if(weekday.equals("7")) weekday = "0";
                 place = dates[j].split("place=\"")[1].split("\"")[0];
                 //Time = (Hour * 60 + Min) / 5
                 stTime = Integer.parseInt(dates[j].split("starttime=\"")[1].split("\"")[0]);

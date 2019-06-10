@@ -17,6 +17,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,6 +27,7 @@ import java.util.Map;
 
 import edu.skku.everycalendar.friends.FriendsListItem;
 import edu.skku.everycalendar.friends.FriendsSelectAdapter;
+import edu.skku.everycalendar.functions.CheckOurUser;
 import edu.skku.everycalendar.functions.JoinSchedulReq;
 import edu.skku.everycalendar.functions.JoinSchedule;
 import edu.skku.everycalendar.R;
@@ -47,12 +50,11 @@ public class AdjustFragment extends Fragment {
     HashMap<String, String> friends_list;
     FriendsSelectAdapter adapter;
 
-    Map<String, String> list_map;
 
     String ed_date = null;
     String st_date = null;
     JoinSchedule js;
-
+    JoinSchedulReq jsr;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -72,7 +74,6 @@ public class AdjustFragment extends Fragment {
         end_picker = rootView.findViewById(R.id.end_time);
 
         friends_list = activity.friends_list_with_id;
-        list_map = activity.friendList;
 
         final ArrayList<FriendsListItem> friends = new ArrayList<>();
         Iterator<String> iterator = friends_list.keySet().iterator();
@@ -124,13 +125,17 @@ public class AdjustFragment extends Fragment {
                 }
                 else{
                     Log.d("HERERHE","11");
-                    JoinSchedulReq jsr = new JoinSchedulReq();
+                    jsr = new JoinSchedulReq();
                     ArrayList<String> fList = new ArrayList<>();
-                    for(FriendsListItem fl : checked_list){
-                        fList.add(friends_list.get(fl.getFriend_name()));
-                    }
                     fList.add("12178141"); //For test, need to remove
-                    js = new JoinSchedule(start_picker.getHour(), end_picker.getHour(), fList);
+                    js = new JoinSchedule(start_picker.getHour(), end_picker.getHour());
+
+                    for(FriendsListItem fl : checked_list){
+                        if(CheckOurUser.chkUser(friends_list.get(fl.getFriend_name())))
+                            fList.add(friends_list.get(fl.getFriend_name()));
+                        //TODO : Check friend is user of our app
+                    }
+
                     jsr.joinRequest(st_date, ed_date, fList, js);
                     reset_btn.callOnClick();
                 }
@@ -146,6 +151,8 @@ public class AdjustFragment extends Fragment {
                         try {
                             while(js==null || !js.getFinished())
                                 sleep(1000);
+
+                            FirebaseDatabase.getInstance().getReference().child("SchedJoin").child(jsr.getID()).removeValue();
                             Intent intent = new Intent(context, AdjustResultActivity.class);
                             intent.putParcelableArrayListExtra("Timetable", js.getRslt());
                             intent.putExtra("stTime", js.getStTime());

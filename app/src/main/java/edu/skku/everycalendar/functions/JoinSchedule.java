@@ -24,12 +24,11 @@ public class JoinSchedule {
     boolean finished = false;
     String id;
 
-    public JoinSchedule(Integer stTime, Integer edTime, ArrayList<String> friends) {
+    public JoinSchedule(Integer stTime, Integer edTime) {
         this.stTime = stTime;
         this.edTime = edTime;
         finished = false;
         dbNum = 0;
-        fNum = friends.size();
         Utilities.makeToast("친구들에게 시간표 조율 요청을 전송했습니다.\n친구들의 확인이 완료되면 작업이 시작됩니다");
         for(int i = 0; i < 7; i++)
             for(int j = 0; j < 24; j++)

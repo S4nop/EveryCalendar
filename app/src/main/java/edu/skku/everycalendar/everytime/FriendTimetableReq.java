@@ -15,7 +15,9 @@ public class FriendTimetableReq extends TimeTableRequest {
 
     @Override
     public void makeTimeTable() {
+        finished = false;
         parseTimeTable(getTimeTable());
+        finished = true;
     }
 
     private String getTimeTable(){
