@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TableFragment tableFragment = new TableFragment();
     private FriendsFragment friendsFragment = new FriendsFragment();
     private AdjustFragment adjustFragment = new AdjustFragment();
-    private CallableArg.GoogleCalFragment googleCalFragment = new CallableArg.GoogleCalFragment();
+    private GoogleCalFragment googleCalFragment = new GoogleCalFragment();
     private RecommendFriend rcmFrnd = new RecommendFriend();
     private boolean friendListFin = false;
     Fragment active = tableFragment;
