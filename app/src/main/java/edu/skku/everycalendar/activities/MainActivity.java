@@ -404,6 +404,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return idNum;
     }
 
+    public String getName() {
+        return name;
+    }
 
     public recommendFriend getRcmFrnd() {
         return rcmFrnd;

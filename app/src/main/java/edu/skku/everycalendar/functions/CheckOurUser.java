@@ -1,5 +1,7 @@
 package edu.skku.everycalendar.functions;
 
+import android.util.Log;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -15,8 +17,10 @@ public class CheckOurUser {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    String key = postSnapshot.getKey();
-                    userList.add(key);
+                    String id = postSnapshot.getKey();
+                    String data = postSnapshot.getValue().toString();
+                    Log.d("LOG_CHKOURUSRE", id + " : " + data);
+                    //userList.add(key);
                 }
             }
             @Override

@@ -145,6 +145,7 @@ public class AdjustFragment extends Fragment {
                     js = new JoinSchedule(start_picker.getHour(), end_picker.getHour());
 
                     for(final FriendsListItem fl : checked_list){
+                        Log.d("LOG_CHKUSER", friends_list.get(fl.getFriend_name()));
                         if(CheckOurUser.chkUser(friends_list.get(fl.getFriend_name())))
                             fList.add(friends_list.get(fl.getFriend_name()));
                         else {

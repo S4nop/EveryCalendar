@@ -82,9 +82,12 @@ public class TableFragment extends Fragment {
 
         return rootView;
     }
-    public void postDB(String idNum) {
+    public void postDB(ArrayList<TimetableData> tList) {
         Map<String, Object> out = new HashMap<>();
-        out.put("/User_information/" + idNum + "/", "O");
+        Map<String, Object> tt = new HashMap<>();
+        tt.put("Table", tList);
+        tt.put("Name", activity.getName());
+        out.put("/User_information/" + activity.getId() + "/", tt);
         FirebaseDatabase.getInstance().getReference().updateChildren(out);
 
     }
@@ -95,7 +98,6 @@ public class TableFragment extends Fragment {
                 etR = new MyTimeTableReq(cookie);
                 etR.makeTimeTable();
                 activity.setIdNum(etR.gettNum());
-                postDB(etR.gettNum());
 
                 Log.d("LOG_MAKETABLE", stDate + " " + edDate);
                 gCR = new GoogleCalRequest(context, thisAct, "Account");
@@ -110,6 +112,7 @@ public class TableFragment extends Fragment {
                 }
 
                 events = etR.getClassList();
+                postDB(events);
                 activity.getRcmFrnd().setClasses(events);
                 activity.getRcmFrnd().recommmend();
 
