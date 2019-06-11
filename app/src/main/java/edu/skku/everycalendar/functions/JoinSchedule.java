@@ -69,6 +69,7 @@ public class JoinSchedule {
     }
     public void addEvents(ArrayList<TimetableData> event){
         for(TimetableData td : event){
+            Log.d("LOG4", "LOOP");
             wEvents[Integer.parseInt(td.getWeekDay())].add(td);
             Log.d("LOG_ADDEVENTS", td.getName());
         }
@@ -89,6 +90,7 @@ public class JoinSchedule {
         Integer st, ed;
 
         for(TimetableData td : wEvents[idx]){
+            Log.d("LOG5", "LOOP");
             st = td.getStartTime() / 12;
             ed = td.getEndTime() / 12 + (td.getEndTime() % 12 == 0 ? 0 : 1);
             for(int i = st; i < ed; i++){
@@ -102,7 +104,7 @@ public class JoinSchedule {
         Random rnd = new Random();
         for(int i = 0; i < 7; i++){
             for(int j = 0; j < 24; j++){
-                Log.d("LOG_CHKABLETIME", "Abletime " + i + " " + j + " = " + ableTime[i][j]);
+                //Log.d("LOG_CHKABLETIME", "Abletime " + i + " " + j + " = " + ableTime[i][j]);
                 if(ableTime[i][j]) out.add(new TimetableData("","","",Integer.toString(i),j * 12,
                         (j+1)*12, "", Color.parseColor("#FF9B9B")));
             }
