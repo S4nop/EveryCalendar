@@ -75,6 +75,7 @@ public class JoinSchedulReq {
 
             }
         });
+        Log.d("LOG_JOINSCHEDREQ", "HERE");
     }
 
     public void chkRequest(){

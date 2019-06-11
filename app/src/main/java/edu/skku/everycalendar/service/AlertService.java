@@ -40,10 +40,13 @@ public class AlertService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("LOG_SERV", "onStart");
-        id = intent.getStringExtra("ID");
-        Log.d("LOG_SERV", "onStart_ID : " + id);
-        chkRequest();
+        try {
+            id = intent.getStringExtra("ID");
+        } catch(Exception e){Log.d("LOG_SERV", "ERR!"); stopSelf(startId);}
+        if(id == null) stopSelf(startId);
+        else chkRequest();
 
+        Log.d("LOG_SERV", "onStart_ID : " + id);
         return super.onStartCommand(intent, flags, startId);
 
     }

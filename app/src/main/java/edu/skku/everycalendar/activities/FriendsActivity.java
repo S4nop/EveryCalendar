@@ -1,5 +1,6 @@
 package edu.skku.everycalendar.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import edu.skku.everycalendar.R;
 import edu.skku.everycalendar.dataType.TimetableData;
 import edu.skku.everycalendar.everytime.FriendTimetableReq;
+import edu.skku.everycalendar.functions.Utilities;
 import edu.skku.everycalendar.table.TableView;
 
 import static java.lang.Math.max;
@@ -27,6 +29,7 @@ public class FriendsActivity extends AppCompatActivity {
     TextView text_excep;
     FrameLayout table_container;
     ArrayList<TimetableData> timeData;
+    Context context;
     TableView tv;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,7 +52,7 @@ public class FriendsActivity extends AppCompatActivity {
                 finish();
             }
         });
-
+        context = getApplicationContext();
         makeTable();
     }
 
