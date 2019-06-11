@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -56,7 +57,7 @@ public class AdjustFragment extends Fragment {
     ListView listView;
     TextView selected_week;
     ScrollView scrollView;
-
+    ConstraintLayout adjLayout;
     Map<String, FriendInfoData> friends_list;
     //Map<String, String> friends_list_to_tt;
     FriendsSelectAdapter adapter;
@@ -85,19 +86,9 @@ public class AdjustFragment extends Fragment {
         result_btn = rootView.findViewById(R.id.btn_result);
         reset_btn = rootView.findViewById(R.id.btn_reset);
         month_btn = rootView.findViewById(R.id.btn_month);
-
+        adjLayout = rootView.findViewById(R.id.adjLayoutP);
         start_picker = rootView.findViewById(R.id.start_time);
         end_picker = rootView.findViewById(R.id.end_time);
-
-/*
-        listView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                scrollView.requestDisallowInterceptTouchEvent(true);
-                return false;
-            }
-        });
-*/
 
 
         new Thread() {
@@ -110,7 +101,13 @@ public class AdjustFragment extends Fragment {
                     }
                 friends_list = activity.friendList;
                 adapter = new FriendsSelectAdapter(activity.friends_list);
-                listView.setAdapter(adapter);
+                adjLayout.post(new Runnable(){
+                    @Override
+                    public void run(){
+                        listView.setAdapter(adapter);
+                    }
+                });
+
 
             }
         }.start();
