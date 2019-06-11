@@ -121,7 +121,7 @@ public class TableView extends ConstraintLayout {
     }
 
     private Button setBtnClickListener(Button btn, final TimetableData event){
-        if(!event.getName().equals(""))
+        if(event.getName() != null && !event.getName().equals(""))
             btn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {

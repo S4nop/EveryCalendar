@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,30 +19,18 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.common.Scopes;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.util.DateTime;
-import com.google.api.client.util.ExponentialBackOff;
-import com.google.api.services.calendar.CalendarScopes;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.concurrent.Callable;
 
 import edu.skku.everycalendar.R;
-import edu.skku.everycalendar.activities.MainActivity;
 import edu.skku.everycalendar.dataType.TimetableData;
 import edu.skku.everycalendar.functions.Utilities;
 import edu.skku.everycalendar.googleCalendar.EventListAdapter;
-import edu.skku.everycalendar.googleCalendar.EventListItem;
+import edu.skku.everycalendar.dataType.EventListItem;
 import edu.skku.everycalendar.googleCalendar.GoogleCalRequest;
 import edu.skku.everycalendar.googleCalendar.GoogleCalTask;
 import edu.skku.everycalendar.monthItems.MonthCalendar;
-import edu.skku.everycalendar.table.TableView;
 
 public class GoogleCalFragment extends Fragment {
     GoogleCalRequest gcr;
@@ -85,6 +72,9 @@ public class GoogleCalFragment extends Fragment {
 
         listView.setAdapter(adapter);
 
+        String firstday = Utilities.getCurSunday();
+        String lastday = Utilities.getCurSaturday();
+        setWeek(firstday, lastday);
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,9 +100,6 @@ public class GoogleCalFragment extends Fragment {
                 builder.setView(alertLayoutView);
                 builder.setCancelable(false); // 바깥 클릭해도 안꺼지게
 
-                String firstday = Utilities.getCurSunday();
-                String lastday = Utilities.getCurSaturday();
-                //setWeek(firstday, lastday);
 
                 builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
@@ -142,7 +129,8 @@ public class GoogleCalFragment extends Fragment {
 
                         DateTime mSt_date = new DateTime(st_year+"-"+st_month+"-"+st_date + "T" + st_hour + ":" + st_min + ":00.000+09:00");
                         DateTime mEd_date = new DateTime(ed_year+"-"+ed_month+"-"+ed_date + "T" + ed_hour + ":" + ed_min + ":00.000+09:00");
-                        gcr.addEventToCalendar(name, loca, desc, mSt_date, mEd_date);
+                        gcr.setModeAdd(name, loca, desc, mSt_date, mEd_date);
+                        gcr.addEventToCalendar();
                         //EventListItem item = new EventListItem(name,form_st_date,form_ed_date,loca,desc);
                         //list.add(item);
                         //adapter.notifyDataSetChanged();
@@ -238,8 +226,8 @@ public class GoogleCalFragment extends Fragment {
             public void run(){
                 GoogleCalRequest gCR;
                 gCR = new GoogleCalRequest(context, activity.getThisAct());
-
-                gCR.getCalendarData(new DateTime(stDate + "T00:00:00.000+09:00"), new DateTime(edDate + "T23:59:59.000+09:00"));
+                gCR.setModeGet(new DateTime(stDate + "T00:00:00.000+09:00"), new DateTime(edDate + "T23:59:59.000+09:00"));
+                gCR.getCalendarData();
 
                 while(!gCR.getFinished()) {
                     try {
@@ -252,14 +240,14 @@ public class GoogleCalFragment extends Fragment {
                 table = gCR.getEvents();
                 list.clear();
                 if(table!=null){
-                    for(int loop=0; loop<table.size(); loop++){
-                        EventListItem item = new EventListItem(table.get(loop).getName(), st_date, ed_date, table.get(loop).getPlace(),table.get(loop).getDescript());
+                    for(TimetableData td : table){
+                        EventListItem item = new EventListItem(td.getName(), td.getStartTime().toString(), td.getEndTime().toString(), td.getPlace(),td.getDescript());
                         list.add(item);
                     }
                 }
                 calLayout.post(new Runnable(){
                     public void run() {
-                        adapter.notifyDataSetChanged();
+                        listView.setAdapter(adapter);
                     }
                 });
             }

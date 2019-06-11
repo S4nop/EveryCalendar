@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import edu.skku.everycalendar.R;
+import edu.skku.everycalendar.dataType.EventListItem;
 
 public class EventListAdapter extends BaseAdapter implements Filterable {
     ArrayList<EventListItem> listViewItemList;
@@ -49,8 +50,7 @@ public class EventListAdapter extends BaseAdapter implements Filterable {
         TextView event_date = convertView.findViewById(R.id.event_date);
 
         event_name.setText(filteredItemList.get(position).getEvent_name());
-        event_date.setText(filteredItemList.get(position).getEvent_st_date()+" ~ "+
-                filteredItemList.get(position).getEvent_ed_date());
+        event_date.setText(filteredItemList.get(position).getEvent_desc());
         return convertView;
     }
 

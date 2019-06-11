@@ -101,8 +101,8 @@ public class TableFragment extends Fragment {
 
                 Log.d("LOG_MAKETABLE", stDate + " " + edDate);
                 gCR = new GoogleCalRequest(context, thisAct);
-
-                gCR.getCalendarData(new DateTime(stDate + "T00:00:00.000+09:00"), new DateTime(edDate + "T23:59:59.000+09:00"));
+                gCR.setModeGet(new DateTime(stDate + "T00:00:00.000+09:00"), new DateTime(edDate + "T23:59:59.000+09:00"));
+                gCR.getCalendarData();
 
                 while(!etR.getFinished() || !gCR.getFinished()) {
                     try {
