@@ -16,12 +16,14 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.Callable;
 
 import edu.skku.everycalendar.R;
 import edu.skku.everycalendar.activities.MainActivity;
-import edu.skku.everycalendar.everytime.AddFriendRequest;
 import edu.skku.everycalendar.googleCalendar.EventListAdapter;
 import edu.skku.everycalendar.googleCalendar.EventListItem;
 import edu.skku.everycalendar.monthItems.MonthCalendar;
@@ -38,7 +40,6 @@ public abstract class CallableArg<T> implements Callable<Void> {
 
     public static class GoogleCalFragment extends Fragment {
         ImageButton btn_add;
-        ImageButton btn_delete;
         ImageButton btn_month;
 
         TextView week_text;
@@ -63,7 +64,6 @@ public abstract class CallableArg<T> implements Callable<Void> {
             context = activity.mainContext;
 
             btn_add = rootView.findViewById(R.id.btn_add);
-            btn_delete = rootView.findViewById(R.id.btn_delete);
             btn_month = rootView.findViewById(R.id.month_btn);
 
             week_text = rootView.findViewById(R.id.week_text);
@@ -71,8 +71,6 @@ public abstract class CallableArg<T> implements Callable<Void> {
             listView = rootView.findViewById(R.id.listView);
 
             list = new ArrayList<>();
-            EventListItem item = new EventListItem("name","0101","서울","이벤트");
-            list.add(item);
             adapter = new EventListAdapter(list,context);
 
             listView.setAdapter(adapter);
@@ -120,8 +118,24 @@ public abstract class CallableArg<T> implements Callable<Void> {
                             String ed_date = ed_date_edit.getText().toString();
                             String ed_hour = ed_hour_edit.getText().toString();
                             String ed_min = ed_min_edit.getText().toString();
+
+                            //형식 변환된 date, time ( yyyy-mm-dd, hh:mm )
+                            String form_st_date =st_year+"-"+st_month+"-"+st_date+" "+st_hour+":"+st_min;
+                            String form_ed_date =ed_year+"-"+ed_month+"-"+ed_date+" "+ed_hour+":"+ed_min;
+
+                            //구글 캘린더에 넣을 때 date 형식이어야 하면 쓰세요
+                            try {
+                                Date mSt_date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(form_st_date);
+                                Date mEd_date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(form_ed_date);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+                            EventListItem item = new EventListItem(name,form_st_date,form_ed_date,loca,desc);
+                            list.add(item);
+                            adapter.notifyDataSetChanged();
                         }
-                    });
+                   });
 
                     builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
                         @Override
@@ -144,6 +158,7 @@ public abstract class CallableArg<T> implements Callable<Void> {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    final int index = position;
                     LayoutInflater inflater = getLayoutInflater();
                     View alertLayoutView = inflater.inflate(R.layout.dialog_event_info, null);
 
@@ -152,19 +167,22 @@ public abstract class CallableArg<T> implements Callable<Void> {
                     builder.setView(alertLayoutView);
 
                     TextView name_text = alertLayoutView.findViewById(R.id.name);
-                    TextView date_text = alertLayoutView.findViewById(R.id.date);
+                    TextView st_date_text = alertLayoutView.findViewById(R.id.st_date);
+                    TextView ed_date_text = alertLayoutView.findViewById(R.id.ed_date);
                     TextView loca_text = alertLayoutView.findViewById(R.id.loca);
                     TextView desc_text = alertLayoutView.findViewById(R.id.desc);
 
                     EventListItem item = list.get(position);
 
                     String name = item.getEvent_name();
-                    String date = item.getEvent_date();
+                    String st_date = item.getEvent_st_date();
+                    String ed_date = item.getEvent_ed_date();
                     String loca = item.getEvent_loca();
                     String desc = item.getEvent_desc();
 
                     name_text.setText(name);
-                    date_text.setText(date);
+                    st_date_text.setText(st_date);
+                    ed_date_text.setText(ed_date);
                     loca_text.setText(loca);
                     desc_text.setText(desc);
 
@@ -176,6 +194,8 @@ public abstract class CallableArg<T> implements Callable<Void> {
                     builder.setNegativeButton("삭제", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            list.remove(index);
+                            adapter.notifyDataSetChanged();
                         }
                     });
                     builder.show();

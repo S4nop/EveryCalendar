@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="설명 추가"
-        android:inputType="textPersonName"
+        android:inputType="text|textMultiLine"
+        android:minLines="3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tableLayout" />
@@ -70,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="date" />
 
                 <TextView
                     android:id="@+id/st_year_text"
@@ -84,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="date"  />
 
                 <TextView
                     android:id="@+id/st_month_text"
@@ -98,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="date"  />
 
                 <TextView
                     android:id="@+id/st_date_text"
@@ -133,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="time"  />
 
                 <TextView
                     android:id="@+id/st_hour_text"
@@ -147,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="time" />
 
                 <TextView
                     android:id="@+id/st_min_text"
@@ -182,7 +183,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="date" />
 
                 <TextView
                     android:id="@+id/textView20"
@@ -196,7 +197,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="date" />
 
                 <TextView
                     android:id="@+id/textView21"
@@ -210,7 +211,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="date" />
 
                 <TextView
                     android:id="@+id/textView22"
@@ -245,7 +246,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="time" />
 
                 <TextView
                     android:id="@+id/textView23"
@@ -259,7 +260,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:inputType="time" />
 
                 <TextView
                     android:id="@+id/textView24"

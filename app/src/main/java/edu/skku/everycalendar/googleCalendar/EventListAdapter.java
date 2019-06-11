@@ -49,7 +49,8 @@ public class EventListAdapter extends BaseAdapter implements Filterable {
         TextView event_date = convertView.findViewById(R.id.event_date);
 
         event_name.setText(filteredItemList.get(position).getEvent_name());
-        event_date.setText(filteredItemList.get(position).getEvent_date());
+        event_date.setText(filteredItemList.get(position).getEvent_st_date()+" ~ "+
+                filteredItemList.get(position).getEvent_ed_date());
         return convertView;
     }
 

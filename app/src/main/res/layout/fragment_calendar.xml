@@ -43,13 +43,6 @@
             android:background="@color/transparent"
             app:srcCompat="@drawable/ic_calendar_plus" />
 
-        <ImageButton
-            android:id="@+id/btn_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/transparent"
-            app:srcCompat="@drawable/ic_alendar_minus" />
     </LinearLayout>
 
     <ListView
