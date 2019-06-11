@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TableFragment tableFragment = new TableFragment();
     private FriendsFragment friendsFragment = new FriendsFragment();
     private AdjustFragment adjustFragment = new AdjustFragment();
-    private CallableArg.GoogleCalFragment googleCalFragment = new CallableArg.GoogleCalFragment();
+    private GoogleCalFragment googleCalFragment = new GoogleCalFragment();
     private recommendFriend rcmFrnd = new recommendFriend();
     private boolean friendListFin = false;
     Fragment active = tableFragment;
@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public HashMap<String, String> friends_list_with_id;
     public Map<String, FriendInfoData> friendList;
     private BackButtonHandler backButtonHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -208,11 +209,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void startService(){
-        if(!isServiceRunningCheck()){
+        if(isServiceRunningCheck()) {
+            sm.stopServ();
+        }
             Log.d("ID", id);
             sm.setActivity(mainContext, id);
             sm.startServ();
-        }
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -261,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Map<String, ArrayList<TimetableData>> pack = new HashMap<>();
                 pack.put(id, events);
                 DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
-                upd.put("/SchedJoin/" + reqID, pack);
+                upd.put("/SchedJoin/" + reqID + "/" + id, events);
                 mRef.updateChildren(upd);
             }
         }.start();
@@ -412,4 +414,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public Map<String, FriendInfoData> getFriendList() {
         return friendList;
     }
+
 }

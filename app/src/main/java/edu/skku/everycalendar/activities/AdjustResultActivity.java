@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.google.api.client.util.DateTime;
@@ -29,7 +30,9 @@ public class AdjustResultActivity extends AppCompatActivity {
     ImageButton btn_save;
     FrameLayout frmResult;
     ArrayList<TimetableData> timeData;
+    ArrayList<String> fList;
     TableView tv;
+    TextView txtFriends;
     int stTime, edTime;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class AdjustResultActivity extends AppCompatActivity {
         btn_back = findViewById(R.id.btn_back);
         btn_save = findViewById(R.id.btn_save);
         frmResult = findViewById(R.id.frmResult);
+        txtFriends = findViewById(R.id.txtFriends);
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,6 +57,12 @@ public class AdjustResultActivity extends AppCompatActivity {
         }
         stTime = getIntent().getIntExtra("stTime", stTime);
         edTime = getIntent().getIntExtra("edTime", edTime);
+        fList = getIntent().getStringArrayListExtra("friends");
+        String fs = "";
+        for(String s : fList){
+            fs += s + " ";
+        }
+        txtFriends.setText(fs);
         Log.d("LOG_RESULTACT", ""+ timeData.size() + " - " + stTime + " - " + edTime);
 
 
@@ -89,21 +99,5 @@ public class AdjustResultActivity extends AppCompatActivity {
                 });
             }
         }.start();
-    }
-
-    private int getStartTime(ArrayList<TimetableData> arrTD){
-        int min = 9999;
-        for(TimetableData td : arrTD){
-            min = min(td.getStartTime(), min);
-        }
-        return min / 12;
-    }
-
-    private int getEndTime(ArrayList<TimetableData> arrTD){
-        int max = -1;
-        for(TimetableData td : arrTD){
-            max = max(td.getEndTime(), max);
-        }
-        return max / 12;
     }
 }

@@ -41,24 +41,32 @@ public class JoinSchedulReq {
 
     public void joinRequest(final String stDate,final String edDate, final ArrayList<String> friends, JoinSchedule js){
         this.js = js;
-        FirebaseDatabase.getInstance().getReference().child("SchedJoinReq").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("SchedJoin").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                int i = 101;
                 Iterator<DataSnapshot> child = dataSnapshot.getChildren().iterator();
-
+                Log.d("LOG_JOINREQ", "OndataChanged");
                 Random rnd = new Random();
-                id = Integer.toString(rnd.nextInt(50000));
+                id = Integer.toString(i);
+                Log.d("LOG_RAND", "" + rnd.nextInt(50000));
                 while(child.hasNext())
                 {
-                    if(id.equals(child)){
-                        id = Integer.toString(rnd.nextInt(50000));
+                    String tmp = child.next().getKey();
+                    Log.d("LOG1", "LOOP " + id + " - " + tmp);
+                    if(id.equals(tmp)){
+                        id = Integer.toString(++i);
                         child = dataSnapshot.getChildren().iterator();
                     }
+                    //child.next();
                 }
 
                 Map<String, Object> out = new HashMap<>();
+
+                out.put("/SchedJoin/" + id + "/@Req", "");
+
                 for(String nid : friends){
+                    Log.d("LOG2", "LOOP");
                     Map<String, String> val = new HashMap<>();
                     Map<String, Object> pack = new HashMap<>();
                     val.put("edDate", edDate);
@@ -89,12 +97,13 @@ public class JoinSchedulReq {
         @Override
         public Void call() {
             try{
-                if(!uploadedFriend.contains(arg)){
-                    uploadedFriend.add(arg);
-                    if(uploadedFriend.size() == fNum2){
-                        getFriendsTT();
+                if(!arg.equals("@Req"))
+                    if(!uploadedFriend.contains(arg)){
+                        uploadedFriend.add(arg);
+                        if(uploadedFriend.size() == fNum2){
+                            getFriendsTT();
+                        }
                     }
-                }
             }catch(Exception e){}
             return null;
         }
@@ -130,7 +139,13 @@ public class JoinSchedulReq {
         public Void call() {
             try{
                 Log.d("LOGCALL", "HERE");
-                addDBNum();
+                new Thread(){
+                    @Override
+                    public void run(){
+                        addDBNum();
+                    }
+                }.start();
+                //addDBNum();
             }catch(Exception e){}
             return null;
         }
