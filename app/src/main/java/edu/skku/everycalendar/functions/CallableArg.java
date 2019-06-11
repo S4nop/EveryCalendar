@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +17,27 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.Scopes;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.util.DateTime;
+import com.google.api.client.util.ExponentialBackOff;
+import com.google.api.services.calendar.CalendarScopes;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.Callable;
 
 import edu.skku.everycalendar.R;
 import edu.skku.everycalendar.activities.MainActivity;
+import edu.skku.everycalendar.dataType.TimetableData;
 import edu.skku.everycalendar.googleCalendar.EventListAdapter;
 import edu.skku.everycalendar.googleCalendar.EventListItem;
+import edu.skku.everycalendar.googleCalendar.GoogleCalRequest;
+import edu.skku.everycalendar.googleCalendar.GoogleCalTask;
 import edu.skku.everycalendar.monthItems.MonthCalendar;
 
 public abstract class CallableArg<T> implements Callable<Void> {
@@ -52,8 +64,14 @@ public abstract class CallableArg<T> implements Callable<Void> {
         String st_date;
         String ed_date;
 
+        ArrayList<TimetableData> table;
         ArrayList<EventListItem> list;
         EventListAdapter adapter;
+
+        GoogleCalRequest GCL;
+        GoogleCalTask googleCalTask;
+        GoogleAccountCredential mCred;
+        private static final String[] SCOPES = {CalendarScopes.CALENDAR};
 
         @Nullable
         @Override
@@ -66,7 +84,10 @@ public abstract class CallableArg<T> implements Callable<Void> {
             btn_add = rootView.findViewById(R.id.btn_add);
             btn_month = rootView.findViewById(R.id.month_btn);
 
+            st_date = getCurSunday();
+            ed_date = getCurSaturday();
             week_text = rootView.findViewById(R.id.week_text);
+            week_text.setText(st_date+" ~ "+ed_date);
 
             listView = rootView.findViewById(R.id.listView);
 
@@ -75,6 +96,12 @@ public abstract class CallableArg<T> implements Callable<Void> {
 
             listView.setAdapter(adapter);
 
+            GCL = new GoogleCalRequest(context, activity, "Account");
+            mCred = GoogleAccountCredential.usingOAuth2(
+                    context,
+                    Arrays.asList(SCOPES)
+            ).setBackOff(new ExponentialBackOff());
+            googleCalTask = new GoogleCalTask(mCred);
             btn_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -120,16 +147,19 @@ public abstract class CallableArg<T> implements Callable<Void> {
                             String ed_min = ed_min_edit.getText().toString();
 
                             //형식 변환된 date, time ( yyyy-mm-dd, hh:mm )
-                            String form_st_date =st_year+"-"+st_month+"-"+st_date+" "+st_hour+":"+st_min;
-                            String form_ed_date =ed_year+"-"+ed_month+"-"+ed_date+" "+ed_hour+":"+ed_min;
+                            String form_st_date =st_year+"-"+st_month+"-"+st_date;
+                            String form_ed_date =ed_year+"-"+ed_month+"-"+ed_date;
 
-                            //구글 캘린더에 넣을 때 date 형식이어야 하면 쓰세요
+                            /*구글 캘린더에 넣을 때 date 형식이어야 하면 쓰세요
                             try {
                                 Date mSt_date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(form_st_date);
                                 Date mEd_date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(form_ed_date);
                             } catch (ParseException e) {
                                 e.printStackTrace();
-                            }
+                            }*/
+
+                            googleCalTask.setModeAdd(name,loca,desc,new DateTime(form_st_date + "T00:00:00.000+09:00"), new DateTime(form_ed_date + "T23:59:59.000+09:00") );
+                            googleCalTask.addEvent();
 
                             EventListItem item = new EventListItem(name,form_st_date,form_ed_date,loca,desc);
                             list.add(item);
@@ -194,6 +224,15 @@ public abstract class CallableArg<T> implements Callable<Void> {
                     builder.setNegativeButton("삭제", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+
+                            String calendarTitle = list.get(index).getEvent_name();
+
+                            try{
+                                googleCalTask.getmServ().calendars().delete(googleCalTask.getCalendarID(calendarTitle)).execute();
+                            }catch(Exception e){
+                                e.printStackTrace();
+                                Log.d("Delete","100");
+                            }
                             list.remove(index);
                             adapter.notifyDataSetChanged();
                         }
@@ -209,6 +248,45 @@ public abstract class CallableArg<T> implements Callable<Void> {
             this.ed_date = ed_date;
             this.st_date = st_date;
             week_text.setText(st_date+" ~ "+ed_date);
+            GCL.getCalendarData(new DateTime( st_date + "T00:00:00.000+09:00"), new DateTime(ed_date + "T23:59:59.000+09:00"));
+            Log.d("Thread","0");
+            while(!GCL.getFinished()) {
+                try {
+                    Log.d("Thread","1");
+                    Thread.sleep(500);      // thread 계속돌아서 에러남
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            Log.d("Thread","2");
+            try{
+                table.addAll(GCL.getEvents());
+            }
+            catch(NullPointerException e){
+                e.printStackTrace();
+            }
+            Log.d("Thread","3");
+            list.clear();
+            if(table!=null){
+                for(int loop=0; loop<table.size(); loop++){
+                    EventListItem item = new EventListItem(table.get(loop).getName(), st_date, ed_date, table.get(loop).getPlace(),table.get(loop).getDescript());
+                    list.add(item);
+                }
+            }
+            adapter.notifyDataSetChanged();
+        }
+        public static String getCurSaturday(){
+            java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
+            return formatter.format(c.getTime());
+        }
+
+        public static String getCurSunday(){
+            java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+            return formatter.format(c.getTime());
         }
     }
 }

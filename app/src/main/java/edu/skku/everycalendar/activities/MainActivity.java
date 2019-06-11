@@ -203,13 +203,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        startService();
+//        startService();
     }
 
     private void startService(){
         if(!isServiceRunningCheck()){
             sm.setActivity(mainContext, id);
-            sm.startServ();
+ //           sm.startServ();
         }
     }
 

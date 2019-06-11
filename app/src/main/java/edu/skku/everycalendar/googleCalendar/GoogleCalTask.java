@@ -5,10 +5,13 @@ import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.model.CalendarList;
+import com.google.api.services.calendar.model.CalendarListEntry;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
@@ -55,6 +58,9 @@ public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
     protected void onCancelled() {
 
     }
+    public com.google.api.services.calendar.Calendar getmServ(){
+        return mServ;
+    }
 
     private List<Event> getEvent() throws IOException {
 
@@ -69,7 +75,7 @@ public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
         return items;
     }
 
-    private void addEvent() {
+    public void addEvent() {
         Event event = new Event()
                 .setSummary(add_Summary)
                 .setLocation(add_Location)
@@ -112,5 +118,34 @@ public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
 
     public boolean getAddResult(){
         return addResult;
+    }
+
+    public String getCalendarID(String calendarTitle){
+
+        String id = null;
+
+        // Iterate through entries in calendar list
+        String pageToken = null;
+        do {
+            CalendarList calendarList = null;
+            try {
+                calendarList = mServ.calendarList().list().setPageToken(pageToken).execute();
+            } catch (UserRecoverableAuthIOException e) {
+                e.printStackTrace();
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+            List<CalendarListEntry> items = calendarList.getItems();
+
+            for (CalendarListEntry calendarListEntry : items) {
+                Log.d("Items",calendarListEntry.getSummary());
+                if ( calendarListEntry.getSummary().equals(calendarTitle)) {
+                    id = calendarListEntry.getId();
+                }
+            }
+            pageToken = calendarList.getNextPageToken();
+        } while (pageToken != null);
+
+        return id;
     }
 }

@@ -49,7 +49,7 @@ public class ServiceMaker extends AppCompatActivity {
         Intent srv = new Intent(context, AlertService.class);
         Log.d("LOG_SERVMAKER", id);
         srv.putExtra("ID", id);
-        context.startService(srv);
+//        context.startService(srv);
     }
 
     public void stopServ(){
