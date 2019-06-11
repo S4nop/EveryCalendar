@@ -36,7 +36,7 @@ import edu.skku.everycalendar.dataType.TimetableData;
 import edu.skku.everycalendar.everytime.FriendsListRequest;
 import edu.skku.everycalendar.everytime.MyTimeTableReq;
 import edu.skku.everycalendar.friends.FriendsListItem;
-import edu.skku.everycalendar.friends.recommendFriend;
+import edu.skku.everycalendar.friends.RecommendFriend;
 import edu.skku.everycalendar.functions.BackButtonHandler;
 import edu.skku.everycalendar.functions.CallableArg;
 import edu.skku.everycalendar.R;
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FriendsFragment friendsFragment = new FriendsFragment();
     private AdjustFragment adjustFragment = new AdjustFragment();
     private CallableArg.GoogleCalFragment googleCalFragment = new CallableArg.GoogleCalFragment();
-    private recommendFriend rcmFrnd = new recommendFriend();
+    private RecommendFriend rcmFrnd = new RecommendFriend();
     private boolean friendListFin = false;
     Fragment active = tableFragment;
     ServiceMaker sm = new ServiceMaker();
@@ -407,7 +407,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return name;
     }
 
-    public recommendFriend getRcmFrnd() {
+    public RecommendFriend getRcmFrnd() {
         return rcmFrnd;
     }
 

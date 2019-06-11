@@ -114,7 +114,7 @@ public class TableFragment extends Fragment {
                 events = etR.getClassList();
                 postDB(events);
                 activity.getRcmFrnd().setClasses(events);
-                activity.getRcmFrnd().recommmend();
+                activity.getRcmFrnd().recommend();
 
                 postUser(user_id,user_name,events);
                 events.addAll(gCR.getEvents());

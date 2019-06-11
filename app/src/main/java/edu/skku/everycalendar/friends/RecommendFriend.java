@@ -11,13 +11,13 @@ import edu.skku.everycalendar.dataType.TimetableData;
 import edu.skku.everycalendar.functions.CallableArg;
 import edu.skku.everycalendar.functions.RealTimeDBPull;
 
-public class recommendFriend {
+public class RecommendFriend {
 
     ArrayList<TimetableData> classes;
     HashMap<String, String> friendList;
     String id;
 
-    public void recommmend(){
+    public void recommend(){
         friendList = new HashMap<>();
         for(TimetableData td : classes) {
             if(td.getIdNum() != "")
