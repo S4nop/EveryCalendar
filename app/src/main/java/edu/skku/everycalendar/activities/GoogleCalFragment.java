@@ -1,4 +1,4 @@
-package edu.skku.everycalendar.functions;
+package edu.skku.everycalendar.activities;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -20,25 +20,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.Callable;
 
 import edu.skku.everycalendar.R;
-import edu.skku.everycalendar.activities.MainActivity;
 import edu.skku.everycalendar.googleCalendar.EventListAdapter;
 import edu.skku.everycalendar.googleCalendar.EventListItem;
 import edu.skku.everycalendar.monthItems.MonthCalendar;
 
-public abstract class CallableArg<T> implements Callable<Void> {
-    public T arg;
-
-    void setArg(T arg){
-        this.arg = arg;
-    }
-
-    @Override
-    public abstract Void call();
-
-    public static class GoogleCalFragment extends Fragment {
+public class GoogleCalFragment extends Fragment {
         ImageButton btn_add;
         ImageButton btn_month;
 
@@ -135,7 +123,7 @@ public abstract class CallableArg<T> implements Callable<Void> {
                             list.add(item);
                             adapter.notifyDataSetChanged();
                         }
-                   });
+                    });
 
                     builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
                         @Override
@@ -210,5 +198,5 @@ public abstract class CallableArg<T> implements Callable<Void> {
             this.st_date = st_date;
             week_text.setText(st_date+" ~ "+ed_date);
         }
-    }
+
 }

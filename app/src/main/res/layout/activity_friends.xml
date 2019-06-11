@@ -5,6 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/text_excep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="10dp"
+        android:text="시간표가 공개되지 않은 친구입니다"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/table_container"
+        app:layout_constraintEnd_toEndOf="@+id/table_container"
+        app:layout_constraintStart_toStartOf="@+id/table_container"
+        app:layout_constraintTop_toTopOf="@+id/table_container" />
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/topLayout"
         android:layout_width="0dp"

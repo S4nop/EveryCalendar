@@ -3,6 +3,7 @@ package edu.skku.everycalendar.activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.api.client.util.DateTime;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
@@ -28,7 +30,9 @@ import java.util.Iterator;
 import java.util.Map;
 
 import edu.skku.everycalendar.dataType.FriendInfoData;
+import edu.skku.everycalendar.dataType.TimetableData;
 import edu.skku.everycalendar.everytime.FriendTimetableReq;
+import edu.skku.everycalendar.everytime.MyTimeTableReq;
 import edu.skku.everycalendar.friends.FriendsListItem;
 import edu.skku.everycalendar.friends.FriendsSelectAdapter;
 import edu.skku.everycalendar.functions.CheckOurUser;
@@ -36,6 +40,7 @@ import edu.skku.everycalendar.functions.JoinSchedulReq;
 import edu.skku.everycalendar.functions.JoinSchedule;
 import edu.skku.everycalendar.R;
 import edu.skku.everycalendar.functions.Utilities;
+import edu.skku.everycalendar.googleCalendar.GoogleCalRequest;
 import edu.skku.everycalendar.monthItems.MonthCalendar;
 
 public class AdjustFragment extends Fragment {
@@ -61,11 +66,16 @@ public class AdjustFragment extends Fragment {
     String st_date = null;
     JoinSchedule js;
     JoinSchedulReq jsr;
+    LayoutInflater inflater;
+    ViewGroup container;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_adjust, container, false);
-        inflater.inflate(R.layout.fragment_adjust, container, false);
+
+        this.inflater = inflater;
+        this.container = container;
 
         activity = (MainActivity) getActivity();
         context = activity.mainContext;
@@ -75,12 +85,11 @@ public class AdjustFragment extends Fragment {
         result_btn = rootView.findViewById(R.id.btn_result);
         reset_btn = rootView.findViewById(R.id.btn_reset);
         month_btn = rootView.findViewById(R.id.btn_month);
-        scrollView = rootView.findViewById(R.id.scroll);
 
         start_picker = rootView.findViewById(R.id.start_time);
         end_picker = rootView.findViewById(R.id.end_time);
 
-
+/*
         listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -88,14 +97,8 @@ public class AdjustFragment extends Fragment {
                 return false;
             }
         });
+*/
 
-//        final ArrayList<FriendsListItem> friends = new ArrayList<>();
-//        Iterator<String> iterator = friends_list.keySet().iterator();
-//        while(iterator.hasNext()){
-//            String name = iterator.next();
-//            FriendsListItem item = new FriendsListItem(name);
-//            friends.add(item);
-//        }
 
         new Thread() {
             @Override
@@ -120,14 +123,14 @@ public class AdjustFragment extends Fragment {
                 int start_min;
                 int end_hour;
                 int end_min;
-                //check된 친구 item들이 들어있는 list 
-                ArrayList<FriendsListItem> checked_list = new ArrayList<>();
+                //check된 친구 item들이 들어있는 list
+                final ArrayList<String> checked_list = new ArrayList<>();
 
                 for (int i = count-1; i >= 0; i--) {
                     if (isChecked.get(i)) {
                         FriendsListItem item = activity.friends_list.get(i);
                         Log.d("get_checked",item.getFriend_name());
-                        checked_list.add(item);
+                        checked_list.add(item.getFriend_name());
                     }
                 }
 
@@ -149,22 +152,20 @@ public class AdjustFragment extends Fragment {
                     Utilities.makeToast("시간 선택이 올바르지 않습니다");
                 }
                 else{
-                    Log.d("HERERHE","11");
                     jsr = new JoinSchedulReq();
                     ArrayList<String> fList = new ArrayList<>();
-                    fList.add(activity.getId());
+                    //fList.add(activity.getId());
                     js = new JoinSchedule(start_picker.getHour(), end_picker.getHour());
-
-                    for(final FriendsListItem fl : checked_list){
+                    for(final String fname : checked_list){
                         //Log.d("LOG_CHKUSER", friends_list.get(fl.getFriend_name()));
-                        if(CheckOurUser.chkUser(friends_list.get(fl.getFriend_name())))
-                            fList.add(friends_list.get(fl.getFriend_name()).getId());
+                        if(CheckOurUser.chkUser(friends_list.get(fname)))
+                            fList.add(friends_list.get(fname).getId());
                         else {
                             Utilities.makeToast("EveryCalendar를 사용하지 않는 인원이 포함되어 있습니다\n해당 인원은 Everytime시간표를 이용하여 조율합니다");
                             new Thread(){
                                 @Override
                                 public void run(){
-                                    js.addEvents(friends_list.get(fl.getFriend_name()).getClasses());
+                                    js.addEvents(friends_list.get(fname).getClasses());
                                     jsr.addDBNum();
                                 }
                             }.start();
@@ -173,31 +174,30 @@ public class AdjustFragment extends Fragment {
                     }
                     jsr.setfNum2(fList.size());
                     jsr.setFnum(checked_list.size() + 1);
+                    addMyTables(st_date, ed_date, js, jsr);
+                    checked_list.add(activity.getName());
                     jsr.joinRequest(st_date, ed_date, fList, js);
                     reset_btn.callOnClick();
                 }
-//                JoinSchedulReq jsr = new JoinSchedulReq();
-//                ArrayList<String> tmp = new ArrayList<>();
-//                tmp.add("12178141");
-//                final JoinSchedule js = new JoinSchedule(9, 22, tmp);
-//                jsr.joinRequest("2019-06-09", "2019-06-15", tmp, js);
 
-                new Thread(){
-                    @Override
-                    public void run(){
-                        try {
-                            while(js==null || !js.getFinished())
-                                sleep(1000);
 
-                            FirebaseDatabase.getInstance().getReference().child("SchedJoin").child(jsr.getID()).removeValue();
-                            Intent intent = new Intent(context, AdjustResultActivity.class);
-                            intent.putParcelableArrayListExtra("Timetable", js.getRslt());
-                            intent.putExtra("stTime", js.getStTime());
-                            intent.putExtra("edTime", js.getEdTime());
-                            startActivity(intent);
-                        } catch (InterruptedException e) {}
-                    }
-                }.start();
+                    new Thread(){
+                        @Override
+                        public void run(){
+                            try {
+                                while(js==null || !js.getFinished())
+                                    sleep(1000);
+                                if(jsr.getID() != null)
+                                    FirebaseDatabase.getInstance().getReference().child("SchedJoin").child(jsr.getID()).removeValue();
+                                Intent intent = new Intent(context, AdjustResultActivity.class);
+                                intent.putParcelableArrayListExtra("Timetable", js.getRslt());
+                                intent.putExtra("stTime", js.getStTime());
+                                intent.putExtra("edTime", js.getEdTime());
+                                intent.putStringArrayListExtra("friends", checked_list);
+                                startActivity(intent);
+                            } catch (InterruptedException e) {}
+                        }
+                    }.start();
             }
         });
 
@@ -238,5 +238,30 @@ public class AdjustFragment extends Fragment {
         this.st_date = st_date;
         selected_week.setText(st_date+" ~ "+ed_date);
     }
+    
+    private void addMyTables(final String stDate, final String edDate, final JoinSchedule js, final JoinSchedulReq jsr){
+        new Thread(){
+            @Override
+            public void run(){
+                ArrayList<TimetableData> events;
+                MyTimeTableReq etR = new MyTimeTableReq(activity.getCookie());
+                etR.makeTimeTable();
 
+                GoogleCalRequest gCR = new GoogleCalRequest(context, activity.getThisAct(), "Account");
+                gCR.getCalendarData(new DateTime(stDate + "T00:00:00.000+09:00"), new DateTime(edDate + "T23:59:59.000+09:00"));
+
+                while(!etR.getFinished() || !gCR.getFinished()) {
+                    try {
+                        sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                events = etR.getClassList();
+                events.addAll(gCR.getEvents());
+                js.addEvents(events);
+                jsr.addDBNum();
+            }
+        }.start();
+    }
 }
