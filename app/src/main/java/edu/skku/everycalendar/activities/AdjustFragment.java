@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import edu.skku.everycalendar.dataType.FriendInfoData;
 import edu.skku.everycalendar.everytime.FriendTimetableReq;
 import edu.skku.everycalendar.friends.FriendsListItem;
 import edu.skku.everycalendar.friends.FriendsSelectAdapter;
@@ -51,8 +52,8 @@ public class AdjustFragment extends Fragment {
     TextView selected_week;
     ScrollView scrollView;
 
-    HashMap<String, String> friends_list;
-    Map<String, String> friends_list_to_tt;
+    Map<String, FriendInfoData> friends_list;
+    //Map<String, String> friends_list_to_tt;
     FriendsSelectAdapter adapter;
 
 
@@ -79,8 +80,6 @@ public class AdjustFragment extends Fragment {
         start_picker = rootView.findViewById(R.id.start_time);
         end_picker = rootView.findViewById(R.id.end_time);
 
-        friends_list = activity.friends_list_with_id;
-        friends_list_to_tt = activity.friendList;
 
         listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -90,16 +89,28 @@ public class AdjustFragment extends Fragment {
             }
         });
 
-        final ArrayList<FriendsListItem> friends = new ArrayList<>();
-        Iterator<String> iterator = friends_list.keySet().iterator();
-        while(iterator.hasNext()){
-            String name = iterator.next();
-            FriendsListItem item = new FriendsListItem(name);
-            friends.add(item);
-        }
-        adapter = new FriendsSelectAdapter(friends);
-        listView.setAdapter(adapter);
+//        final ArrayList<FriendsListItem> friends = new ArrayList<>();
+//        Iterator<String> iterator = friends_list.keySet().iterator();
+//        while(iterator.hasNext()){
+//            String name = iterator.next();
+//            FriendsListItem item = new FriendsListItem(name);
+//            friends.add(item);
+//        }
 
+        new Thread() {
+            @Override
+            public void run() {
+                while (!activity.isFriendListFin())
+                    try {
+                        sleep(500);
+                    } catch (Exception e) {
+                    }
+                friends_list = activity.friendList;
+                adapter = new FriendsSelectAdapter(activity.friends_list);
+                listView.setAdapter(adapter);
+
+            }
+        }.start();
         result_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,7 +125,7 @@ public class AdjustFragment extends Fragment {
 
                 for (int i = count-1; i >= 0; i--) {
                     if (isChecked.get(i)) {
-                        FriendsListItem item = friends.get(i);
+                        FriendsListItem item = activity.friends_list.get(i);
                         Log.d("get_checked",item.getFriend_name());
                         checked_list.add(item);
                     }
@@ -141,28 +152,19 @@ public class AdjustFragment extends Fragment {
                     Log.d("HERERHE","11");
                     jsr = new JoinSchedulReq();
                     ArrayList<String> fList = new ArrayList<>();
-                    fList.add(activity.getIdNum());
+                    fList.add(activity.getId());
                     js = new JoinSchedule(start_picker.getHour(), end_picker.getHour());
 
                     for(final FriendsListItem fl : checked_list){
-                        Log.d("LOG_CHKUSER", friends_list.get(fl.getFriend_name()));
+                        //Log.d("LOG_CHKUSER", friends_list.get(fl.getFriend_name()));
                         if(CheckOurUser.chkUser(friends_list.get(fl.getFriend_name())))
-                            fList.add(friends_list.get(fl.getFriend_name()));
+                            fList.add(friends_list.get(fl.getFriend_name()).getId());
                         else {
                             Utilities.makeToast("EveryCalendar를 사용하지 않는 인원이 포함되어 있습니다\n해당 인원은 Everytime시간표를 이용하여 조율합니다");
                             new Thread(){
                                 @Override
                                 public void run(){
-                                    FriendTimetableReq ftr = new FriendTimetableReq(activity.getCookie(), friends_list_to_tt.get(fl.getFriend_name()));
-                                    ftr.makeTimeTable();
-                                    while(!ftr.getFinished()) {
-                                        try {
-                                            sleep(500);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                    js.addEvents(ftr.getClassList());
+                                    js.addEvents(friends_list.get(fl.getFriend_name()).getClasses());
                                     jsr.addDBNum();
                                 }
                             }.start();

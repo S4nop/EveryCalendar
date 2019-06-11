@@ -15,10 +15,10 @@ public class RealTimeDBPull {
         targDB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("onDataChange", "Data is Updated");
+                //Log.d("onDataChange", "Data is Updated");
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     String key = postSnapshot.getKey();
-                    Log.d("getFirebaseDatabase", "key: " + (getKeyMode ? postSnapshot.getKey() : postSnapshot.getValue()));
+                    //Log.d("getFirebaseDatabase", "key: " + (getKeyMode ? postSnapshot.getKey() : postSnapshot.getValue()));
                     funcEach.setArg((getKeyMode ? postSnapshot.getKey() : postSnapshot.getValue()).toString());
                     funcEach.call();
                 }

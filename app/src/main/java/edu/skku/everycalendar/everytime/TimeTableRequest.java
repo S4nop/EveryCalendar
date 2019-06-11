@@ -40,7 +40,7 @@ public abstract class TimeTableRequest {
                 stTime = Integer.parseInt(dates[j].split("starttime=\"")[1].split("\"")[0]);
                 edTime = Integer.parseInt(dates[j].split("endtime=\"")[1].split("\"")[0]);
                 classList.add(new TimetableData(name, place, prof, weekday, stTime, edTime, idNum, color));
-                Log.d("LOG_PRSTT", name + " " + place + " " + prof + " " + weekday);
+                //Log.d("LOG_PRSTT", name + " " + place + " " + prof + " " + weekday);
             }
         }
     }
@@ -68,7 +68,7 @@ public abstract class TimeTableRequest {
                     }
                     if(hr.request("POST", "https://everytime.kr/find/timetable/table" + (mod == 1 ? "/friend" : ""), queries, headers) == 0){
                         rslt = hr.getResult();
-                        Log.d("LOG_HTTP", rslt);
+                        //Log.d("LOG_HTTP", rslt);
                         return rslt;
                     }
                     return null;

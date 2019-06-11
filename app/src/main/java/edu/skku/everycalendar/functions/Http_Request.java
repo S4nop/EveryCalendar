@@ -46,16 +46,16 @@ public class Http_Request {
             con = (HttpURLConnection)url.openConnection();
             con.setInstanceFollowRedirects(false);
             con.setRequestMethod(mthd);
-            Log.d("Log", "here?");
+            //Log.d("Log", "here?");
             if(_headers != null) {
                 for (Map.Entry<String, Object> hd : _headers.valueSet()) {
                     con.setRequestProperty(hd.getKey(), hd.getValue().toString());
-                    Log.d("HttpRequest_Log_Hd", hd.getKey() + "," + hd.getValue().toString());
+                    //Log.d("HttpRequest_Log_Hd", hd.getKey() + "," + hd.getValue().toString());
                 }
             }
 
             String strParams = sbPrm.toString();
-            Log.d("HttpRequest_Log_strPm", strParams);
+            //Log.d("HttpRequest_Log_strPm", strParams);
             if(!strParams.equals("")) {
                 OutputStream os = null;
                 os = con.getOutputStream();
@@ -64,18 +64,18 @@ public class Http_Request {
                 os.close();
             }
 
-            Log.d("Log", Integer.toString(con.getResponseCode()));
+            //Log.d("Log", Integer.toString(con.getResponseCode()));
             if(con.getResponseCode() != 200 && con.getResponseCode() != 302) {
 
                 result = null;
-                Log.d("HttpRequest_Log", "Return -1, Http not OK");
+                //Log.d("HttpRequest_Log", "Return -1, Http not OK");
                 return -1;
             }
 
-            Log.d("Log", "here?!!");
+            //Log.d("Log", "here?!!");
             BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
-            Log.d("Log", "here!!!");
+            //Log.d("Log", "here!!!");
             String line;
             String page = "";
 
@@ -83,7 +83,7 @@ public class Http_Request {
             headers = con.getHeaderFields();
             result = page;
 
-            Log.d("HttpRequest_Log", "Return 0");
+            //Log.d("HttpRequest_Log", "Return 0");
             return 0;
         }catch (MalformedURLException e){
             e.printStackTrace();
@@ -93,7 +93,7 @@ public class Http_Request {
             if (con != null)
                 con.disconnect();
         }
-        Log.d("HttpRequest_Log", "Return -1 end");
+        //Log.d("HttpRequest_Log", "Return -1 end");
         result = null;
         return -1;
     }
