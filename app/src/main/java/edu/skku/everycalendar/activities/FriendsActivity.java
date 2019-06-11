@@ -25,7 +25,6 @@ public class FriendsActivity extends AppCompatActivity {
     TextView name_text;
     FrameLayout table_container;
     ArrayList<TimetableData> timeData;
-    String cookie, key;
     TableView tv;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,8 +35,8 @@ public class FriendsActivity extends AppCompatActivity {
         option_btn = findViewById(R.id.option_btn);
         name_text = findViewById(R.id.friend_name);
         table_container = findViewById(R.id.table_container);
-        cookie = getIntent().getStringExtra("Cookie");
-        key = getIntent().getStringExtra("Key");
+        timeData = getIntent().getParcelableArrayListExtra("Timetable");
+        Log.d("LOG_FRIENDACT", ""+timeData.size());
         name_text.setText(getIntent().getStringExtra("Name"));
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,17 +52,6 @@ public class FriendsActivity extends AppCompatActivity {
         new Thread(){
             @Override
             public void run(){
-
-                FriendTimetableReq friendTimetableReq = new FriendTimetableReq(cookie, key);
-                friendTimetableReq.makeTimeTable();
-
-                while(!friendTimetableReq.getFinished())
-                    try{
-                        Log.d("LOG_TBWHILE", "run");
-                        sleep(500);
-                    }catch(Exception e){}
-
-                timeData = friendTimetableReq.getClassList();
                 table_container.post(new Runnable(){
                     public void run(){
                         try{

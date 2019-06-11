@@ -19,6 +19,8 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+
+import edu.skku.everycalendar.dataType.FriendInfoData;
 import edu.skku.everycalendar.everytime.FriendTimetableReq;
 
 import java.util.ArrayList;
@@ -44,10 +46,10 @@ public class FriendsFragment extends Fragment {
     ImageButton addBtn;
     FloatingActionButton fab_plus;
 
-    ArrayList<FriendsListItem> list;
+    ArrayList<FriendsListItem> list = new ArrayList<>();
     FriendsListAdapter adapter;
 
-    Map<String, String> list_map;
+    Map<String, FriendInfoData> list_map;
 
     @Nullable
     @Override
@@ -64,32 +66,48 @@ public class FriendsFragment extends Fragment {
         activity = (MainActivity) getActivity();
         context = activity.mainContext;
 
-        list = activity.friends_list;
-        adapter = new FriendsListAdapter(context, list);
-        list_map = activity.friendList;
-
-        friendsList.setTextFilterEnabled(true);
-        friendsList.setAdapter(adapter);
-
-        friendsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        new Thread(){
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ArrayList<TimetableData> friendTT;
-                try{
-                    //TODO : Make friend's timetable!!
-                    //Log.d("LOG_FRIENDTT", friendTT.toString());
+            public void run(){
+                while(!activity.isFriendListFin())
+                    try{sleep(500);}
+                    catch(Exception e){}
+                list = activity.friends_list;
+                adapter = new FriendsListAdapter(context, list);
+                list_map = activity.getFriendList();
+//                Iterator<String> iterator = list_map.keySet().iterator();
+//                Log.d("LOG_MAINACT", "" + list_map.size());
+//                while(iterator.hasNext()){
+//                    String name = iterator.next();
+//                    Log.d("LOG_MAINACT_FR", list_map.get(name).getClasses().toString());
+//                    String key = list_map.get(name).getKey();
+//                }
 
-                    Intent intent = new Intent(context, FriendsActivity.class);
-                    intent.putExtra("Cookie", activity.getCookie());
-                    intent.putExtra("Key", list_map.get(list.get(position).getFriend_name()));
-                    intent.putExtra("Name", list.get(position).getFriend_name());
-                    startActivity(intent);
-                } catch(Exception e){
-                    Utilities.makeToast(context, "Cannot read friend's timetable data");
-                }
+                friendsList.setTextFilterEnabled(true);
+                friendsList.setAdapter(adapter);
 
+                friendsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        ArrayList<TimetableData> friendTT;
+                        try{
+                            //TODO : Make friend's timetable!!
+                            Log.d("LOG_FRIENDTT",list.get(position).getFriend_name());
+
+                            Intent intent = new Intent(context, FriendsActivity.class);
+                            Log.d("LOG_FRIENDFRAG_TT", list_map.get(list.get(position).getFriend_name()).getClasses().toString());
+                            intent.putParcelableArrayListExtra("Timetable", list_map.get(list.get(position).getFriend_name()).getClasses());
+                            intent.putExtra("Name", list.get(position).getFriend_name());
+                            startActivity(intent);
+                        } catch(Exception e){
+                            Utilities.makeToast(context, "Cannot read friend's timetable data");
+                        }
+
+                    }
+                });
             }
-        });
+        }.start();
+
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override

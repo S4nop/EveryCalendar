@@ -44,7 +44,7 @@ public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
                 addEvent();
             }
         } catch (Exception e) {
-            Log.d("LOG_DOINBACK", e.toString());
+            //Log.d("LOG_DOINBACK", e.toString());
             cancel(true);
             return null;
         }

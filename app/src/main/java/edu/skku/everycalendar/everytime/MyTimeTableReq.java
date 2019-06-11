@@ -19,7 +19,7 @@ public class MyTimeTableReq extends TimeTableRequest {
         finished = false;
         tNum = getTTNum();
         if(tNum == null){
-            Log.d("LOG_MakeTimeTable", "getting tNum failed");
+            //Log.d("LOG_MakeTimeTable", "getting tNum failed");
             return;
         }
         parseTimeTable(getTimeTable(tNum));

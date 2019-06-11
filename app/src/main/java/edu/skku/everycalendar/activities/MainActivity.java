@@ -31,6 +31,7 @@ import com.google.api.client.util.DateTime;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import edu.skku.everycalendar.dataType.FriendInfoData;
 import edu.skku.everycalendar.dataType.TimetableData;
 import edu.skku.everycalendar.everytime.FriendsListRequest;
 import edu.skku.everycalendar.everytime.MyTimeTableReq;
@@ -72,13 +73,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private AdjustFragment adjustFragment = new AdjustFragment();
     private CallableArg.GoogleCalFragment googleCalFragment = new CallableArg.GoogleCalFragment();
     private recommendFriend rcmFrnd = new recommendFriend();
-
+    private boolean friendListFin = false;
     Fragment active = tableFragment;
     ServiceMaker sm = new ServiceMaker();
 
     public ArrayList<FriendsListItem> friends_list;
     public HashMap<String, String> friends_list_with_id;
-    public Map<String, String> friendList;
+    public Map<String, FriendInfoData> friendList;
     private BackButtonHandler backButtonHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,15 +137,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         final FriendsListRequest friendsListRequest = new FriendsListRequest(getCookie());
         friendsListRequest.makeFriendList();
 
-        friendList = friendsListRequest.getFriendList();
-        friends_list_with_id = friendsListRequest.getFriendListForJoin();
-        Iterator<String> iterator = friendList.keySet().iterator();
-        while(iterator.hasNext()){
-            String name = iterator.next();
-            String key = friendList.get(name);
-            FriendsListItem item = new FriendsListItem(name);
-            friends_list.add(item);
-        }
+        new Thread(){
+            @Override
+            public void run(){
+                while(!friendsListRequest.isFinished())
+                    try{sleep(500);}
+                    catch(Exception e){}
+                friendList = friendsListRequest.getFriendList();
+                Iterator<String> iterator = friendList.keySet().iterator();
+                Log.d("LOG_MAINACT", "" + friendList.size());
+                while(iterator.hasNext()){
+                    String name = iterator.next();
+                    //Log.d("LOG_MAINACT_FR", friendList.get(name).getClasses().toString());
+                    String key = friendList.get(name).getKey();
+                    FriendsListItem item = new FriendsListItem(name);
+                    friends_list.add(item);
+                }
+                friendListFin = true;
+            }
+        }.start();
+
 
         fragmentManager.beginTransaction().add(R.id.container, googleCalFragment,"4").hide(googleCalFragment).commit();
         fragmentManager.beginTransaction().add(R.id.container, friendsFragment,"3").hide(friendsFragment).commit();
@@ -195,23 +207,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void startService(){
-        new Thread(){
-            @Override
-            public void run(){
-                while(idNum == null) {
-                    try {
-                        sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if(!isServiceRunningCheck()){
-                    sm.setActivity(mainContext, idNum);
-                    sm.startServ();
-                    //sm.bindServ();
-                }
-            }
-        }.start();
+        if(!isServiceRunningCheck()){
+            sm.setActivity(mainContext, id);
+            sm.startServ();
+        }
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -227,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             sendTables(stDate, edDate, reqID);
-                            FirebaseDatabase.getInstance().getReference().child("SchedJoinReq").child(idNum).removeValue();
+                            FirebaseDatabase.getInstance().getReference().child("SchedJoinReq").child(id).removeValue();
                             //Utilities.makeToast(mainContext, "시간표가 전송되었습니다");
                         }
                     }
@@ -258,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 Map<String, Object> upd = new HashMap<>();
                 Map<String, ArrayList<TimetableData>> pack = new HashMap<>();
-                pack.put(idNum, events);
+                pack.put(id, events);
                 DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
                 upd.put("/SchedJoin/" + reqID, pack);
                 mRef.updateChildren(upd);
@@ -410,5 +409,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public recommendFriend getRcmFrnd() {
         return rcmFrnd;
+    }
+
+    public boolean isFriendListFin() {
+        return friendListFin;
+    }
+
+    public Map<String, FriendInfoData> getFriendList() {
+        return friendList;
     }
 }

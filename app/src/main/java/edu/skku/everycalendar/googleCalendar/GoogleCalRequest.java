@@ -83,14 +83,14 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
     }
 
     private void executeTask(){
-        Log.d("LOG_EXECUTE", "herere");
+        //Log.d("LOG_EXECUTE", "herere");
         if (!chkGoogleServAvail()) {
             acqGoogleServ();
         } else if (mCred.getSelectedAccountName() == null) {
             chooseAcc();
         }
         else{
-            Log.d("LOG_EXECUTE", "ThrdRun");
+            //Log.d("LOG_EXECUTE", "ThrdRun");
             new Thread(){
                 @Override
                 public void run(){
@@ -124,7 +124,7 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
 
             //TODO : Need to handle case - Events' start date and end date are in different week
 
-            Log.d("LOG_RESLT", String.format("%s \n (%s)", event.getSummary(), event.getStart().getDateTime().toString()));
+            //Log.d("LOG_RESLT", String.format("%s \n (%s)", event.getSummary(), event.getStart().getDateTime().toString()));
             DateTime tmp;
         }
     }
@@ -141,11 +141,11 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
                 long calDateDays = (edd.getTime() - std.getTime()) / ( 24*60*60*1000);
                 Calendar c = Calendar.getInstance();
                 c.setTime(std);
-                Log.d("LOG_CAL", c.toString());
+                //Log.d("LOG_CAL", c.toString());
                 int week = c.get(Calendar.DAY_OF_WEEK) - 1;
                 Random rnd = new Random();
                 int color = Color.rgb(rnd.nextInt(255), rnd.nextInt(255), rnd.nextInt(255));
-                Log.d("LOG_COMPDATA", Long.toString(calDateDays));
+                //Log.d("LOG_COMPDATA", Long.toString(calDateDays));
                 for(long i = 0; i <= calDateDays; i++){
                     events.add(new TimetableData(event.getSummary(), event.getLocation(),
                             event.getDescription(), Integer.toString(week), timeToInt(stDate), timeToInt(edDate), "", color));
@@ -161,7 +161,7 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
     private Integer timeToInt(DateTime dt){
         String strDT = dt.toString();
         Integer tmp = ((Integer.parseInt(strDT.substring(11, 13)) * 60 + Integer.parseInt(strDT.substring(14,16))) / 5);
-        Log.d("LOG_TIMETOINT", strDT + " " + Integer.toString(tmp));
+        //Log.d("LOG_TIMETOINT", strDT + " " + Integer.toString(tmp));
         return ((Integer.parseInt(strDT.substring(11, 13)) * 60 + Integer.parseInt(strDT.substring(14,16))) / 5);
     }
 
@@ -184,13 +184,13 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
 
     @AfterPermissionGranted(REQUEST_PERM_GET_ACC)
     private void chooseAcc() {
-        Log.d("LOGHERE", "here1");
+        //Log.d("LOGHERE", "here1");
         if (EasyPermissions.hasPermissions(context, Manifest.permission.GET_ACCOUNTS)) {
-            Log.d("LOGHERE", "here2");
+            //Log.d("LOGHERE", "here2");
 
             String svdAccName = mainAct.getPreferences(context.MODE_PRIVATE).getString(accName, null);
             if (svdAccName == null) {
-                Log.d("LOGHERE", "here5");
+                //Log.d("LOGHERE", "here5");
                 mainAct.startActivityForResult(mCred.newChooseAccountIntent(), REQUEST_ACC_PICK);
                 waitUntilPermEnd(2);
 
@@ -200,7 +200,7 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
                 waitUntilPermEnd(2);
             }
         } else {
-            Log.d("LOGHERE", "here3");
+            //Log.d("LOGHERE", "here3");
             EasyPermissions.requestPermissions(
                     mainAct,
                     "This app needs permission to access your Google Account",
@@ -222,7 +222,7 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
     }
 
     private void waitUntilPermEnd(final int mod){
-        Log.d("LOGHERE", "here4");
+        //Log.d("LOGHERE", "here4");
         new Thread() {
             @Override
             public void run() {
