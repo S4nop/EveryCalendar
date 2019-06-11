@@ -207,23 +207,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void startService(){
-        new Thread(){
-            @Override
-            public void run(){
-                while(idNum == null) {
-                    try {
-                        sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if(!isServiceRunningCheck()){
-                    sm.setActivity(mainContext, id);
-                    sm.startServ();
-                    //sm.bindServ();
-                }
-            }
-        }.start();
+        if(!isServiceRunningCheck()){
+            sm.setActivity(mainContext, id);
+            sm.startServ();
+        }
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
