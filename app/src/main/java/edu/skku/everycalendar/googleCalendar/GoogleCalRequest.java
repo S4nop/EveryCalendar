@@ -215,12 +215,12 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
             if (svdAccName == null) {
                 //Log.d("LOGHERE", "here5");
                 mainAct.startActivityForResult(mCred.newChooseAccountIntent(), REQUEST_ACC_PICK);
-                waitUntilPermEnd();
+                waitUntilPermEnd(2);
 
 
             } else {
                 mCred.setSelectedAccountName(svdAccName);
-                waitUntilPermEnd();
+                waitUntilPermEnd(2);
             }
         } else {
             //Log.d("LOGHERE", "here3");
@@ -229,7 +229,7 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
                     "This app needs permission to access your Google Account",
                     REQUEST_PERM_GET_ACC,
                     Manifest.permission.GET_ACCOUNTS);
-            waitUntilPermEnd();
+            waitUntilPermEnd(1);
         }
     }
 
@@ -240,27 +240,23 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
             editor.putString(this.accName, accName);
             editor.apply();
             mCred.setSelectedAccountName(accName);
-            waitUntilPermEnd();
+            waitUntilPermEnd(2);
         }
     }
 
-    private void waitUntilPermEnd(){
+    private void waitUntilPermEnd(final int chkMod){
         //Log.d("LOGHERE", "here4");
         new Thread() {
             @Override
             public void run() {
-                while((mod == 1 && !EasyPermissions.hasPermissions(context, Manifest.permission.GET_ACCOUNTS)) || (mod == 2 && mCred.getSelectedAccountName() == null)) {
+                while((chkMod == 1 && !EasyPermissions.hasPermissions(context, Manifest.permission.GET_ACCOUNTS)) || (chkMod == 2 && mCred.getSelectedAccountName() == null)) {
                     try {
                         sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-                googleCalTask = new GoogleCalTask(mCred);
-                if(mod == 2)
-                    googleCalTask.setModeAdd(add_Sum, add_loc, add_Desc, stDate, edDate);
-                else if(mod == 1)
-                    googleCalTask.setModeGet(stDate, edDate);
+
                 executeTask();
             }
         }.start();

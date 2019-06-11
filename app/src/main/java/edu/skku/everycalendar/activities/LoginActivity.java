@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -81,7 +82,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 if(lr.getLogined()){ // 조건문 내부를 true로 바꾸시면 로그인 없이 화면 전환됩니다.
                     mainIntent.putExtra("Cookie", lr.getCookie().split("etsid=")[1].split(";")[0]);
-                    mainIntent.putExtra("ID", login_id);
+                    Log.d("LOG_LOGINID", user_id);
+                    mainIntent.putExtra("ID", user_id);
                     LoginActivity.this.startActivity(mainIntent);
 
                 }

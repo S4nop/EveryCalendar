@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //------------------------------------
         cookie = getIntent().getStringExtra("Cookie");
         id = getIntent().getStringExtra("ID");
+        Log.d("LOG_ID", id);
         backButtonHandler = new BackButtonHandler(this);
 
         bottomBar = findViewById(R.id.bottomNavigationView);
@@ -208,6 +209,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void startService(){
         if(!isServiceRunningCheck()){
+            Log.d("LOG_SERVID", id);
             sm.setActivity(mainContext, id);
             sm.startServ();
         }
@@ -342,7 +344,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("LOG_ACRESLT", "Here");
+        Log.d("LOG_ACRESLT", data.getExtras().toString());
 
         if (requestCode == GoogleCalRequest.REQUEST_ACC_PICK && resultCode == RESULT_OK && data != null && data.getExtras() != null) {
             tableFragment.onActivityResult(data);
@@ -418,5 +420,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public Map<String, FriendInfoData> getFriendList() {
         return friendList;
+    }
+
+    public GoogleCalFragment getGoogleCalFragment() {
+        return googleCalFragment;
     }
 }

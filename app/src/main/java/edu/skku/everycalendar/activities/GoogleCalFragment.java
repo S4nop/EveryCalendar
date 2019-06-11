@@ -72,9 +72,9 @@ public class GoogleCalFragment extends Fragment {
 
         listView.setAdapter(adapter);
 
-        String firstday = Utilities.getCurSunday();
-        String lastday = Utilities.getCurSaturday();
-        setWeek(firstday, lastday);
+//        String firstday = Utilities.getCurSunday();
+//        String lastday = Utilities.getCurSaturday();
+//        setWeek(firstday, lastday);
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -237,20 +237,24 @@ public class GoogleCalFragment extends Fragment {
                     }
                 }
 
-                table = gCR.getEvents();
-                list.clear();
-                if(table!=null){
-                    for(TimetableData td : table){
-                        EventListItem item = new EventListItem(td.getName(), td.getStartTime().toString(), td.getEndTime().toString(), td.getPlace(),td.getDescript());
-                        list.add(item);
-                    }
-                }
-                calLayout.post(new Runnable(){
-                    public void run() {
-                        listView.setAdapter(adapter);
-                    }
-                });
+                setTable(gCR.getEvents());
             }
         }.start();
+    }
+
+    public void setTable(ArrayList<TimetableData> events){
+        table = events;
+        list.clear();
+        if(table!=null){
+            for(TimetableData td : table){
+                EventListItem item = new EventListItem(td.getName(), td.getStartTime().toString(), td.getEndTime().toString(), td.getPlace(),td.getDescript());
+                list.add(item);
+            }
+        }
+        calLayout.post(new Runnable(){
+            public void run() {
+                listView.setAdapter(adapter);
+            }
+        });
     }
 }
