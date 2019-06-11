@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 MyTimeTableReq etR = new MyTimeTableReq(cookie);
                 etR.makeTimeTable();
 
-                GoogleCalRequest gCR = new GoogleCalRequest(mainContext, thisAct, "Account");
+                GoogleCalRequest gCR = new GoogleCalRequest(mainContext, thisAct);
                 gCR.getCalendarData(new DateTime(stDate + "T00:00:00.000+09:00"), new DateTime(edDate + "T23:59:59.000+09:00"));
 
                 while(!etR.getFinished() || !gCR.getFinished()) {

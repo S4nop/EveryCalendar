@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -35,17 +37,19 @@ import java.util.concurrent.Callable;
 import edu.skku.everycalendar.R;
 import edu.skku.everycalendar.activities.MainActivity;
 import edu.skku.everycalendar.dataType.TimetableData;
+import edu.skku.everycalendar.functions.Utilities;
 import edu.skku.everycalendar.googleCalendar.EventListAdapter;
 import edu.skku.everycalendar.googleCalendar.EventListItem;
 import edu.skku.everycalendar.googleCalendar.GoogleCalRequest;
 import edu.skku.everycalendar.googleCalendar.GoogleCalTask;
 import edu.skku.everycalendar.monthItems.MonthCalendar;
+import edu.skku.everycalendar.table.TableView;
 
 public class GoogleCalFragment extends Fragment {
     GoogleCalRequest gcr;
     ImageButton btn_add;
     ImageButton btn_month;
-
+    LinearLayout calLayout;
     TextView week_text;
 
     ListView listView;
@@ -68,10 +72,10 @@ public class GoogleCalFragment extends Fragment {
 
         activity = (MainActivity) getActivity();
         context = activity.mainContext;
-        gcr = new GoogleCalRequest(context, activity.getThisAct(), activity.getName());
+        gcr = new GoogleCalRequest(context, activity.getThisAct());
         btn_add = rootView.findViewById(R.id.btn_add);
         btn_month = rootView.findViewById(R.id.month_btn);
-
+        calLayout = rootView.findViewById(R.id.calLayout);
         week_text = rootView.findViewById(R.id.week_text);
 
         listView = rootView.findViewById(R.id.listView);
@@ -105,6 +109,10 @@ public class GoogleCalFragment extends Fragment {
                 builder.setTitle("일정 추가하기");
                 builder.setView(alertLayoutView);
                 builder.setCancelable(false); // 바깥 클릭해도 안꺼지게
+
+                String firstday = Utilities.getCurSunday();
+                String lastday = Utilities.getCurSaturday();
+                //setWeek(firstday, lastday);
 
                 builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
@@ -218,52 +226,43 @@ public class GoogleCalFragment extends Fragment {
         return rootView;
     }
 
-    public void setWeek(String st_date, String ed_date){
-        this.ed_date = ed_date;
-        this.st_date = st_date;
-        week_text.setText(st_date+" ~ "+ed_date);
-        gcr.getCalendarData(new DateTime( st_date + "T00:00:00.000+09:00"), new DateTime(ed_date + "T23:59:59.000+09:00"));
-        Log.d("Thread","0");
-        while(!gcr.getFinished()) {
-            try {
-                Log.d("Thread","1");
-                Thread.sleep(500);      // thread 계속돌아서 에러남
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        Log.d("Thread","2");
-        try{
-            table.addAll(gcr.getEvents());
-        }
-        catch(NullPointerException e){
-            e.printStackTrace();
-        }
-        Log.d("Thread","3");
-        list.clear();
-        if(table!=null){
-            for(int loop=0; loop<table.size(); loop++){
-                EventListItem item = new EventListItem(table.get(loop).getName(), st_date, ed_date, table.get(loop).getPlace(),table.get(loop).getDescript());
-                list.add(item);
-            }
-        }
-        adapter.notifyDataSetChanged();
-    }
-    public static String getCurSaturday(){
-        java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
-        return formatter.format(c.getTime());
-    }
 
-    public static String getCurSunday(){
-        java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
-        return formatter.format(c.getTime());
-    }
     private String addZero(String s){
         if(s.length() == 1) return "0" + s;
         else return s;
+    }
+
+    public void setWeek(final String stDate, final String edDate){
+        new Thread(){
+            @Override
+            public void run(){
+                GoogleCalRequest gCR;
+                gCR = new GoogleCalRequest(context, activity.getThisAct());
+
+                gCR.getCalendarData(new DateTime(stDate + "T00:00:00.000+09:00"), new DateTime(edDate + "T23:59:59.000+09:00"));
+
+                while(!gCR.getFinished()) {
+                    try {
+                        sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                table = gCR.getEvents();
+                list.clear();
+                if(table!=null){
+                    for(int loop=0; loop<table.size(); loop++){
+                        EventListItem item = new EventListItem(table.get(loop).getName(), st_date, ed_date, table.get(loop).getPlace(),table.get(loop).getDescript());
+                        list.add(item);
+                    }
+                }
+                calLayout.post(new Runnable(){
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        }.start();
     }
 }

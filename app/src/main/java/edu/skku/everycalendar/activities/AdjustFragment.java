@@ -247,7 +247,7 @@ public class AdjustFragment extends Fragment {
                 MyTimeTableReq etR = new MyTimeTableReq(activity.getCookie());
                 etR.makeTimeTable();
 
-                GoogleCalRequest gCR = new GoogleCalRequest(context, activity.getThisAct(), "Account");
+                GoogleCalRequest gCR = new GoogleCalRequest(context, activity.getThisAct());
                 gCR.getCalendarData(new DateTime(stDate + "T00:00:00.000+09:00"), new DateTime(edDate + "T23:59:59.000+09:00"));
 
                 while(!etR.getFinished() || !gCR.getFinished()) {

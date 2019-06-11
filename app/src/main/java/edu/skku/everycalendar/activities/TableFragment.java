@@ -26,6 +26,7 @@ import java.util.Map;
 
 import edu.skku.everycalendar.functions.FirebasePost;
 import edu.skku.everycalendar.R;
+import edu.skku.everycalendar.functions.Utilities;
 import edu.skku.everycalendar.table.TableView;
 import edu.skku.everycalendar.dataType.TimetableData;
 import edu.skku.everycalendar.everytime.MyTimeTableReq;
@@ -69,8 +70,8 @@ public class TableFragment extends Fragment {
         thisAct = activity.getThisAct();
         cookie = activity.getCookie();
 
-        String firstday = getCurSunday();
-        String lastday = getCurSaturday();
+        String firstday = Utilities.getCurSunday();
+        String lastday = Utilities.getCurSaturday();
 
         makeTable(firstday, lastday);
         select_week_btn.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +100,7 @@ public class TableFragment extends Fragment {
                 etR.makeTimeTable();
 
                 Log.d("LOG_MAKETABLE", stDate + " " + edDate);
-                gCR = new GoogleCalRequest(context, thisAct, "Account");
+                gCR = new GoogleCalRequest(context, thisAct);
 
                 gCR.getCalendarData(new DateTime(stDate + "T00:00:00.000+09:00"), new DateTime(edDate + "T23:59:59.000+09:00"));
 
@@ -186,21 +187,7 @@ public class TableFragment extends Fragment {
         gCR.pickAcc(data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME));
     }
 
-    public static String getCurSaturday(){
-        java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
-        return formatter.format(c.getTime());
-    }
-
-    public static String getCurSunday(){
-        java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
-        return formatter.format(c.getTime());
-    }
-
-    public void postUser(String user_id, String user_name, ArrayList<TimetableData> events){
+        public void postUser(String user_id, String user_name, ArrayList<TimetableData> events){
         FirebasePost post = new FirebasePost(user_id,user_name,events);
         post.postDB();
     }

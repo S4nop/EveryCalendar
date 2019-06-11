@@ -46,13 +46,12 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
     public static final int REQUEST_PERM_GET_ACC = 1003;
 
 
-    String accName = "accountName";
+    String accName = null;
     private static final String[] SCOPES = {CalendarScopes.CALENDAR};
 
-    public GoogleCalRequest(Context context, Activity mainAct, String accName) {
+    public GoogleCalRequest(Context context, Activity mainAct) {
         this.context = context;
         this.mainAct = mainAct;
-        this.accName = accName;
         events = new ArrayList<>();
 
         mCred = GoogleAccountCredential.usingOAuth2(
@@ -81,14 +80,7 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
         googleCalTask = new GoogleCalTask(mCred);
         googleCalTask.setModeAdd(add_Sum, add_Loc, add_Desc, stDate, edDate);
 
-        try {
-            googleCalTask.execute().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        //executeTask();
+        pickAcc(null);
     }
 
     private void executeTask(){
@@ -245,6 +237,7 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
                         e.printStackTrace();
                     }
                 }
+                googleCalTask = new GoogleCalTask(mCred);
                 executeTask();
             }
         }.start();
