@@ -197,7 +197,8 @@ else{
 import edu.skku.everycalendar.googleCalendar.GoogleCalRequest;
 GoogleCalRequest googleCalRequest = new GoogleCalRequest(Context, Activity, accountName);
 
-googleCalRequest.getCalendarData(StartDate, EndDate);
+googleCalRequest.setModeGet(StartDate, EndDate);
+googleCalRequest.getCalendarData();
 ArrayList<TimetableData> events = googleCalRequest.getEvents();
 ```
 
@@ -207,7 +208,8 @@ ArrayList<TimetableData> events = googleCalRequest.getEvents();
 import edu.skku.everycalendar.googleCalendar.GoogleCalRequest;
 GoogleCalRequest googleCalRequest = new GoogleCalRequest(Context, Activity, accountName);
 
-googleCalRequest.addEventToCalendar(Summary, Location, Description, StartDateTime, EndDateTime);
+googleCalRequest.setModeAdd(Summary, Location, Description, StartDateTime, EndDateTime);
+googleCalRequest.addEventToCalendar();
 ```
 
 ### 3.8 - 시간표 조율하기
