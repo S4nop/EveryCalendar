@@ -59,7 +59,6 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
                 context,
                 Arrays.asList(SCOPES)
         ).setBackOff(new ExponentialBackOff());
-        googleCalTask = new GoogleCalTask(mCred);
     }
 
     public boolean getFinished(){
@@ -67,6 +66,7 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
     }
 
     public void getCalendarData(DateTime stDate, DateTime edDate) {
+        googleCalTask = new GoogleCalTask(mCred);
         googleCalTask.setModeGet(stDate, edDate);
         finished = false;
         executeTask();
@@ -78,8 +78,17 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
         } else if (mCred.getSelectedAccountName() == null) {
             chooseAcc();
         }
+        googleCalTask = new GoogleCalTask(mCred);
         googleCalTask.setModeAdd(add_Sum, add_Loc, add_Desc, stDate, edDate);
-        executeTask();
+
+        try {
+            googleCalTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //executeTask();
     }
 
     private void executeTask(){
@@ -98,8 +107,10 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
                     try {
                         if(gThreadRunning == 0){
                             gThreadRunning = 1;
+                            Log.d("LOG_GTHREAD", "1");
                             eventList = googleCalTask.execute().get();
                             parseEvents(eventList);
+                            googleCalTask = null;
                         }
                     } catch (ExecutionException e) {
                         e.printStackTrace();
@@ -109,6 +120,7 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
                         e.printStackTrace();
                     }
                     gThreadRunning = 0;
+                    Log.d("LOG_GTHREAD", "0");
                     finished = true;
                 }
             }.start();

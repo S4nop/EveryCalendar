@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,17 +18,31 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.Scopes;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.util.DateTime;
+import com.google.api.client.util.ExponentialBackOff;
+import com.google.api.services.calendar.CalendarScopes;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.Callable;
 
 import edu.skku.everycalendar.R;
+import edu.skku.everycalendar.activities.MainActivity;
+import edu.skku.everycalendar.dataType.TimetableData;
 import edu.skku.everycalendar.googleCalendar.EventListAdapter;
 import edu.skku.everycalendar.googleCalendar.EventListItem;
+import edu.skku.everycalendar.googleCalendar.GoogleCalRequest;
+import edu.skku.everycalendar.googleCalendar.GoogleCalTask;
 import edu.skku.everycalendar.monthItems.MonthCalendar;
 
 public class GoogleCalFragment extends Fragment {
+    GoogleCalRequest gcr;
     ImageButton btn_add;
     ImageButton btn_month;
 
@@ -41,9 +56,11 @@ public class GoogleCalFragment extends Fragment {
     String st_date;
     String ed_date;
 
+    ArrayList<TimetableData> table;
     ArrayList<EventListItem> list;
     EventListAdapter adapter;
 
+    GoogleCalTask googleCalTask;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,7 +68,7 @@ public class GoogleCalFragment extends Fragment {
 
         activity = (MainActivity) getActivity();
         context = activity.mainContext;
-
+        gcr = new GoogleCalRequest(context, activity.getThisAct(), activity.getName());
         btn_add = rootView.findViewById(R.id.btn_add);
         btn_month = rootView.findViewById(R.id.month_btn);
 
@@ -97,32 +114,30 @@ public class GoogleCalFragment extends Fragment {
                         String loca = loca_edit.getText().toString();
 
                         String st_year = st_year_edit.getText().toString();
-                        String st_month = st_month_edit.getText().toString();
-                        String st_date = st_date_edit.getText().toString();
-                        String st_hour = st_hour_edit.getText().toString();
-                        String st_min = st_min_edit.getText().toString();
+                        String st_month = addZero(st_month_edit.getText().toString());
+                        String st_date = addZero(st_date_edit.getText().toString());
+                        String st_hour = addZero(st_hour_edit.getText().toString());
+                        String st_min = addZero(st_min_edit.getText().toString());
 
                         String ed_year = ed_year_edit.getText().toString();
-                        String ed_month = ed_month_edit.getText().toString();
-                        String ed_date = ed_date_edit.getText().toString();
-                        String ed_hour = ed_hour_edit.getText().toString();
-                        String ed_min = ed_min_edit.getText().toString();
+                        String ed_month = addZero(ed_month_edit.getText().toString());
+                        String ed_date = addZero(ed_date_edit.getText().toString());
+                        String ed_hour = addZero(ed_hour_edit.getText().toString());
+                        String ed_min = addZero(ed_min_edit.getText().toString());
+
 
                         //형식 변환된 date, time ( yyyy-mm-dd, hh:mm )
                         String form_st_date =st_year+"-"+st_month+"-"+st_date+" "+st_hour+":"+st_min;
                         String form_ed_date =ed_year+"-"+ed_month+"-"+ed_date+" "+ed_hour+":"+ed_min;
 
                         //구글 캘린더에 넣을 때 date 형식이어야 하면 쓰세요
-                        try {
-                            Date mSt_date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(form_st_date);
-                            Date mEd_date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(form_ed_date);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
 
-                        EventListItem item = new EventListItem(name,form_st_date,form_ed_date,loca,desc);
-                        list.add(item);
-                        adapter.notifyDataSetChanged();
+                        DateTime mSt_date = new DateTime(st_year+"-"+st_month+"-"+st_date + "T" + st_hour + ":" + st_min + ":00.000+09:00");
+                        DateTime mEd_date = new DateTime(ed_year+"-"+ed_month+"-"+ed_date + "T" + ed_hour + ":" + ed_min + ":00.000+09:00");
+                        gcr.addEventToCalendar(name, loca, desc, mSt_date, mEd_date);
+                        //EventListItem item = new EventListItem(name,form_st_date,form_ed_date,loca,desc);
+                        //list.add(item);
+                        //adapter.notifyDataSetChanged();
                     }
                 });
 
@@ -183,6 +198,15 @@ public class GoogleCalFragment extends Fragment {
                 builder.setNegativeButton("삭제", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
+                        String calendarTitle = list.get(index).getEvent_name();
+
+                        try{
+                            googleCalTask.getmServ().calendars().delete(googleCalTask.getCalendarID(calendarTitle)).execute();
+                        }catch(Exception e){
+                            e.printStackTrace();
+                            Log.d("Delete","100");
+                        }
                         list.remove(index);
                         adapter.notifyDataSetChanged();
                     }
@@ -198,5 +222,48 @@ public class GoogleCalFragment extends Fragment {
         this.ed_date = ed_date;
         this.st_date = st_date;
         week_text.setText(st_date+" ~ "+ed_date);
+        gcr.getCalendarData(new DateTime( st_date + "T00:00:00.000+09:00"), new DateTime(ed_date + "T23:59:59.000+09:00"));
+        Log.d("Thread","0");
+        while(!gcr.getFinished()) {
+            try {
+                Log.d("Thread","1");
+                Thread.sleep(500);      // thread 계속돌아서 에러남
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        Log.d("Thread","2");
+        try{
+            table.addAll(gcr.getEvents());
+        }
+        catch(NullPointerException e){
+            e.printStackTrace();
+        }
+        Log.d("Thread","3");
+        list.clear();
+        if(table!=null){
+            for(int loop=0; loop<table.size(); loop++){
+                EventListItem item = new EventListItem(table.get(loop).getName(), st_date, ed_date, table.get(loop).getPlace(),table.get(loop).getDescript());
+                list.add(item);
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+    public static String getCurSaturday(){
+        java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
+        return formatter.format(c.getTime());
+    }
+
+    public static String getCurSunday(){
+        java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+        return formatter.format(c.getTime());
+    }
+    private String addZero(String s){
+        if(s.length() == 1) return "0" + s;
+        else return s;
     }
 }
