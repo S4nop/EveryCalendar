@@ -18,7 +18,9 @@ public class FriendsListRequest {
     String cookie;
     int fNum, eNum;
     HashMap<String, FriendInfoData> friendList;
+    HashMap<String, FriendInfoData> reqFriendList;
     ArrayList<TimetableData> fClassList = new ArrayList<>();
+
     boolean finished = false;
 
     public FriendsListRequest(String cookie){
@@ -27,11 +29,13 @@ public class FriendsListRequest {
 
     public void makeFriendList(){
             friendList = new HashMap<>();
+            reqFriendList = new HashMap<>();
             fNum = 0; eNum = 0; finished = false;
             //friendListForJoin = new HashMap<>();
             FriendListRequest flr = new FriendListRequest();
             try {
-                String resp[] = flr.execute().get().split("friend");
+
+                String resp[] = flr.execute().get().split("<friend");
                 fNum = resp.length - 1;
                 for(int i = 1; i < resp.length; i++){
                     addFriendToMap(resp[i]);

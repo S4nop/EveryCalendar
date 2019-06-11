@@ -38,8 +38,10 @@ public class CheckOurUser {
         String[] tmp = s.split("descript=");
         for(int i = 1; i < tmp.length; i++){
             Log.d("LOG_MAKETD", tmp[i]);
-            tdList.add(new TimetableData(tmp[i].split("name=")[1].split(",")[0], tmp[i].split("place=")[1].split("\\}")[0], tmp[i].split(",")[0], tmp[i].split("weekDay=")[1].split(",")[0],
-                    Integer.parseInt(tmp[i].split("startTime=")[1].split(",")[0]), Integer.parseInt(tmp[i].split("endTime=")[1].split(",")[0]), tmp[i].split("idNum=")[1].split(",")[0], Integer.parseInt(tmp[i].split("color=")[1].split(",")[0])));
+            try {
+                tdList.add(new TimetableData(tmp[i].split("name=")[1].split(",")[0], tmp[i].split("place=")[1].split("\\}")[0], tmp[i].split(",")[0], tmp[i].split("weekDay=")[1].split(",")[0],
+                        Integer.parseInt(tmp[i].split("startTime=")[1].split(",")[0]), Integer.parseInt(tmp[i].split("endTime=")[1].split(",")[0]), tmp[i].split("idNum=")[1].split(",")[0], Integer.parseInt(tmp[i].split("color=")[1].split(",")[0])));
+            }catch(Exception e){}
         }
         return tdList;
     }
