@@ -3,6 +3,7 @@ package edu.skku.everycalendar.activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -61,11 +62,16 @@ public class AdjustFragment extends Fragment {
     String st_date = null;
     JoinSchedule js;
     JoinSchedulReq jsr;
+    LayoutInflater inflater;
+    ViewGroup container;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_adjust, container, false);
-        inflater.inflate(R.layout.fragment_adjust, container, false);
+
+        this.inflater = inflater;
+        this.container = container;
 
         activity = (MainActivity) getActivity();
         context = activity.mainContext;
@@ -75,12 +81,11 @@ public class AdjustFragment extends Fragment {
         result_btn = rootView.findViewById(R.id.btn_result);
         reset_btn = rootView.findViewById(R.id.btn_reset);
         month_btn = rootView.findViewById(R.id.btn_month);
-        scrollView = rootView.findViewById(R.id.scroll);
 
         start_picker = rootView.findViewById(R.id.start_time);
         end_picker = rootView.findViewById(R.id.end_time);
 
-
+/*
         listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -88,7 +93,7 @@ public class AdjustFragment extends Fragment {
                 return false;
             }
         });
-
+*/
 //        final ArrayList<FriendsListItem> friends = new ArrayList<>();
 //        Iterator<String> iterator = friends_list.keySet().iterator();
 //        while(iterator.hasNext()){
@@ -238,5 +243,4 @@ public class AdjustFragment extends Fragment {
         this.st_date = st_date;
         selected_week.setText(st_date+" ~ "+ed_date);
     }
-
 }

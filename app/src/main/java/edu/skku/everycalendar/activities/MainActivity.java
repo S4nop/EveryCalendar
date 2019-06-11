@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -157,7 +158,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }.start();
 
-
         fragmentManager.beginTransaction().add(R.id.container, googleCalFragment,"4").hide(googleCalFragment).commit();
         fragmentManager.beginTransaction().add(R.id.container, friendsFragment,"3").hide(friendsFragment).commit();
         fragmentManager.beginTransaction().add(R.id.container, adjustFragment,"2").hide(adjustFragment).commit();
@@ -205,6 +205,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         startService();
     }
+
 
     private void startService(){
         if(!isServiceRunningCheck()){
