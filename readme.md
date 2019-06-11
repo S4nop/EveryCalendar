@@ -8,28 +8,28 @@
 
 ### 1.2 - com.skku.everycalendar
 
-`edu.skku.everycalendar.activities` : Activity들과 MainActivity를 구성하는 Fragment들이 있는 패키지 
+`edu.skku.everycalendar.activities` : Activity들과 `MainActivity`를 구성하는 `Fragment`들이 있는 패키지 
 
 
-`edu.skku.everycalendar.dataType` : 어플리케이션에서 사용되는 Data를 저장, 사용하기 위한 구조체들이 있는 패키지
+`edu.skku.everycalendar.dataType` : 어플리케이션에서 사용되는 Data를 저장, 사용하기 위한 **구조체**들이 있는 패키지
 
 
-`edu.skku.everycalendar.everytime` : Everytime 관련 기능들을 담당하는 Class들이 있는 패키지
+`edu.skku.everycalendar.everytime` : **Everytime 관련 기능들**을 담당하는 Class들이 있는 패키지
 
 
-`edu.skku.everycalendar.friends` : 어플리케이션의 친구 관련 기능, 레이아웃 등에 사용되는 Class들이 있는 패키지
+`edu.skku.everycalendar.friends` : 어플리케이션의 **친구 관련 기능, 레이아웃** 등에 사용되는 Class들이 있는 패키지
 
 
-`edu.skku.everycalendar.googleCalendar` : 구글 캘린더 API 관련 기능들을 담당하는 Class들이 있는 패키지
+`edu.skku.everycalendar.googleCalendar` : **구글 캘린더 API** 관련 기능들을 담당하는 Class들이 있는 패키지
 
 
-`edu.skku.everycalendar.monthItems` : 어플리케이션에서 날짜 선택을 위한 달력 구현에 사용되는 패키지
+`edu.skku.everycalendar.monthItems` : 어플리케이션에서 날짜 선택을 위한 __달력 구현__ 에 사용되는 패키지
 
 
-`edu.skku.everycalendar.service` : 어플리케이션에서 조율 신청을 받기 위한 **Always-On Service** 를 구현하는 패키지
+`edu.skku.everycalendar.service` : 어플리케이션에서 조율 신청을 받기 위한 __Always-On Service__ 를 구현하는 패키지
 
 
-`edu.skku.everycalendar.table` : 어플리케이션에서 사용되는 TimeTable Custom View 구현에 사용되는 패키지
+`edu.skku.everycalendar.table` : 어플리케이션에서 사용되는 __TimeTable Custom View__ 구현에 사용되는 패키지
 
 
 `edu.skku.everycalendar.functions` : 어플리케이션에서 사용되는 기타 함수들이 구현된 Class들이 있는 패키지
@@ -45,26 +45,25 @@
 
 `edu.skku.everycalendar.everytime`의 `LoginReqest`를 통해 로그인을 진행한다.
 
-로그인에 성공하면 자동 로그인 체크박스를 확인하여 SharedPreferences로 자동 로그인을 세팅한다.
+로그인에 성공하면 자동 로그인 체크박스를 확인하여 **SharedPreferences**로 자동 로그인을 세팅한다.
 
 ### 2.2 - MainActivity
-대부분의 기능들을 담당하는 메인 화면을 총괄하는 객체이다
+대부분의 기능들을 담당하는 메인 화면을 총괄하는 객체이다.
 
-각각의 기능에 대한 화면을 구성하기 위해
+각각의 기능에 대한 화면은 다음과 같이 구성되었다.
 
 - `TableFragment`
 - `FriendsFragment`
 - `GoogleCalFragment`
 - `AdjustFragment`
 
-로 화면을 나누었다.
 
 ### 2.3 - TableFragment
 사용자의 한 주 일정을 테이블로 보여주는 객체이다.
 
 `edu.skku.everycalendar.table`를 사용하여 `Timetable`을 표시한다
 
-테이블 뷰 위에 Button을 사용하여 일정을 표시하며, 일정을 선택하면 Toast로 일정을 출력한다.
+테이블 뷰 위에 **Button**을 사용하여 일정을 표시하며, 일정을 선택하면 **Toast**로 일정을 출력한다.
 
 ### 2.4 - FriendsFragment
 친구 목록을 Listview로 보여주는 객체이다
@@ -76,7 +75,7 @@
 ### 2.5 - GoogleCalFragment
 구글 캘린더 관리 화면을 담당하는 객체이다
 
-기본적으로 한 주의 일정을 ListView로 보여주며
+기본적으로 한 주의 일정을 **ListView**로 보여주며
 
 `edu.skku.everycalendar.googleCalendar.GoogleCalRequest`를 사용하여
 
