@@ -18,9 +18,10 @@ public class AddFriendRequest {
     public String addFriend(String fid){
         AsyncAddFriendRequest afr = new AsyncAddFriendRequest();
         try {
-            String result = afr.execute(fid).get();
-            Log.d("LOG_ADDFRIEND", result);
-            return result.split("<response>")[1].split("</response>")[0].equals("-1") ? "친구 요청을 실패했습니다" : "친구 요청을 전송했습니다";
+            int result = Integer.parseInt(afr.execute(fid).get().split("<response>")[1].split("</response>")[0]);
+            Log.d("LOG_ADDFRIEND",""+ result);
+
+            return result == -1 ? "친구 요청을 실패했습니다" : result == - 2 ? "이미 에브리타임 친구입니다" :"친구 요청을 전송했습니다";
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

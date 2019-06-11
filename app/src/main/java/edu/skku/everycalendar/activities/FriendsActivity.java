@@ -1,5 +1,6 @@
 package edu.skku.everycalendar.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import edu.skku.everycalendar.R;
 import edu.skku.everycalendar.dataType.TimetableData;
 import edu.skku.everycalendar.everytime.FriendTimetableReq;
+import edu.skku.everycalendar.functions.Utilities;
 import edu.skku.everycalendar.table.TableView;
 
 import static java.lang.Math.max;
@@ -25,6 +27,7 @@ public class FriendsActivity extends AppCompatActivity {
     TextView name_text;
     FrameLayout table_container;
     ArrayList<TimetableData> timeData;
+    Context context;
     TableView tv;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +47,7 @@ public class FriendsActivity extends AppCompatActivity {
                 finish();
             }
         });
-
+        context = getApplicationContext();
         makeTable();
     }
 
@@ -61,13 +64,15 @@ public class FriendsActivity extends AppCompatActivity {
                         tv = new TableView(getApplicationContext(), getStartTime(timeData), getEndTime(timeData) + 1);
                         tv.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
                         table_container.addView(tv);
-                        table_container.post(new Runnable(){
-                            public void run(){
-                                tv.addEvents(timeData);
-                                table_container.removeView(tv);
-                                table_container.addView(tv);
-                            }
-                        });
+                        if(timeData.size() > 0)
+                            table_container.post(new Runnable(){
+                                public void run(){
+                                    tv.addEvents(timeData);
+                                    table_container.removeView(tv);
+                                    table_container.addView(tv);
+                                }
+                            });
+                        else Utilities.makeToast(context, "친구의 시간표를 불러올 수 없습니다");
                     }
                 });
             }

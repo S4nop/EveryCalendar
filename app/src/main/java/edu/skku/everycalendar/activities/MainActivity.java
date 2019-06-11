@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public Context mainContext;
     private Activity thisAct;
     private String cookie;
-    private String id, idNum;
+    private String id;
     private String name;
     private String info;
     public BottomNavigationView bottomBar;
@@ -208,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void startService(){
         if(!isServiceRunningCheck()){
+            Log.d("ID", id);
             sm.setActivity(mainContext, id);
             sm.startServ();
         }
@@ -393,14 +394,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
         return false;
-    }
-
-    public void setIdNum(String idNum) {
-        this.idNum = idNum;
-    }
-
-    public String getIdNum() {
-        return idNum;
     }
 
     public String getName() {
