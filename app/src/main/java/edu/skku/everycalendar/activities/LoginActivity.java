@@ -39,8 +39,16 @@ public class LoginActivity extends AppCompatActivity {
         final CheckBox checkBox = findViewById(R.id.checkBox);
 
         final Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+
+
+
         SharedPreferences loginPref = this.getPreferences(getApplicationContext().MODE_PRIVATE);
         final SharedPreferences.Editor editor = loginPref.edit();
+
+        if(getIntent().hasExtra("Logout")){
+            editor.clear();
+            editor.commit();
+        }
         login_id= loginPref.getString("login", null);
         if (login_id != null) {
             login_pw=loginPref.getString("pw",null);
@@ -52,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                 mainIntent.putExtra("Cookie", lr.getCookie().split("etsid=")[1].split(";")[0]);
                 mainIntent.putExtra("ID", login_id);
                 LoginActivity.this.startActivity(mainIntent);
-
+                this.finish();
             }
         }
 
@@ -85,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("LOG_LOGINID", user_id);
                     mainIntent.putExtra("ID", user_id);
                     LoginActivity.this.startActivity(mainIntent);
+                    LoginActivity.this.finish();
 
                 }
                 else{

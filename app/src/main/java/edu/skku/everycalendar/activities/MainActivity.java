@@ -31,6 +31,8 @@ import com.google.api.client.util.DateTime;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.mortbay.jetty.Main;
+
 import edu.skku.everycalendar.dataType.FriendInfoData;
 import edu.skku.everycalendar.dataType.TimetableData;
 import edu.skku.everycalendar.everytime.FriendsListRequest;
@@ -332,6 +334,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_logout) {
             //TODO : Logout
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.putExtra("Logout", "1");
+            startActivity(intent);
+            this.finish();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
