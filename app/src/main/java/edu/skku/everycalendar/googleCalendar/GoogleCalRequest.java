@@ -37,7 +37,7 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
 
     Context context;
     Activity mainAct;
-    GoogleAccountCredential mCred;
+    public GoogleAccountCredential mCred;
     ArrayList<TimetableData> events;
     GoogleCalTask googleCalTask;
     boolean finished = false;
