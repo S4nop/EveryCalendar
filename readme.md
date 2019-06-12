@@ -252,7 +252,7 @@ else{
 
 ```JAVA
 import edu.skku.everycalendar.googleCalendar.GoogleCalRequest;
-GoogleCalRequest googleCalRequest = new GoogleCalRequest(Context, Activity, accountName);
+GoogleCalRequest googleCalRequest = new GoogleCalRequest(Context, Activity);
 
 googleCalRequest.setModeGet(StartDate, EndDate);
 googleCalRequest.getCalendarData();
@@ -263,13 +263,23 @@ ArrayList<TimetableData> events = googleCalRequest.getEvents();
 
 ```JAVA
 import edu.skku.everycalendar.googleCalendar.GoogleCalRequest;
-GoogleCalRequest googleCalRequest = new GoogleCalRequest(Context, Activity, accountName);
+GoogleCalRequest googleCalRequest = new GoogleCalRequest(Context, Activity);
 
 googleCalRequest.setModeAdd(Summary, Location, Description, StartDateTime, EndDateTime);
 googleCalRequest.addEventToCalendar();
 ```
 
-### 3.8 - 시간표 조율하기
+### 3.9 - 구글 캘린더에서 일정 삭제하기
+
+```JAVA
+import edu.skku.everycalendar.googleCalendar.GoogleCalRequest;
+GoogleCalRequest googleCalRequest = new GoogleCalRequest(context, Activity);
+
+googleCalRequest.setModeRemove(calendarId);
+googleCalRequest.removeCalendarData();
+```
+
+### 3.10 - 시간표 조율하기
 
 ```JAVA
 import edu.skku.everycalendar.functionsJoinSchedule;
