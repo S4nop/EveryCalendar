@@ -44,7 +44,7 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
     int gThreadRunning = 0;
     int mod = 0;
     DateTime stDate, edDate;
-    String add_Sum, add_loc, add_Desc, sum;
+    String add_Sum, add_loc, add_Desc, id;
     public static final int REQUEST_ACC_PICK = 1000;
     public static final int REQUEST_PERM_GET_ACC = 1003;
 
@@ -82,10 +82,16 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
         this.add_Sum = add_Sum;
     }
 
-    public void setModeRemove(String name){
+    public void setModeRemove(String id){
         this.mod = 3;
-        this.sum = name;
+        this.id = id;
     }
+
+    public void removeCalendarData(){
+        googleCalTask = new GoogleCalTask(mCred);
+
+    }
+
     public void getCalendarData() {
         googleCalTask = new GoogleCalTask(mCred);
         googleCalTask.setModeGet(stDate, edDate);
@@ -167,6 +173,7 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
                 edd = format.parse(edDate.toString().substring(0, 10));
                 long calDateDays = (edd.getTime() - std.getTime()) / ( 24*60*60*1000);
                 Calendar c = Calendar.getInstance();
+                String idNum = event.getId();
                 c.setTime(std);
                 //Log.d("LOG_CAL", c.toString());
                 int week = c.get(Calendar.DAY_OF_WEEK) - 1;
@@ -175,7 +182,7 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
                 //Log.d("LOG_COMPDATA", Long.toString(calDateDays));
                 for(long i = 0; i <= calDateDays; i++){
                     events.add(new TimetableData(event.getSummary(), event.getLocation(),
-                            event.getDescription(), Integer.toString(week), timeToInt(stDate), timeToInt(edDate), "", color));
+                            event.getDescription(), Integer.toString(week), timeToInt(stDate), timeToInt(edDate), idNum, color));
                 }
 
             } catch (ParseException e) {

@@ -22,7 +22,7 @@ import java.util.List;
 public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
     private Integer mod;
     private DateTime stDate, edDate;
-    private String add_Summary, add_Location, add_Description;
+    private String add_Summary, add_Location, add_Description, id;
     private com.google.api.services.calendar.Calendar mServ;
     private boolean addResult = false;
 
@@ -72,7 +72,6 @@ public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
                 .setSingleEvents(true)
                 .execute();
         List<Event> items = events.getItems();
-
         return items;
     }
 
@@ -101,6 +100,10 @@ public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
         addResult = event.getHtmlLink() != null;
     }
 
+    public void remove(){
+
+    }
+
     public void setModeGet(DateTime stDate, DateTime edDate){
         mod = 1;
         this.stDate = stDate;
@@ -115,6 +118,11 @@ public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
         this.stDate = stDate;
         this.edDate = edDate;
         addResult = false;
+    }
+
+    public void setModeRemove(String id){
+        mod = 3;
+        this.id = id;
     }
 
     public boolean getAddResult(){

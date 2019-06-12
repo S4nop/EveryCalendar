@@ -429,4 +429,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public GoogleCalFragment getGoogleCalFragment() {
         return googleCalFragment;
     }
+
+    public TableFragment getTableFragment() {
+        return tableFragment;
+    }
 }

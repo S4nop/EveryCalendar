@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import edu.skku.everycalendar.R;
 import edu.skku.everycalendar.dataType.TimetableData;
+import edu.skku.everycalendar.functions.Utilities;
 import edu.skku.everycalendar.googleCalendar.EventListAdapter;
 import edu.skku.everycalendar.googleCalendar.EventListItem;
 import edu.skku.everycalendar.googleCalendar.GoogleCalRequest;
@@ -43,8 +44,8 @@ public class GoogleCalFragment extends Fragment {
     MainActivity activity;
     Context context;
 
-    String st_date;
-    String ed_date;
+    String stDate;
+    String edDate;
 
     ArrayList<TimetableData> table;
     ArrayList<EventListItem> list;
@@ -71,8 +72,6 @@ public class GoogleCalFragment extends Fragment {
 
         listView.setAdapter(adapter);
 
-//        String firstday = Utilities.getCurSunday();
-//        String lastday = Utilities.getCurSaturday();
 //        setWeek(firstday, lastday);
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,11 +124,16 @@ public class GoogleCalFragment extends Fragment {
                         String form_ed_date =ed_year+"-"+ed_month+"-"+ed_date+" "+ed_hour+":"+ed_min;
 
                         //구글 캘린더에 넣을 때 date 형식이어야 하면 쓰세요
+                        try {
+                            DateTime mSt_date = new DateTime(st_year + "-" + st_month + "-" + st_date + "T" + st_hour + ":" + st_min + ":00.000+09:00");
+                            DateTime mEd_date = new DateTime(ed_year + "-" + ed_month + "-" + ed_date + "T" + ed_hour + ":" + ed_min + ":00.000+09:00");
+                            gcr.setModeAdd(name, loca, desc, mSt_date, mEd_date);
+                            gcr.addEventToCalendar();
+                            setWeek(stDate, edDate);
+                        }catch(Exception e){
+                            Utilities.makeToast("입력을 확인해 주세요");
+                        }
 
-                        DateTime mSt_date = new DateTime(st_year+"-"+st_month+"-"+st_date + "T" + st_hour + ":" + st_min + ":00.000+09:00");
-                        DateTime mEd_date = new DateTime(ed_year+"-"+ed_month+"-"+ed_date + "T" + ed_hour + ":" + ed_min + ":00.000+09:00");
-                        gcr.setModeAdd(name, loca, desc, mSt_date, mEd_date);
-                        gcr.addEventToCalendar();
                         //EventListItem item = new EventListItem(name,form_st_date,form_ed_date,loca,desc);
                         //list.add(item);
                         //adapter.notifyDataSetChanged();
@@ -175,7 +179,7 @@ public class GoogleCalFragment extends Fragment {
 
                 String name = item.getEvent_name();
                 String st_date = item.getEvent_st_date();
-                String ed_date = item.getEvent_ed_date();
+                final String ed_date = item.getEvent_ed_date();
                 String loca = item.getEvent_loca();
                 String desc = item.getEvent_desc();
 
@@ -194,7 +198,7 @@ public class GoogleCalFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        final String calendarTitle = list.get(index).getEvent_name();
+                        final String calendarTitle = list.get(index).getEvent_id();
 
                             //googleCalTask.getmServ().calendars().delete("primary").execute();
                             new Thread(){
@@ -207,6 +211,7 @@ public class GoogleCalFragment extends Fragment {
                                         e.printStackTrace();
                                         Log.d("Delete","100");
                                     }
+                                    setWeek(stDate, edDate);
                                 }
                             }.start();
                         list.remove(index);
@@ -248,12 +253,14 @@ public class GoogleCalFragment extends Fragment {
     }
 
     public void setTable(ArrayList<TimetableData> events, final String stDate, final String edDate, GoogleCalRequest gCR){
+        this.stDate = stDate;
+        this.edDate = edDate;
         table = events;
         list.clear();
         googleCalTask = new GoogleCalTask(gCR.mCred);
         if(table!=null){
             for(TimetableData td : table){
-                EventListItem item = new EventListItem(td.getName(), td.getStartTime().toString(), td.getEndTime().toString(), td.getPlace(),td.getDescript());
+                EventListItem item = new EventListItem(td.getName(), td.getStartTime().toString(), td.getEndTime().toString(), td.getPlace(),td.getDescript(), td.getIdNum());
                 list.add(item);
             }
         }
