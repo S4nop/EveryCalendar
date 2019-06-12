@@ -111,7 +111,7 @@ public class TableFragment extends Fragment {
                     }
                 }
 
-                activity.getGoogleCalFragment().setTable(gCR.getEvents(), stDate, edDate, gCR);
+                activity.getGoogleCalFragment().setTable(gCR.getEvents(), stDate, edDate);
 
                 events = etR.getClassList();
                 postDB(events);

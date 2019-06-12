@@ -89,6 +89,9 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
 
     public void removeCalendarData(){
         googleCalTask = new GoogleCalTask(mCred);
+        googleCalTask.setModeRemove(id);
+        finished = false;
+        executeTask();
 
     }
 

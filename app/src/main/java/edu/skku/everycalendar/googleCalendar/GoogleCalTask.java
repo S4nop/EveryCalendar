@@ -47,6 +47,9 @@ public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
             else if (mod == 2) {
                 addEvent();
             }
+            else if (mod == 3){
+                removeEvent();
+            }
         } catch (Exception e) {
             Log.d("LOG_DOINBACK", e.toString());
             cancel(true);
@@ -58,9 +61,6 @@ public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
     @Override
     protected void onCancelled() {
 
-    }
-    public com.google.api.services.calendar.Calendar getmServ(){
-        return mServ;
     }
 
     private List<Event> getEvent() throws IOException {
@@ -100,8 +100,12 @@ public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
         addResult = event.getHtmlLink() != null;
     }
 
-    public void remove(){
-
+    public void removeEvent(){
+        try {
+            mServ.events().delete("primary",id).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setModeGet(DateTime stDate, DateTime edDate){

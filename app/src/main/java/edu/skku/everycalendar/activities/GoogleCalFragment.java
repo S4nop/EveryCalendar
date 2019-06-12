@@ -51,7 +51,6 @@ public class GoogleCalFragment extends Fragment {
     ArrayList<EventListItem> list;
     EventListAdapter adapter;
 
-    GoogleCalTask googleCalTask;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -198,15 +197,16 @@ public class GoogleCalFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        final String calendarTitle = list.get(index).getEvent_id();
+                        final String calendarId = list.get(index).getEvent_id();
 
-                            //googleCalTask.getmServ().calendars().delete("primary").execute();
                             new Thread(){
                                 @Override
                                 public void run(){
 
                                     try{
-                                    googleCalTask.getmServ().events().delete("primary",calendarTitle).execute();
+                                        gcr = new GoogleCalRequest(context, activity.getThisAct());
+                                        gcr.setModeRemove(calendarId);
+                                        gcr.removeCalendarData();
                                     }catch(Exception e){
                                         e.printStackTrace();
                                         Log.d("Delete","100");
@@ -235,29 +235,27 @@ public class GoogleCalFragment extends Fragment {
         new Thread(){
             @Override
             public void run(){
-                GoogleCalRequest gCR;
-                gCR = new GoogleCalRequest(context, activity.getThisAct());
-                gCR.setModeGet(new DateTime(stDate + "T00:00:00.000+09:00"), new DateTime(edDate + "T23:59:59.000+09:00"));
-                gCR.getCalendarData();
+                gcr = new GoogleCalRequest(context, activity.getThisAct());
+                gcr.setModeGet(new DateTime(stDate + "T00:00:00.000+09:00"), new DateTime(edDate + "T23:59:59.000+09:00"));
+                gcr.getCalendarData();
 
-                while(!gCR.getFinished()) {
+                while(!gcr.getFinished()) {
                     try {
                         sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-                setTable(gCR.getEvents(), stDate, edDate, gCR);
+                setTable(gcr.getEvents(), stDate, edDate);
             }
         }.start();
     }
 
-    public void setTable(ArrayList<TimetableData> events, final String stDate, final String edDate, GoogleCalRequest gCR){
+    public void setTable(ArrayList<TimetableData> events, final String stDate, final String edDate){
         this.stDate = stDate;
         this.edDate = edDate;
         table = events;
         list.clear();
-        googleCalTask = new GoogleCalTask(gCR.mCred);
         if(table!=null){
             for(TimetableData td : table){
                 EventListItem item = new EventListItem(td.getName(), td.getStartTime().toString(), td.getEndTime().toString(), td.getPlace(),td.getDescript(), td.getIdNum());
