@@ -12,7 +12,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import edu.skku.everycalendar.R;
-import edu.skku.everycalendar.dataType.EventListItem;
 
 public class EventListAdapter extends BaseAdapter implements Filterable {
     ArrayList<EventListItem> listViewItemList;

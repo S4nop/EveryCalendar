@@ -1,4 +1,4 @@
-package edu.skku.everycalendar.dataType;
+package edu.skku.everycalendar.googleCalendar;
 
 public class EventListItem {
     private String event_name;

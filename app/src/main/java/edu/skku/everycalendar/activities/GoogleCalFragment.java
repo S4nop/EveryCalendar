@@ -25,9 +25,8 @@ import java.util.ArrayList;
 
 import edu.skku.everycalendar.R;
 import edu.skku.everycalendar.dataType.TimetableData;
-import edu.skku.everycalendar.functions.Utilities;
 import edu.skku.everycalendar.googleCalendar.EventListAdapter;
-import edu.skku.everycalendar.dataType.EventListItem;
+import edu.skku.everycalendar.googleCalendar.EventListItem;
 import edu.skku.everycalendar.googleCalendar.GoogleCalRequest;
 import edu.skku.everycalendar.googleCalendar.GoogleCalTask;
 import edu.skku.everycalendar.monthItems.MonthCalendar;

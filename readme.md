@@ -1,38 +1,88 @@
 # EveryCalendar
+
 ## 1. 패키지 분류
+
 ### 1.1 - res
 어플리케이션에 사용되는 리소스들이 들어있는 패키지.
 
 주로 Activity, Fragment, View를 구성하는 Layout 파일들이며,
-각종 데이터들(String, Color 등)을 포함한다.
 
-### 1.2 - com.skku.everycalendar
+각종 데이터들(String, Color, Image 등)을 포함한다.
 
-`edu.skku.everycalendar.activities` : Activity들과 `MainActivity`를 구성하는 `Fragment`들이 있는 패키지 
+### 1.2 - com.skku.everycalendar.activities
 
-
-`edu.skku.everycalendar.dataType` : 어플리케이션에서 사용되는 Data를 저장, 사용하기 위한 **구조체**들이 있는 패키지
-
-
-`edu.skku.everycalendar.everytime` : **Everytime 관련 기능들**을 담당하는 Class들이 있는 패키지
-
-
-`edu.skku.everycalendar.friends` : 어플리케이션의 **친구 관련 기능, 레이아웃** 등에 사용되는 Class들이 있는 패키지
-
-
-`edu.skku.everycalendar.googleCalendar` : **구글 캘린더 API** 관련 기능들을 담당하는 Class들이 있는 패키지
+Activity들과 `MainActivity`를 구성하는 `Fragment`들이 있는 패키지
+- `com.skku.everycalendar.activities.LoginActivity`
+- `com.skku.everycalendar.activities.MainActivity`
+- `com.skku.everycalendar.activities.TableFragment`
+- `com.skku.everycalendar.activities.FriendsFragment`
+- `com.skku.everycalendar.activities.GoogleCalFragment`
+- `com.skku.everycalendar.activities.AdjustFragment`
+- `com.skku.everycalendar.activities.FriendsActivity`
+- `com.skku.everycalendar.activities.AdjustResultActivity`
+- `com.skku.everycalendar.activities.FriendsRecommActivity`
 
 
-`edu.skku.everycalendar.monthItems` : 어플리케이션에서 날짜 선택을 위한 __달력 구현__ 에 사용되는 패키지
+### 1.3 - com.skku.everycalendar.dataType
+어플리케이션에서 사용되는 Data를 저장, 사용하기 위한 **구조체**들이 있는 패키지
+- `com.skku.everycalendar.dataType.FriendInfoData`
+- `com.skku.everycalendar.dataType.TimetableData`
+
+### 1.4 - com.skku.everycalendar.everytime
+**Everytime 관련 기능들**을 담당하는 Class들이 있는 패키지
+- `com.skku.everycalendar.everytime.AddFriendRequest`
+- `com.skku.everycalendar.everytime.FriendsListRequest`
+- `com.skku.everycalendar.everytime.FriendTimetabledReq`
+- `com.skku.everycalendar.everytime.GetNameRequest`
+- `com.skku.everycalendar.everytime.LoginRequest`
+- `com.skku.everycalendar.everytime.MyTimeTableReq`
+- `com.skku.everycalendar.everytime.TimeTableRequest`
+
+### 1.5 - com.skku.everycalendar.friends
+어플리케이션의 **친구 관련 기능, 레이아웃** 등에 사용되는 Class들이 있는 패키지
+- `com.skku.everycalendar.friends.FriendsListAdapter`
+- `com.skku.everycalendar.friends.FriendsListItem`
+- `com.skku.everycalendar.friends.FriendsListLayout`
+- `com.skku.everycalendar.friends.FriendsSelectAdapter`
+- `com.skku.everycalendar.friends.RecommendFriend`
+
+### 1.6 - com.skku.everycalendar.googleCalendar
+**구글 캘린더 API** 관련 기능들을 담당하는 Class들이 있는 패키지
+- `com.skku.everycalendar.googleCalendar.EventListAdapter`
+- `com.skku.everycalendar.googleCalendar.EventListItem`
+- `com.skku.everycalendar.googleCalendar.GoogleCalRequest`
+- `com.skku.everycalendar.googleCalendar.GOogleCalTask`
+
+### 1.7 - com.skku.everycalendar.monthItem
+어플리케이션에서 날짜 선택을 위한 __달력 구현__ 에 사용되는 패키지
+- `com.skku.everycalendar.monthItem.MonthAdapter`
+- `com.skku.everycalendar.monthItem.MonthCalendar`
+- `com.skku.everycalendar.monthItem.MonthItem`
+- `com.skku.everycalendar.monthItem.MonthItemView`
+
+### 1.8 - com.skku.everycalendar.service
+어플리케이션에서 조율 신청을 받기 위한 __Always-On Service__ 를 구현하는 패키지
+- `com.skku.everycalendar.service.AlertService`
+- `com.skku.everycalendar.service.ServiceMaker`
 
 
-`edu.skku.everycalendar.service` : 어플리케이션에서 조율 신청을 받기 위한 __Always-On Service__ 를 구현하는 패키지
+### 1.9 - com.skku.everycalendar.table
+어플리케이션에서 사용되는 __TimeTable Custom View__ 구현에 사용되는 패키지
+- `com.skku.everycalendar.table.TableRowView`
+- `com.skku.everycalendar.table.TableView`
 
-
-`edu.skku.everycalendar.table` : 어플리케이션에서 사용되는 __TimeTable Custom View__ 구현에 사용되는 패키지
-
-
-`edu.skku.everycalendar.functions` : 어플리케이션에서 사용되는 기타 함수들이 구현된 Class들이 있는 패키지
+### 1.10 - com.skku.everycalendar.functions
+어플리케이션에서 사용되는 기타 함수들이 구현된 Class들이 있는 패키지
+- `com.skku.everycalendar.functions.BackButtonHandler`
+- `com.skku.everycalendar.functions.CallableArg`
+- `com.skku.everycalendar.functions.CaptureScreen`
+- `com.skku.everycalendar.functions.CheckOurUser`
+- `com.skku.everycalendar.functions.FirebasePost`
+- `com.skku.everycalendar.functions.Http_Requst`
+- `com.skku.everycalendar.functions.JoinSchedule`
+- `com.skku.everycalendar.functions.JoinSchedulReq`
+- `com.skku.everycalendar.functions.RealTimeDBPull`
+- `com.skku.everycalendar.functions.Utilities`
 
 ---
 
@@ -105,6 +155,14 @@
 `edu.skku.everycalendar.table`를 사용하여 `Timetable`을 표시한다.
 
 출력 결과는 사진으로 저장하거나, 공유할 수 있다.
+
+### 2.9 - FriendRecommActivity
+추천 친구 리스트를 출력하는 화면을 담당하는 객체이다
+`com.skku.everycalendar.friends.RecommendFriend` 에서
+
+추천 친구 리스트를 받아와 **ListView**로 출력한다.
+
+
 
 ---
 
