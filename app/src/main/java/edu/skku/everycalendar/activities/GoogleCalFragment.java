@@ -117,25 +117,19 @@ public class GoogleCalFragment extends Fragment {
                         String ed_hour = addZero(ed_hour_edit.getText().toString());
                         String ed_min = addZero(ed_min_edit.getText().toString());
 
-
-                        //형식 변환된 date, time ( yyyy-mm-dd, hh:mm )
-                        String form_st_date =st_year+"-"+st_month+"-"+st_date+" "+st_hour+":"+st_min;
-                        String form_ed_date =ed_year+"-"+ed_month+"-"+ed_date+" "+ed_hour+":"+ed_min;
-
-                        //구글 캘린더에 넣을 때 date 형식이어야 하면 쓰세요
                         try {
+                            Log.d("LOG_ADDEVENT", "here");
                             DateTime mSt_date = new DateTime(st_year + "-" + st_month + "-" + st_date + "T" + st_hour + ":" + st_min + ":00.000+09:00");
                             DateTime mEd_date = new DateTime(ed_year + "-" + ed_month + "-" + ed_date + "T" + ed_hour + ":" + ed_min + ":00.000+09:00");
                             gcr.setModeAdd(name, loca, desc, mSt_date, mEd_date);
                             gcr.addEventToCalendar();
                             setWeek(stDate, edDate);
+                            activity.getTableFragment().makeTable(stDate, edDate);
+                            Log.d("LOG_ADDEVENT", "" + mSt_date + "\n" + mEd_date);
                         }catch(Exception e){
                             Utilities.makeToast("입력을 확인해 주세요");
                         }
 
-                        //EventListItem item = new EventListItem(name,form_st_date,form_ed_date,loca,desc);
-                        //list.add(item);
-                        //adapter.notifyDataSetChanged();
                     }
                 });
 
@@ -177,14 +171,11 @@ public class GoogleCalFragment extends Fragment {
                 EventListItem item = list.get(position);
 
                 String name = item.getEvent_name();
-                String st_date = item.getEvent_st_date();
-                final String ed_date = item.getEvent_ed_date();
+
                 String loca = item.getEvent_loca();
                 String desc = item.getEvent_desc();
 
                 name_text.setText(name);
-                st_date_text.setText(st_date);
-                ed_date_text.setText(ed_date);
                 loca_text.setText(loca);
                 desc_text.setText(desc);
 
@@ -207,6 +198,7 @@ public class GoogleCalFragment extends Fragment {
                                         gcr = new GoogleCalRequest(context, activity.getThisAct());
                                         gcr.setModeRemove(calendarId);
                                         gcr.removeCalendarData();
+                                        activity.getTableFragment().makeTable(stDate, edDate);
                                     }catch(Exception e){
                                         e.printStackTrace();
                                         Log.d("Delete","100");

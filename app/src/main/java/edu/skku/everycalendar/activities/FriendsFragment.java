@@ -73,13 +73,6 @@ public class FriendsFragment extends Fragment {
                 list = activity.friends_list;
                 adapter = new FriendsListAdapter(context, list);
                 list_map = activity.getFriendList();
-//                Iterator<String> iterator = list_map.keySet().iterator();
-//                Log.d("LOG_MAINACT", "" + list_map.size());
-//                while(iterator.hasNext()){
-//                    String name = iterator.next();
-//                    Log.d("LOG_MAINACT_FR", list_map.get(name).getClasses().toString());
-//                    String key = list_map.get(name).getKey();
-//                }
 
                 friendsList.setTextFilterEnabled(true);
                 friendsList.setAdapter(adapter);
@@ -90,10 +83,10 @@ public class FriendsFragment extends Fragment {
                         ArrayList<TimetableData> friendTT;
                         try{
                             //TODO : Make friend's timetable!!
-                            Log.d("LOG_FRIENDTT",list.get(position).getFriend_name());
+                            //Log.d("LOG_FRIENDTT",list.get(position).getFriend_name());
 
                             Intent intent = new Intent(context, FriendsActivity.class);
-                            Log.d("LOG_FRIENDFRAG_TT", list_map.get(list.get(position).getFriend_name()).getClasses().toString());
+                            //Log.d("LOG_FRIENDFRAG_TT", list_map.get(list.get(position).getFriend_name()).getClasses().toString());
                             intent.putParcelableArrayListExtra("Timetable", list_map.get(list.get(position).getFriend_name()).getClasses());
                             intent.putExtra("Name", list.get(position).getFriend_name());
                             startActivity(intent);
@@ -147,11 +140,11 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 HashMap<String, String> fl = activity.getRcmFrnd().getFriendList();
-                Log.d("LOG_FRIENDFRAG", ""+fl.size());
+                //Log.d("LOG_FRIENDFRAG", ""+fl.size());
                 ArrayList<String> fName = new ArrayList<>();
                 ArrayList<String> fid = new ArrayList<>();
                 for(String name : fl.keySet()){
-                    Log.d("LOG_FRIENDFRAG", "::" +  name);
+                    //Log.d("LOG_FRIENDFRAG", "::" +  name);
                     fName.add(name);
                     fid.add(fl.get(name));
                 }

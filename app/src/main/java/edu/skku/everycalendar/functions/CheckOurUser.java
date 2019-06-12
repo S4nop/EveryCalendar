@@ -22,7 +22,7 @@ public class CheckOurUser {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     String id = postSnapshot.getKey();
                     String data = postSnapshot.getValue().toString();
-                    Log.d("LOG_CHKOURUSRE", id + " : " + data);
+                    //Log.d("LOG_CHKOURUSRE", id + " : " + data);
                     userList.add(new FriendInfoData(id, data.split("Name=")[1].split("\\}")[0], makeTD(data)));
                 }
             }
@@ -37,7 +37,7 @@ public class CheckOurUser {
         ArrayList<TimetableData> tdList = new ArrayList<>();
         String[] tmp = s.split("descript=");
         for(int i = 1; i < tmp.length; i++){
-            Log.d("LOG_MAKETD", tmp[i]);
+            //Log.d("LOG_MAKETD", tmp[i]);
             try {
                 tdList.add(new TimetableData(tmp[i].split("name=")[1].split(",")[0], tmp[i].split("place=")[1].split("\\}")[0], tmp[i].split(",")[0], tmp[i].split("weekDay=")[1].split(",")[0],
                         Integer.parseInt(tmp[i].split("startTime=")[1].split(",")[0]), Integer.parseInt(tmp[i].split("endTime=")[1].split(",")[0]), tmp[i].split("idNum=")[1].split(",")[0], Integer.parseInt(tmp[i].split("color=")[1].split(",")[0])));
@@ -46,11 +46,11 @@ public class CheckOurUser {
         return tdList;
     }
     public static boolean chkUser(FriendInfoData fr){
-        Log.d("LOG_CHKUSER", fr.getName() + "-" + fr.getId());
+        //Log.d("LOG_CHKUSER", fr.getName() + "-" + fr.getId());
         boolean result = false;
         for(FriendInfoData fInfo : userList){
             if(fInfo.getName().equals(fr.getName())){
-                Log.d("LOG_CHKUSER" , "Same name");
+                //Log.d("LOG_CHKUSER" , "Same name");
                 result = true;
                 for(TimetableData td : fInfo.getClasses()){
                     for(TimetableData ftd : fr.getClasses()){

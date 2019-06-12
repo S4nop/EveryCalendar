@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public Context mainContext;
     private Activity thisAct;
     private String cookie;
-    private String id, idNum;
+    private String id;
     private String name;
     private String info;
     public BottomNavigationView bottomBar;
@@ -76,11 +77,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private GoogleCalFragment googleCalFragment = new GoogleCalFragment();
     private RecommendFriend rcmFrnd = new RecommendFriend();
     private boolean friendListFin = false;
-    Fragment active = tableFragment;
+    private Fragment active = tableFragment;
     ServiceMaker sm = new ServiceMaker();
 
     public ArrayList<FriendsListItem> friends_list;
-    public HashMap<String, String> friends_list_with_id;
     public Map<String, FriendInfoData> friendList;
     private BackButtonHandler backButtonHandler;
     @Override
@@ -88,16 +88,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //-------------TESTING----------------
-//        ArrayList<String> tmp = new ArrayList<>();
-//        tmp.add("182812");
-//        tmp.add("12178141");
-//        JoinSchedulReq jsr = new JoinSchedulReq();
-//        jsr.joinRequest("2019-06-09", "2019-06-15", tmp);
-        //------------------------------------
         cookie = getIntent().getStringExtra("Cookie");
         id = getIntent().getStringExtra("ID");
-        Log.d("LOG_ID", id);
+        //Log.d("LOG_ID", id);
         backButtonHandler = new BackButtonHandler(this);
 
         bottomBar = findViewById(R.id.bottomNavigationView);
@@ -148,10 +141,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     catch(Exception e){}
                 friendList = friendsListRequest.getFriendList();
                 Iterator<String> iterator = friendList.keySet().iterator();
-                Log.d("LOG_MAINACT", "" + friendList.size());
+                //Log.d("LOG_MAINACT", "" + friendList.size());
                 while(iterator.hasNext()){
                     String name = iterator.next();
-                    //Log.d("LOG_MAINACT_FR", friendList.get(name).getClasses().toString());
+                    ////Log.d("LOG_MAINACT_FR", friendList.get(name).getClasses().toString());
                     String key = friendList.get(name).getKey();
                     FriendsListItem item = new FriendsListItem(name);
                     friends_list.add(item);
@@ -211,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void startService(){
         if(!isServiceRunningCheck()){
-            Log.d("LOG_SERVID", id);
+            //Log.d("LOG_SERVID", id);
             sm.setActivity(mainContext, id);
             sm.startServ();
         }
@@ -224,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             final String stDate = message.split("stDate=")[1].split("\\}")[0];
             final String edDate = message.split("edDate=")[1].split(",")[0];
             final String reqID = message.split("reqID=")[1].split(",")[0];
-            Log.d("receiver", "Got message");
+            //Log.d("receiver", "Got message");
             makeAlert("시간표 조율 요청", "친구가 시간표 조율을 요청했습니다.\n친구에게 시간표를 전송하시겠습니까?",
                     "전송", true,
                     new DialogInterface.OnClickListener() {
@@ -348,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("LOG_ACRESLT", data.getExtras().toString());
+        //Log.d("LOG_ACRESLT", data.getExtras().toString());
 
         if (requestCode == GoogleCalRequest.REQUEST_ACC_PICK && resultCode == RESULT_OK && data != null && data.getExtras() != null) {
             tableFragment.onActivityResult(data);
@@ -380,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onDismiss(DialogInterface dialog) {
         MonthCalendar monthCalendar = (MonthCalendar) dialog;
-        Log.d("LOG_ONDISMISS", "here?");
+        //Log.d("LOG_ONDISMISS", "here?");
         if(monthCalendar.getFlag()==1){
             adjustFragment.setWeek(monthCalendar.getStDate(), monthCalendar.getEdDate());
         }
@@ -402,16 +395,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return false;
     }
 
-    public void setIdNum(String idNum) {
-        this.idNum = idNum;
-    }
-
-    public String getIdNum() {
-        return idNum;
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        tableFragment.makeTable();
     }
 
     public String getName() {
         return name;
+    }
+
+    public Fragment getActive() {
+        return active;
     }
 
     public RecommendFriend getRcmFrnd() {

@@ -155,12 +155,12 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
     private void parseEvents(List<Event> items){
         for (Event event : items) {
 
+            Log.d("LOG_RESLT", event.getSummary());
             compData(event.getStart().getDateTime(), event.getEnd().getDateTime(), event);
 
 
             //TODO : Need to handle case - Events' start date and end date are in different week
 
-            //Log.d("LOG_RESLT", String.format("%s \n (%s)", event.getSummary(), event.getStart().getDateTime().toString()));
             DateTime tmp;
         }
     }
@@ -197,7 +197,6 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
 
     private Integer timeToInt(DateTime dt){
         String strDT = dt.toString();
-        Integer tmp = ((Integer.parseInt(strDT.substring(11, 13)) * 60 + Integer.parseInt(strDT.substring(14,16))) / 5);
         //Log.d("LOG_TIMETOINT", strDT + " " + Integer.toString(tmp));
         return ((Integer.parseInt(strDT.substring(11, 13)) * 60 + Integer.parseInt(strDT.substring(14,16))) / 5);
     }
@@ -254,8 +253,8 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
             editor.putString(this.accName, accName);
             editor.apply();
             mCred.setSelectedAccountName(accName);
-            waitUntilPermEnd(2);
         }
+        waitUntilPermEnd(2);
     }
 
     private void waitUntilPermEnd(final int chkMod){

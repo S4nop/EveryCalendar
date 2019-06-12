@@ -44,7 +44,7 @@ public class FriendsActivity extends AppCompatActivity {
 
         table_container = findViewById(R.id.table_container);
         timeData = getIntent().getParcelableArrayListExtra("Timetable");
-        Log.d("LOG_FRIENDACT", ""+timeData.size());
+        //Log.d("LOG_FRIENDACT", ""+timeData.size());
         name_text.setText(getIntent().getStringExtra("Name"));
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override

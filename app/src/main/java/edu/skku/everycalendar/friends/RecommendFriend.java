@@ -32,7 +32,7 @@ public class RecommendFriend {
             try{
                 if(!id.equals(arg.split("name=")[1].split(",")[0]))
                     friendList.put(arg.split("name=")[1].split(",")[0], arg.split("id=")[1].split("\\}")[0]);
-                    Log.d("LOG_RECOMMEND", "put!!");
+                    //Log.d("LOG_RECOMMEND", "put!!");
             }catch(Exception e){}
             return null;
         }

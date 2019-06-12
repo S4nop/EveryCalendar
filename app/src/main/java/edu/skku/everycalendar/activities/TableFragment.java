@@ -44,6 +44,7 @@ public class TableFragment extends Fragment {
     String cookie;
     String user_id;
     String user_name;
+    String stDate, edDate;
     GoogleCalRequest gCR;
     MyTimeTableReq etR;
     ArrayList<TimetableData> events;
@@ -51,7 +52,6 @@ public class TableFragment extends Fragment {
     ImageButton select_week_btn;
     TextView period;
     boolean schedFin = false;
-    ArrayList<FirebasePost> inf = new ArrayList<FirebasePost>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
@@ -70,10 +70,10 @@ public class TableFragment extends Fragment {
         thisAct = activity.getThisAct();
         cookie = activity.getCookie();
 
-        String firstday = Utilities.getCurSunday();
-        String lastday = Utilities.getCurSaturday();
+        stDate = Utilities.getCurSunday();
+        edDate = Utilities.getCurSaturday();
 
-        makeTable(firstday, lastday);
+        makeTable(stDate, edDate);
         select_week_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,14 +92,21 @@ public class TableFragment extends Fragment {
         FirebaseDatabase.getInstance().getReference().updateChildren(out);
 
     }
+
+    public void makeTable(){
+        makeTable(stDate, edDate);
+    }
+
     public void makeTable(final String stDate, final String edDate){
+        this.stDate = stDate;
+        this.edDate = edDate;
         new Thread(){
             @Override
             public void run(){
                 etR = new MyTimeTableReq(cookie);
                 etR.makeTimeTable();
 
-                Log.d("LOG_MAKETABLE", stDate + " " + edDate);
+                //Log.d("LOG_MAKETABLE", stDate + " " + edDate);
                 gCR = new GoogleCalRequest(context, thisAct);
                 gCR.setModeGet(new DateTime(stDate + "T00:00:00.000+09:00"), new DateTime(edDate + "T23:59:59.000+09:00"));
                 gCR.getCalendarData();
@@ -120,6 +127,10 @@ public class TableFragment extends Fragment {
 
                 postUser(user_id,user_name,events);
                 events.addAll(gCR.getEvents());
+
+                while(!activity.getActive().equals(activity.getTableFragment()))
+                    try{sleep(500);}
+                    catch(Exception e){}
 
                 clToTable.post(new Runnable(){
                     public void run(){
@@ -159,7 +170,7 @@ public class TableFragment extends Fragment {
                     }
                 }
 
-                Log.d("LOG_BUILDTB", events.toString());
+                //Log.d("LOG_BUILDTB", events.toString());
 
 
                 schedFin = false;
@@ -197,16 +208,16 @@ public class TableFragment extends Fragment {
 //        final ValueEventListener postListener = new ValueEventListener() {
 //            @Override
 //            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                Log.d("onDataChange", "Data is Updated");
-//                Log.d("getFirebase",snapshot.getKey());
+//                //Log.d("onDataChange", "Data is Updated");
+//                //Log.d("getFirebase",snapshot.getKey());
 //                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-//                    Log.d("key",snapshot1.getKey());
+//                    //Log.d("key",snapshot1.getKey());
 //                    FirebasePost get = snapshot1.getValue(FirebasePost.class);
 //                    FirebasePost i1 = new FirebasePost(get.getId(), get.getName(), get.getTable());
-//                    Log.d("getFirebase","getFirebase start");
-//                    Log.d("getFirebase",get.getId());
+//                    //Log.d("getFirebase","getFirebase start");
+//                    //Log.d("getFirebase",get.getId());
 //                    inf.add(i1);
-//                    Log.d("inf size",Integer.toString(inf.size()));
+//                    //Log.d("inf size",Integer.toString(inf.size()));
 //                }
 //            }
 //            @Override

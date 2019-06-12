@@ -45,7 +45,7 @@ public class GetNameRequest {
 
                     if(hr.request("POST", "https://everytime.kr/my", null, headers) == 0){
                         rslt = hr.getResult();
-                        Log.d("LOG_HTTP", rslt);
+                        //Log.d("LOG_HTTP", rslt);
                         return rslt;
                     }
                     //Case failure

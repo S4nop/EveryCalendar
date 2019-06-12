@@ -117,25 +117,21 @@ public class AdjustFragment extends Fragment {
                 SparseBooleanArray isChecked = listView.getCheckedItemPositions();
                 int count = adapter.getCount();
                 int start_hour;
-                int start_min;
                 int end_hour;
-                int end_min;
                 //check된 친구 item들이 들어있는 list
                 final ArrayList<String> checked_list = new ArrayList<>();
 
                 for (int i = count-1; i >= 0; i--) {
                     if (isChecked.get(i)) {
                         FriendsListItem item = activity.friends_list.get(i);
-                        Log.d("get_checked",item.getFriend_name());
+                        //Log.d("get_checked",item.getFriend_name());
                         checked_list.add(item.getFriend_name());
                     }
                 }
 
                 //hour은 24시 기준 (오후 10시 -> 22시)
                 start_hour = start_picker.getHour();
-                start_min = start_picker.getMinute();
                 end_hour = end_picker.getHour();
-                end_min = end_picker.getMinute();
 
                 //st_date, ed_date 저장되어 있음
 
@@ -151,10 +147,9 @@ public class AdjustFragment extends Fragment {
                 else{
                     jsr = new JoinSchedulReq();
                     ArrayList<String> fList = new ArrayList<>();
-                    //fList.add(activity.getId());
                     js = new JoinSchedule(start_picker.getHour(), end_picker.getHour());
                     for(final String fname : checked_list){
-                        //Log.d("LOG_CHKUSER", friends_list.get(fl.getFriend_name()));
+                        ////Log.d("LOG_CHKUSER", friends_list.get(fl.getFriend_name()));
                         if(CheckOurUser.chkUser(friends_list.get(fname)))
                             fList.add(friends_list.get(fname).getId());
                         else {

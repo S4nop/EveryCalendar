@@ -47,7 +47,7 @@ public class AdjustResultActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adjust_result);
-        Log.d("LOG_RESULTACT", "Act Start");
+        //Log.d("LOG_RESULTACT", "Act Start");
         btn_back = findViewById(R.id.btn_back);
         btn_save = findViewById(R.id.btn_save);
         frmResult = findViewById(R.id.frmResult);
@@ -64,7 +64,7 @@ public class AdjustResultActivity extends AppCompatActivity {
         timeData = getIntent().getParcelableArrayListExtra("Timetable");
 
         for(TimetableData td : timeData){
-            Log.d("LOG_RESULTACT", "! " + td.getName() + " " + td.getWeekDay() + " " + td.getStartTime());
+            //Log.d("LOG_RESULTACT", "! " + td.getName() + " " + td.getWeekDay() + " " + td.getStartTime());
         }
         stTime = getIntent().getIntExtra("stTime", stTime);
         edTime = getIntent().getIntExtra("edTime", edTime);
@@ -74,7 +74,7 @@ public class AdjustResultActivity extends AppCompatActivity {
             fs += s + " ";
         }
         txtFriends.setText(fs);
-        Log.d("LOG_RESULTACT", ""+ timeData.size() + " - " + stTime + " - " + edTime);
+        //Log.d("LOG_RESULTACT", ""+ timeData.size() + " - " + stTime + " - " + edTime);
 
 
 
@@ -82,7 +82,7 @@ public class AdjustResultActivity extends AppCompatActivity {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("LOG_ARA", "Click!!");
+                //Log.d("LOG_ARA", "Click!!");
                 fs = "";
                 for(String s : fList){
                     fs += s;

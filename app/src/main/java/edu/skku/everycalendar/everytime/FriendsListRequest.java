@@ -39,7 +39,7 @@ public class FriendsListRequest {
                 fNum = resp.length - 1;
                 for(int i = 1; i < resp.length; i++){
                     addFriendToMap(resp[i]);
-                    Log.d("LOG_FRIEND", resp[i]);
+                    //Log.d("LOG_FRIEND", resp[i]);
                 }
 
             } catch (ExecutionException e) {
@@ -57,7 +57,6 @@ public class FriendsListRequest {
         final String name, key, id;
         name = line.split("name=\"")[1].split("\"")[0];
         key = line.split("userid=\"")[1].split("\"")[0];
-        id = line.split("id=\"")[1].split("\"")[0];
         final FriendInfoData fInfo = new FriendInfoData(key, name);
         new Thread(){
             @Override
@@ -73,11 +72,10 @@ public class FriendsListRequest {
                 fInfo.setClassId(ftr.getClassList());
                 friendList.put(name, fInfo);
                 addENum();
-            Log.d("LOG_FRIENDREQ", name);
+            //Log.d("LOG_FRIENDREQ", name);
             }
         }.start();
 
-        //friendListForJoin.put(name, id);
     }
 
     public synchronized void addENum(){
@@ -107,7 +105,7 @@ public class FriendsListRequest {
 
                     if(hr.request("POST", "https://everytime.kr/find/friend/list", null, headers) == 0){
                         rslt = hr.getResult();
-                        Log.d("LOG_HTTP", rslt);
+                        //Log.d("LOG_HTTP", rslt);
                         return rslt;
                     }
                     //Case failure

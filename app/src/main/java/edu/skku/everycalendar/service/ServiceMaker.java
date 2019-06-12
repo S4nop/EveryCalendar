@@ -27,7 +27,7 @@ public class ServiceMaker extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             AlertService.ServiceBinder sv = (AlertService.ServiceBinder) iBinder;
-            Log.d("LOG_ONSERVCONN", "HERE");
+            //Log.d("LOG_ONSERVCONN", "HERE");
             aServ = sv.getService();
 
             isBind = true;
@@ -47,9 +47,9 @@ public class ServiceMaker extends AppCompatActivity {
 
     public void startServ(){
         Intent srv = new Intent(context, AlertService.class);
-        Log.d("LOG_SERVMAKER", id);
+        //Log.d("LOG_SERVMAKER", id);
         srv.putExtra("ID", id);
-//        context.startService(srv);
+        context.startService(srv);
     }
 
     public void stopServ(){
@@ -58,7 +58,7 @@ public class ServiceMaker extends AppCompatActivity {
 
     public void bindServ(){
         if(!isBind) {
-            Log.d("LOG_ISBIND", "false");
+            //Log.d("LOG_ISBIND", "false");
             try {
             context.bindService(new Intent(context, AlertService.class), sconn, BIND_AUTO_CREATE);
             }catch(Exception e){}

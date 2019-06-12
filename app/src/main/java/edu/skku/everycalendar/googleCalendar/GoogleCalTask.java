@@ -40,7 +40,7 @@ public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
     @Override
     protected List<Event> doInBackground(Void... params) {
         try {
-            Log.d("MOD?", "" + mod);
+            //Log.d("MOD?", "" + mod);
             if ( mod == 1) {
                 return getEvent();
             }
@@ -51,7 +51,7 @@ public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
                 removeEvent();
             }
         } catch (Exception e) {
-            Log.d("LOG_DOINBACK", e.toString());
+            //Log.d("LOG_DOINBACK", e.toString());
             cancel(true);
             return null;
         }
@@ -64,7 +64,7 @@ public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
     }
 
     private List<Event> getEvent() throws IOException {
-        Log.d("LOG_GOOTASK", "" + stDate + " " + edDate);
+        //Log.d("LOG_GOOTASK", "" + stDate + " " + edDate);
         Events events = mServ.events().list("primary")//"primary")
                 .setTimeMin(stDate)
                 .setTimeMax(edDate)
@@ -151,7 +151,7 @@ public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
             List<CalendarListEntry> items = calendarList.getItems();
 
             for (CalendarListEntry calendarListEntry : items) {
-                Log.d("Items",calendarListEntry.getSummary());
+                //Log.d("Items",calendarListEntry.getSummary());
                 if ( calendarListEntry.getSummary().equals(calendarTitle)) {
                     id = calendarListEntry.getId();
                 }

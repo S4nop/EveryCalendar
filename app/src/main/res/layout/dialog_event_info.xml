@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="30dp">
@@ -37,78 +38,14 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/st_date_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/name_layout">
-
-        <TextView
-            android:id="@+id/st_textView15"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.3"
-            android:gravity="center"
-            android:text="시작 일시" />
-
-        <ImageView
-            android:id="@+id/st_imageView8"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="10dp"
-            app:srcCompat="@color/gray" />
-
-        <TextView
-            android:id="@+id/st_date"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="5" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ed_date_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/st_date_layout">
-
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.3"
-            android:gravity="center"
-            android:text="끝 일시" />
-
-        <ImageView
-            android:id="@+id/imageView8"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="10dp"
-            app:srcCompat="@color/gray" />
-
-        <TextView
-            android:id="@+id/ed_date"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="5" />
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/loca_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:orientation="horizontal"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ed_date_layout">
+        app:layout_constraintTop_toBottomOf="@+id/name_layout">
 
         <TextView
             android:id="@+id/textView17"
