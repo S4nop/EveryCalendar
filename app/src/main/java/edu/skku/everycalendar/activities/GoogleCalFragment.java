@@ -235,13 +235,12 @@ public class GoogleCalFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-
-                setTable(gCR.getEvents());
+                setTable(gCR.getEvents(), stDate, edDate);
             }
         }.start();
     }
 
-    public void setTable(ArrayList<TimetableData> events){
+    public void setTable(ArrayList<TimetableData> events, final String stDate, final String edDate){
         table = events;
         list.clear();
         if(table!=null){
@@ -253,6 +252,7 @@ public class GoogleCalFragment extends Fragment {
         calLayout.post(new Runnable(){
             public void run() {
                 listView.setAdapter(adapter);
+                week_text.setText(stDate + " ~ " + edDate);
             }
         });
     }

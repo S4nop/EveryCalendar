@@ -42,7 +42,6 @@ public class FriendsFragment extends Fragment {
     ListView friendsList;
     EditText searchText;
 
-    ImageButton deleteBtn;
     ImageButton addBtn;
     FloatingActionButton fab_plus;
 
@@ -60,7 +59,6 @@ public class FriendsFragment extends Fragment {
         searchText = rootView.findViewById(R.id.searchText);
 
         addBtn = rootView.findViewById(R.id.addBtn);
-        deleteBtn = rootView.findViewById(R.id.deleteBtn);
         fab_plus = rootView.findViewById(R.id.fab_plus);
 
         activity = (MainActivity) getActivity();
@@ -183,12 +181,6 @@ public class FriendsFragment extends Fragment {
             }
         });
 
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
         return rootView;
     }

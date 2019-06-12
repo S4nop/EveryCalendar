@@ -103,8 +103,6 @@ public class TableFragment extends Fragment {
                 gCR = new GoogleCalRequest(context, thisAct);
                 gCR.setModeGet(new DateTime(stDate + "T00:00:00.000+09:00"), new DateTime(edDate + "T23:59:59.000+09:00"));
                 gCR.getCalendarData();
-                activity.getGoogleCalFragment().setTable(gCR.getEvents());
-
                 while(!etR.getFinished() || !gCR.getFinished()) {
                     try {
                         sleep(500);
@@ -112,6 +110,8 @@ public class TableFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+
+                activity.getGoogleCalFragment().setTable(gCR.getEvents(), stDate, edDate);
 
                 events = etR.getClassList();
                 postDB(events);

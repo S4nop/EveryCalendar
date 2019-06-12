@@ -26,7 +26,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="친구 관리"
+            android:text="친구 추천"
             android:textColor="@color/colorMain"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -36,29 +36,6 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topbar">
-
-        <android.support.design.widget.TabItem
-            android:id="@+id/tabItem1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="친구 추천" />
-
-        <android.support.design.widget.TabItem
-            android:id="@+id/tabItem2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="친구 신청" />
-
-    </android.support.design.widget.TabLayout>
-
     <FrameLayout
         android:id="@+id/contents"
         android:layout_width="match_parent"
@@ -66,7 +43,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tabs">
+        app:layout_constraintTop_toBottomOf="@id/topbar">
 
         <ListView
             android:id="@+id/listView"

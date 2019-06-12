@@ -330,10 +330,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_setting) {
-            // Handle the camera action
-        } else if (id == R.id.nav_logout) {
-
+        if (id == R.id.nav_logout) {
+            //TODO : Logout
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
