@@ -44,7 +44,7 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
     int gThreadRunning = 0;
     int mod = 0;
     DateTime stDate, edDate;
-    String add_Sum, add_loc, add_Desc;
+    String add_Sum, add_loc, add_Desc, sum;
     public static final int REQUEST_ACC_PICK = 1000;
     public static final int REQUEST_PERM_GET_ACC = 1003;
 
@@ -82,6 +82,10 @@ public class GoogleCalRequest implements EasyPermissions.PermissionCallbacks {
         this.add_Sum = add_Sum;
     }
 
+    public void setModeRemove(String name){
+        this.mod = 3;
+        this.sum = name;
+    }
     public void getCalendarData() {
         googleCalTask = new GoogleCalTask(mCred);
         googleCalTask.setModeGet(stDate, edDate);

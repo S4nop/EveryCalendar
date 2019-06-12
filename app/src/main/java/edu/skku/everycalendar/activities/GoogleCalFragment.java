@@ -59,7 +59,6 @@ public class GoogleCalFragment extends Fragment {
         activity = (MainActivity) getActivity();
         context = activity.mainContext;
         gcr = new GoogleCalRequest(context, activity.getThisAct());
-        googleCalTask = new GoogleCalTask(gcr.mCred);
         btn_add = rootView.findViewById(R.id.btn_add);
         btn_month = rootView.findViewById(R.id.month_btn);
         calLayout = rootView.findViewById(R.id.calLayout);
@@ -131,9 +130,9 @@ public class GoogleCalFragment extends Fragment {
                         DateTime mEd_date = new DateTime(ed_year+"-"+ed_month+"-"+ed_date + "T" + ed_hour + ":" + ed_min + ":00.000+09:00");
                         gcr.setModeAdd(name, loca, desc, mSt_date, mEd_date);
                         gcr.addEventToCalendar();
-                        EventListItem item = new EventListItem(name,form_st_date,form_ed_date,loca,desc);
-                        list.add(item);
-                        adapter.notifyDataSetChanged();
+                        //EventListItem item = new EventListItem(name,form_st_date,form_ed_date,loca,desc);
+                        //list.add(item);
+                        //adapter.notifyDataSetChanged();
                     }
                 });
 
@@ -195,15 +194,21 @@ public class GoogleCalFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        String calendarTitle = list.get(index).getEvent_name();
+                        final String calendarTitle = list.get(index).getEvent_name();
 
-                        try{
                             //googleCalTask.getmServ().calendars().delete("primary").execute();
-                            googleCalTask.getmServ().events().delete("primary",calendarTitle).execute();
-                        }catch(Exception e){
-                            e.printStackTrace();
-                            Log.d("Delete","100");
-                        }
+                            new Thread(){
+                                @Override
+                                public void run(){
+
+                                    try{
+                                    googleCalTask.getmServ().events().delete("primary",calendarTitle).execute();
+                                    }catch(Exception e){
+                                        e.printStackTrace();
+                                        Log.d("Delete","100");
+                                    }
+                                }
+                            }.start();
                         list.remove(index);
                         adapter.notifyDataSetChanged();
                     }
@@ -237,14 +242,15 @@ public class GoogleCalFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-                setTable(gCR.getEvents(), stDate, edDate);
+                setTable(gCR.getEvents(), stDate, edDate, gCR);
             }
         }.start();
     }
 
-    public void setTable(ArrayList<TimetableData> events, final String stDate, final String edDate){
+    public void setTable(ArrayList<TimetableData> events, final String stDate, final String edDate, GoogleCalRequest gCR){
         table = events;
         list.clear();
+        googleCalTask = new GoogleCalTask(gCR.mCred);
         if(table!=null){
             for(TimetableData td : table){
                 EventListItem item = new EventListItem(td.getName(), td.getStartTime().toString(), td.getEndTime().toString(), td.getPlace(),td.getDescript());
