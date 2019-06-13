@@ -71,7 +71,12 @@ Activity들과 `MainActivity`를 구성하는 `Fragment`들이 있는 패키지
 - `com.skku.everycalendar.table.TableRowView`
 - `com.skku.everycalendar.table.TableView`
 
-### 1.10 - com.skku.everycalendar.functions
+### 1.10 - com.skku.everycalendar.joinSchedule
+**시간표 조율** 관련 기능들을 담당하는 Class들이 있는 패키지
+- `com.skku.everycalendar.joinSchedule.JoinSchedule`
+- `com.skku.everycalendar.joinSchedule.JoinSchedulReq`
+
+### 1.11 - com.skku.everycalendar.functions
 어플리케이션에서 사용되는 기타 함수들이 구현된 Class들이 있는 패키지
 - `com.skku.everycalendar.functions.BackButtonHandler`
 - `com.skku.everycalendar.functions.CallableArg`
@@ -79,8 +84,6 @@ Activity들과 `MainActivity`를 구성하는 `Fragment`들이 있는 패키지
 - `com.skku.everycalendar.functions.CheckOurUser`
 - `com.skku.everycalendar.functions.FirebasePost`
 - `com.skku.everycalendar.functions.Http_Requst`
-- `com.skku.everycalendar.functions.JoinSchedule`
-- `com.skku.everycalendar.functions.JoinSchedulReq`
 - `com.skku.everycalendar.functions.RealTimeDBPull`
 - `com.skku.everycalendar.functions.Utilities`
 
@@ -136,9 +139,9 @@ Activity들과 `MainActivity`를 구성하는 `Fragment`들이 있는 패키지
 
 조율에 필요한 요소들을 모두 선택한 후 조율 버튼을 누르면
 
-`edu.skku.everycalendar.functions.JoinSchedule`
+`edu.skku.everycalendar.joinSchedule.JoinSchedule`
 
-`edu.skku.everycalendar.functions.JoinSchedulReq`
+`edu.skku.everycalendar.joinSchedule.JoinSchedulReq`
 
 을 사용하여 조율 작업을 수행한다.
 
@@ -282,8 +285,8 @@ googleCalRequest.removeCalendarData();
 ### 3.10 - 시간표 조율하기
 
 ```JAVA
-import edu.skku.everycalendar.functionsJoinSchedule;
-import edu.skku.everycalendar.functionsJoinSchedulReq;
+import edu.skku.everycalendar.joinSchedule.JoinSchedule;
+import edu.skku.everycalendar.joinSchedule.JoinSchedulReq;
 
 JoinSchedule joinSchedule = new JoinSchedule(startHour, endHour);
 JoinSchedulReq joinSchedulReq = new JoinSchedulReq();

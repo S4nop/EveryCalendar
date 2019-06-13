@@ -1,4 +1,4 @@
-package edu.skku.everycalendar.functions;
+package edu.skku.everycalendar.joinSchedule;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import java.util.Random;
 import edu.skku.everycalendar.activities.AdjustFragment;
 import edu.skku.everycalendar.activities.AdjustResultActivity;
 import edu.skku.everycalendar.dataType.TimetableData;
+import edu.skku.everycalendar.functions.Utilities;
 
 public class JoinSchedule {
     Integer stTime, edTime;

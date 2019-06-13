@@ -1,7 +1,6 @@
-package edu.skku.everycalendar.functions;
+package edu.skku.everycalendar.joinSchedule;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -15,6 +14,8 @@ import java.util.Map;
 import java.util.Random;
 
 import edu.skku.everycalendar.dataType.TimetableData;
+import edu.skku.everycalendar.functions.CallableArg;
+import edu.skku.everycalendar.functions.RealTimeDBPull;
 
 public class JoinSchedulReq {
     JoinSchedule js;
