@@ -254,7 +254,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 events = etR.getClassList();
                 events.addAll(gCR.getEvents());
-
+                for(TimetableData t : events){
+                    t.setName(" ");
+                    t.setDescript(" ");
+                    t.setPlace(" ");
+                }
                 Map<String, Object> upd = new HashMap<>();
                 //Map<String, ArrayList<TimetableData>> pack = new HashMap<>();
                 //pack.put(id, events);
