@@ -72,6 +72,8 @@ public class GoogleCalTask extends AsyncTask<Void, Void, List<Event>> {
                 .setSingleEvents(true)
                 .execute();
         List<Event> items = events.getItems();
+        for(Event e : items)
+        Log.d("LOG_FINAL", "1 " + e.getSummary());
         return items;
     }
 

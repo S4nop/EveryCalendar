@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView nav_view;
     private View nav_header;
     private DrawerLayout drawer;
-
+    private String alertNum = "";
     private TextView name_text;
     private TextView info_text;
 
@@ -217,6 +217,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             final String stDate = message.split("stDate=")[1].split("\\}")[0];
             final String edDate = message.split("edDate=")[1].split(",")[0];
             final String reqID = message.split("reqID=")[1].split(",")[0];
+            if(reqID.equals(alertNum)) return;
+            else alertNum = reqID;
             //Log.d("receiver", "Got message");
             makeAlert("시간표 조율 요청", "친구가 시간표 조율을 요청했습니다.\n친구에게 시간표를 전송하시겠습니까?",
                     "전송", true,
@@ -254,11 +256,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 events.addAll(gCR.getEvents());
 
                 Map<String, Object> upd = new HashMap<>();
-                Map<String, ArrayList<TimetableData>> pack = new HashMap<>();
-                pack.put(id, events);
+                //Map<String, ArrayList<TimetableData>> pack = new HashMap<>();
+                //pack.put(id, events);
                 DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
-                upd.put("/SchedJoin/" + reqID, pack);
+                upd.put("/SchedJoin/" + reqID + "/" + id + "/", events);
                 mRef.updateChildren(upd);
+                alertNum = "";
             }
         }.start();
     }

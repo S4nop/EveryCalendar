@@ -1,6 +1,7 @@
 package edu.skku.everycalendar.joinSchedule;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -99,6 +100,7 @@ public class JoinSchedulReq {
         public Void call() {
             try{
                 if(!arg.equals("@Req"))
+                    //Log.d("LOG_REQ", arg);
                     if(!uploadedFriend.contains(arg)){
                         uploadedFriend.add(arg);
                         if(uploadedFriend.size() == fNum2){
@@ -122,11 +124,12 @@ public class JoinSchedulReq {
         @Override
         public Void call() {
             try{
+                //Log.d("LOG_REQ", arg);
                 //Log.d("LOG_CALLARGEJOIN", arg);
                 String stTime = arg.split("startTime=")[1].split(",")[0];
                 String edTime = arg.split("endTime=")[1].split(",")[0];
                 String week = arg.split("weekDay=")[1].split(",")[0];
-                js.addEvent(new TimetableData("","","",week,
+                js.addEvent(new TimetableData(arg.split("name=")[1].split(",")[0], "","",week,
                         Integer.parseInt(stTime), Integer.parseInt(edTime), "", 0), Integer.parseInt(week));
             }catch(Exception e){
                 e.printStackTrace();

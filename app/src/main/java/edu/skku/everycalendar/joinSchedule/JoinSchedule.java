@@ -91,7 +91,8 @@ public class JoinSchedule {
         Integer st, ed;
 
         for(TimetableData td : wEvents[idx]){
-            //Log.d("LOG5", "LOOP");
+            //Log.d("LOG5", td.getName());
+
             st = td.getStartTime() / 12;
             ed = td.getEndTime() / 12 + (td.getEndTime() % 12 == 0 ? 0 : 1);
             for(int i = st; i < ed; i++){
